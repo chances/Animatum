@@ -1,0 +1,238 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using Animatum.SceneGraph;
+using SharpGL;
+using SharpGL.SceneGraph;
+using SharpGL.SceneGraph.Cameras;
+using Animatum.SceneGraph.Primitives;
+using SharpGL.SceneGraph.Effects;
+using SharpGL.Enumerations;
+using System.Diagnostics;
+
+namespace Animatum.Controls
+{
+    public partial class ModelViewControl : UserControl
+    {
+        private Color clearColor;
+        private MovingLookAtCamera camera;
+        private bool renderGrid, renderAxies;
+        private Grid grid;
+        private Axies axies;
+        private OpenGLAttributesEffect attrs;
+        private Model model;
+
+        private bool initialized = false;
+
+        public ModelViewControl()
+        {
+            InitializeComponent();
+
+            openGLControl.FrameRate = 0;
+
+            clearColor = Color.Black;
+            camera = new MovingLookAtCamera()
+            {
+                Position = new Vertex(10f, 0f, 7.5f),
+                Target = new Vertex(0f, 0f, 0f),
+                UpVector = new Vertex(0f, 0f, 1f),
+                Near = 0,
+                Far = 250,
+                Theta = 0.785f
+            };
+            renderGrid = true;
+            renderAxies = true;
+            grid = new Grid();
+            grid.Size = 150;
+            axies = new Axies();
+            axies.Size = 150;
+            //Set attributes
+            attrs = new OpenGLAttributesEffect();
+            attrs.EnableAttributes.EnableDepthTest = true;
+            attrs.EnableAttributes.EnableNormalize = true;
+            attrs.EnableAttributes.EnableLighting = true;
+            attrs.EnableAttributes.EnableTexture2D = true;
+            attrs.EnableAttributes.EnableBlend = true;
+            attrs.ColorBufferAttributes.BlendingSourceFactor = BlendingSourceFactor.SourceAlpha;
+            attrs.ColorBufferAttributes.BlendingDestinationFactor = BlendingDestinationFactor.OneMinusSourceAlpha;
+            attrs.LightingAttributes.TwoSided = false;
+
+            model = new Model();
+
+            Color col = Color.FromArgb(40, 40, 40);
+
+            //Nice soft-ish lighting
+            Light light = new Light(OpenGL.GL_LIGHT0)
+            {
+                Position = new Vertex(-9, -9, 11),
+                Ambient = Color.Black,
+                Diffuse = col,
+                Specular = col
+            };
+            model.Children.Add(light);
+            light = new Light(OpenGL.GL_LIGHT1)
+            {
+                Position = new Vertex(9, -9, 11),
+                Ambient = Color.Black,
+                Diffuse = col,
+                Specular = col
+            };
+            model.Children.Add(light);
+            light = new Light(OpenGL.GL_LIGHT2)
+            {
+                Position = new Vertex(0, 15, 15),
+                Ambient = Color.Black,
+                Diffuse = col,
+                Specular = col
+            };
+            model.Children.Add(light);
+
+            CurrentTool = ToolboxItem.Select;
+        }
+
+        public Model Model
+        {
+            get { return model; }
+            set { model = value; }
+        }
+
+        public Color ClearColor
+        {
+            get { return clearColor; }
+            set { clearColor = value; }
+        }
+
+        public bool RenderGrid
+        {
+            get { return renderGrid; }
+            set { renderGrid = value; }
+        }
+
+        public bool RenderAxies
+        {
+            get { return renderAxies; }
+            set { renderAxies = value; }
+        }
+
+        public ToolboxItem CurrentTool
+        {
+            get;
+            set;
+        }
+
+        public int FrameRate
+        {
+            get { return openGLControl.FrameRate; }
+        }
+
+        public bool IsPlaying
+        {
+            get { return openGLControl.FrameRate > 0; }
+        }
+
+        public void Play()
+        {
+            openGLControl.FrameRate = 30;
+        }
+
+        public void Pause()
+        {
+            openGLControl.FrameRate = 0;
+        }
+
+        protected override void OnInvalidated(InvalidateEventArgs e)
+        {
+            openGLControl.Invalidate();
+            base.OnInvalidated(e);
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            //Zoom by moving the camera closer or farther away from the origin
+            float delta = 0.0f;
+            if (e.Delta > 0)
+                delta = 1.0f - (e.Delta / (float)(e.Delta * 6));
+            else
+                delta = (e.Delta * 0.01f) * -1.0f;
+            camera.Zoom(delta);
+            openGLControl.Invalidate();
+            base.OnMouseWheel(e);
+        }
+
+        bool mouseDown = false;
+        Point mousePos;
+
+        private void openGLControl_MouseDown(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+            mousePos = e.Location;
+            openGLControl.Invalidate();
+        }
+
+        private void openGLControl_MouseMove(object sender, MouseEventArgs e)
+        {
+           if (mouseDown && e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                if (CurrentTool == ToolboxItem.Orbit)
+                {
+                    int diffX = mousePos.X - e.X;
+                    int diffY = mousePos.Y - e.Y;
+                    //Rotation in degrees
+                    float delta = diffX * 0.01f;
+                    camera.RotateHorizontal(delta);
+                    //Project the camera so that stuff looks right
+                    camera.Project(openGLControl.OpenGL);
+                    openGLControl.Invalidate();
+                }
+            }
+            mousePos = e.Location;
+        }
+
+        private void openGLControl_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+            openGLControl.Invalidate();
+        }
+
+        private void openGLControl_OpenGLInitialized(object sender, EventArgs e)
+        {
+            initialized = true;
+        }
+
+        private void openGLControl_Resized(object sender, EventArgs e)
+        {
+            if (!DesignMode && initialized && camera != null)
+            {
+                camera.AspectRatio = (float)openGLControl.Width / (float)openGLControl.Height;
+                camera.Project(openGLControl.OpenGL);
+            }
+        }
+
+        private void openGLControl_OpenGLDraw(object sender, PaintEventArgs e)
+        {
+            OpenGL gl = openGLControl.OpenGL;
+
+            float[] clear = Convert.ColorToGLColor(clearColor);
+            gl.ClearColor(clear[0], clear[1], clear[2], clear[3]);
+
+            camera.Project(gl);
+
+            gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT |
+                OpenGL.GL_STENCIL_BUFFER_BIT);
+
+            attrs.Push(gl, null);
+
+            if (renderGrid)
+                grid.Render(gl);
+            if (renderAxies)
+                axies.Render(gl);
+
+            if (model != null)
+                model.Render(gl);
+
+            attrs.Pop(gl, null);
+
+            gl.Flush();
+        }
+    }
+}
