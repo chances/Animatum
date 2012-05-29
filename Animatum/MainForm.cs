@@ -119,5 +119,25 @@ namespace Animatum
             //Invalidate
             this.modelView.Invalidate();
         }
+
+        private void timeline_BeginPlayback(object sender, EventArgs e)
+        {
+            this.modelView.Play();
+        }
+
+        private void timeline_PausePlayback(object sender, EventArgs e)
+        {
+            this.modelView.Pause();
+        }
+
+        private void timeline_StopPlayback(object sender, EventArgs e)
+        {
+            this.modelView.Pause();
+            this.modelView.Model.CurrentTime = 0.0f;
+            //Update timeline model
+            this.timeline.Model = this.modelView.Model;
+            //Invalidate
+            this.modelView.Invalidate();
+        }
     }
 }

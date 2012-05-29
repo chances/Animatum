@@ -15,6 +15,9 @@ namespace Animatum.Controls
 
         public event EventHandler Ready;
         public event EventHandler ModelUpdated;
+        public event EventHandler BeginPlayback;
+        public event EventHandler PausePlayback;
+        public event EventHandler StopPlayback;
 
         public TimelineControl()
         {
@@ -22,6 +25,9 @@ namespace Animatum.Controls
 
             scriptObj = new TimelineScriptingObject(null);
             scriptObj.ModelUpdated += new EventHandler(scriptObj_ModelUpdated);
+            scriptObj.BeginPlayback += new EventHandler(scriptObj_BeginPlayback);
+            scriptObj.PausePlayback += new EventHandler(scriptObj_PausePlayback);
+            scriptObj.StopPlayback += new EventHandler(scriptObj_StopPlayback);
             webBrowser.ObjectForScripting = scriptObj;
         }
 
@@ -30,7 +36,13 @@ namespace Animatum.Controls
             get { return model; }
             set
             {
+                bool makeHandler = (model == null);
                 model = value;
+                if (makeHandler && model != null)
+                {
+                    model.CurrentTimeChanged += new EventHandler(model_CurrentTimeChanged);
+                    model.AnimationEnded += new EventHandler(model_AnimationEnded);
+                }
                 scriptObj.model = model;
                 if (webBrowser.Document != null)
                     execScript("onModelUpdated();");
@@ -44,12 +56,43 @@ namespace Animatum.Controls
 
         private void OnModelUpdated()
         {
-            if (ModelUpdated != null) ModelUpdated(this, new EventArgs());
+            if (ModelUpdated != null)
+                ModelUpdated(this, new EventArgs());
+        }
+
+        void model_CurrentTimeChanged(object sender, EventArgs e)
+        {
+            if (webBrowser.Document != null)
+                execScript("onCurrentTimeChanged();");
+        }
+
+        void model_AnimationEnded(object sender, EventArgs e)
+        {
+            if (webBrowser.Document != null)
+                execScript("onAnimationEnded();");
         }
 
         void scriptObj_ModelUpdated(object sender, EventArgs e)
         {
             OnModelUpdated();
+        }
+
+        void scriptObj_BeginPlayback(object sender, EventArgs e)
+        {
+            if (BeginPlayback != null)
+                BeginPlayback(this, new EventArgs());
+        }
+
+        void scriptObj_PausePlayback(object sender, EventArgs e)
+        {
+            if (PausePlayback != null)
+                PausePlayback(this, new EventArgs());
+        }
+
+        void scriptObj_StopPlayback(object sender, EventArgs e)
+        {
+            if (StopPlayback != null)
+                StopPlayback(this, new EventArgs());
         }
 
         private void setBrowserStyle()

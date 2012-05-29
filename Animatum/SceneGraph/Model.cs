@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Web.Script.Serialization;
 using SharpGL.SceneGraph;
 using Animatum.Animation;
+using System;
 
 namespace Animatum.SceneGraph
 {
@@ -15,6 +16,9 @@ namespace Animatum.SceneGraph
     public class Model : Node
     {
         private float curTime;
+
+        public event EventHandler CurrentTimeChanged;
+        public event EventHandler AnimationEnded;
 
         /// <summary>
         /// Construct a new model.
@@ -28,7 +32,12 @@ namespace Animatum.SceneGraph
         public float CurrentTime
         {
             get { return curTime; }
-            set { curTime = value; }
+            set
+            {
+                curTime = value;
+                if (CurrentTimeChanged != null)
+                    CurrentTimeChanged(this, new EventArgs());
+            }
         }
 
         /// <summary>
@@ -170,6 +179,10 @@ namespace Animatum.SceneGraph
                             .GetRightMostKeyframe(KeyframeType.Rotation);
                         if (rightRotatate != null)
                             rotate = rightRotatate.Transformation;
+
+                        //Animation ended
+                        if (AnimationEnded != null)
+                            AnimationEnded(this, new EventArgs());
                     }
                     else
                     {

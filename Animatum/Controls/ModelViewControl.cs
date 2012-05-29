@@ -22,6 +22,8 @@ namespace Animatum.Controls
         private OpenGLAttributesEffect attrs;
         private Model model;
 
+        private Stopwatch frameTimer;
+
         private bool initialized = false;
 
         public ModelViewControl()
@@ -58,6 +60,7 @@ namespace Animatum.Controls
             attrs.LightingAttributes.TwoSided = false;
 
             model = new Model();
+            model.AnimationEnded += new EventHandler(model_AnimationEnded);
 
             Color col = Color.FromArgb(40, 40, 40);
 
@@ -87,13 +90,15 @@ namespace Animatum.Controls
             };
             model.Children.Add(light);
 
+            frameTimer = new Stopwatch();
+
             CurrentTool = ToolboxItem.Select;
         }
 
         public Model Model
         {
             get { return model; }
-            set { model = value; }
+            set {  model = value; }
         }
 
         public Color ClearColor
@@ -132,12 +137,17 @@ namespace Animatum.Controls
 
         public void Play()
         {
-            openGLControl.FrameRate = 30;
+            openGLControl.FrameRate = 32;
         }
 
         public void Pause()
         {
             openGLControl.FrameRate = 0;
+        }
+
+        void model_AnimationEnded(object sender, EventArgs e)
+        {
+            Pause();
         }
 
         protected override void OnInvalidated(InvalidateEventArgs e)
@@ -210,6 +220,28 @@ namespace Animatum.Controls
 
         private void openGLControl_OpenGLDraw(object sender, PaintEventArgs e)
         {
+            //If animating, increment current time
+            if (IsPlaying)
+            {
+                /*frameTimer.Stop();
+                long elapsed = frameTimer.ElapsedMilliseconds;
+                frameTimer.Reset();
+                //Desired milliseconds between frames
+                float between = 1000 / FrameRate;
+                //If the actuall time passed is longer, compensate
+                if (elapsed > between)
+                {
+                    model.CurrentTime += elapsed / 1000;
+                }
+                else //We're okay, no compensation
+                {
+                    model.CurrentTime += between / 1000;
+                }*/
+                float between = 1000 / FrameRate;
+                model.CurrentTime += between / 1000;
+            }
+
+            //Render
             OpenGL gl = openGLControl.OpenGL;
 
             float[] clear = Convert.ColorToGLColor(clearColor);
@@ -233,6 +265,12 @@ namespace Animatum.Controls
             attrs.Pop(gl, null);
 
             gl.Flush();
+
+            //Start measuring time between frames
+            if (IsPlaying)
+            {
+                //frameTimer.Start();
+            }
         }
     }
 }

@@ -16,6 +16,9 @@ namespace Animatum.Controls
     public class TimelineScriptingObject
     {
         public event EventHandler ModelUpdated;
+        public event EventHandler BeginPlayback;
+        public event EventHandler PausePlayback;
+        public event EventHandler StopPlayback;
 
         public TimelineScriptingObject(Model model)
         {
@@ -38,9 +41,6 @@ namespace Animatum.Controls
 
         public void setModel(string model)
         {
-            //JSONSerializer serializer = new JSONSerializer(null);
-            //Model updatedModel = serializer.Deserialize(model);
-
             if (ModelUpdated != null)
                 ModelUpdated(this, new EventArgs());
         }
@@ -140,6 +140,24 @@ namespace Animatum.Controls
 
             if (ModelUpdated != null)
                 ModelUpdated(this, new EventArgs());
+        }
+
+        public void play()
+        {
+            if (BeginPlayback != null)
+                BeginPlayback(this, new EventArgs());
+        }
+
+        public void pause()
+        {
+            if (PausePlayback != null)
+                PausePlayback(this, new EventArgs());
+        }
+
+        public void stop()
+        {
+            if (StopPlayback != null)
+                StopPlayback(this, new EventArgs());
         }
 
         public bool showConfirm(string title, string message, string def = "yes")
