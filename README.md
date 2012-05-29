@@ -20,3 +20,5 @@ I used a few third party classes and libraries for this project. They are as fol
 +  SharpGL: On [CodePlex](http://sharpgl.codeplex.com/)
 +  libASE-sharp: I ported [libASE](http://interreality.sourceforge.net/software/libASE/) to C# [here](http://github.com/XESoD/libASE-sharp)
 +  VS2008MenuRenderer.cs: From this [CodeProject](http://www.codeproject.com/Articles/70204/Custom-VisualStudio-2008-style-MenuStrip-and-ToolS) article
+
+The Vista Inspirat icon set is also used.

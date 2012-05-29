@@ -138,6 +138,7 @@ namespace Animatum.SceneGraph
 
         private void updateMeshTransforms()
         {
+            int endCount = 0;
             foreach (Bone bone in Bones)
             {
                 Vertex translate = bone.Translation;
@@ -180,9 +181,7 @@ namespace Animatum.SceneGraph
                         if (rightRotatate != null)
                             rotate = rightRotatate.Transformation;
 
-                        //Animation ended
-                        if (AnimationEnded != null)
-                            AnimationEnded(this, new EventArgs());
+                        endCount++;
                     }
                     else
                     {
@@ -233,6 +232,10 @@ namespace Animatum.SceneGraph
                     bone.Mesh.Bone = bone;
                 }
             }
+            //All bone animations have ended
+            if (endCount == Bones.Count)
+                if (AnimationEnded != null)
+                    AnimationEnded(this, new EventArgs());
         }
 
         private List<Mesh> getMeshes(List<Node> start)

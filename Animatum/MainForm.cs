@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Animatum.SceneGraph;
 using ASE = libASEsharp;
 using Animatum.Controls;
+using System.Diagnostics;
 
 namespace Animatum
 {
@@ -82,6 +83,11 @@ namespace Animatum
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void reportABugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://github.com/XESoD/Animatum/issues");
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

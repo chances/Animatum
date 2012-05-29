@@ -30,31 +30,33 @@
         {
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainerProject = new System.Windows.Forms.SplitContainer();
             this.splitContainerProps = new System.Windows.Forms.SplitContainer();
+            this.toolbox = new Animatum.Controls.Toolbox();
+            this.splitContainerTimeline = new System.Windows.Forms.SplitContainer();
+            this.importDialog = new System.Windows.Forms.OpenFileDialog();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.modelDockPanel = new Animatum.Controls.DockToolPanel();
             this.modelTreeView = new Animatum.Controls.ModelTreeView();
             this.propsDockPanel = new Animatum.Controls.DockToolPanel();
             this.propsControl = new Animatum.Controls.PropertiesControl();
-            this.toolbox = new Animatum.Controls.Toolbox();
-            this.splitContainerTimeline = new System.Windows.Forms.SplitContainer();
             this.timelineDockPanel = new Animatum.Controls.DockToolPanel();
             this.timeline = new Animatum.Controls.TimelineControl();
-            this.importDialog = new System.Windows.Forms.OpenFileDialog();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportABugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerProject)).BeginInit();
             this.splitContainerProject.Panel1.SuspendLayout();
@@ -64,13 +66,13 @@
             this.splitContainerProps.Panel1.SuspendLayout();
             this.splitContainerProps.Panel2.SuspendLayout();
             this.splitContainerProps.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTimeline)).BeginInit();
+            this.splitContainerTimeline.Panel2.SuspendLayout();
+            this.splitContainerTimeline.SuspendLayout();
             this.modelDockPanel.Content.SuspendLayout();
             this.modelDockPanel.SuspendLayout();
             this.propsDockPanel.Content.SuspendLayout();
             this.propsDockPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTimeline)).BeginInit();
-            this.splitContainerTimeline.Panel2.SuspendLayout();
-            this.splitContainerTimeline.SuspendLayout();
             this.timelineDockPanel.Content.SuspendLayout();
             this.timelineDockPanel.SuspendLayout();
             this.SuspendLayout();
@@ -102,62 +104,15 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "&File";
             // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Image = global::Animatum.Properties.Resources.fileopen;
-            this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.openToolStripMenuItem.Text = "&Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            // 
-            // importToolStripMenuItem
-            // 
-            this.importToolStripMenuItem.Image = global::Animatum.Properties.Resources.fileimport;
-            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.importToolStripMenuItem.Text = "&Import ASE...";
-            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
-            // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
             this.toolStripSeparator.Size = new System.Drawing.Size(192, 6);
             // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.Image = global::Animatum.Properties.Resources.filesave;
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.saveToolStripMenuItem.Text = "&Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
-            // saveAsToolStripMenuItem
-            // 
-            this.saveAsToolStripMenuItem.Image = global::Animatum.Properties.Resources.filesaveas;
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
-            | System.Windows.Forms.Keys.S)));
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.saveAsToolStripMenuItem.Text = "Save &As...";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(192, 6);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Image = global::Animatum.Properties.Resources.exit;
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-            this.exitToolStripMenuItem.Text = "E&xit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -168,24 +123,6 @@
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "&Edit";
             // 
-            // undoToolStripMenuItem
-            // 
-            this.undoToolStripMenuItem.Enabled = false;
-            this.undoToolStripMenuItem.Image = global::Animatum.Properties.Resources.undo;
-            this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-            this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
-            this.undoToolStripMenuItem.Text = "&Undo";
-            // 
-            // redoToolStripMenuItem
-            // 
-            this.redoToolStripMenuItem.Enabled = false;
-            this.redoToolStripMenuItem.Image = global::Animatum.Properties.Resources.redo;
-            this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-            this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.redoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
-            this.redoToolStripMenuItem.Text = "&Redo";
-            // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -194,29 +131,15 @@
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
             // 
-            // optionsToolStripMenuItem
-            // 
-            this.optionsToolStripMenuItem.Image = global::Animatum.Properties.Resources.configure;
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
-            this.optionsToolStripMenuItem.Text = "&Options";
-            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
-            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.reportABugToolStripMenuItem,
+            this.toolStripSeparator2,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "&Help";
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Image = global::Animatum.Properties.Resources.info;
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
-            this.aboutToolStripMenuItem.Text = "&About...";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // splitContainerProject
             // 
@@ -269,6 +192,54 @@
             this.splitContainerProps.SplitterDistance = 208;
             this.splitContainerProps.SplitterWidth = 3;
             this.splitContainerProps.TabIndex = 1;
+            // 
+            // toolbox
+            // 
+            this.toolbox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.toolbox.Location = new System.Drawing.Point(0, 0);
+            this.toolbox.MaximumSize = new System.Drawing.Size(0, 50);
+            this.toolbox.MinimumSize = new System.Drawing.Size(125, 50);
+            this.toolbox.Name = "toolbox";
+            this.toolbox.SelectedTool = ToolboxItem.Select;
+            this.toolbox.Size = new System.Drawing.Size(125, 50);
+            this.toolbox.TabIndex = 0;
+            this.toolbox.SelectedToolChanged += new System.EventHandler(this.toolbox_SelectedToolChanged);
+            // 
+            // splitContainerTimeline
+            // 
+            this.splitContainerTimeline.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.splitContainerTimeline.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerTimeline.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainerTimeline.Location = new System.Drawing.Point(0, 0);
+            this.splitContainerTimeline.Name = "splitContainerTimeline";
+            this.splitContainerTimeline.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainerTimeline.Panel1
+            // 
+            this.splitContainerTimeline.Panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainerTimeline.Panel1MinSize = 220;
+            // 
+            // splitContainerTimeline.Panel2
+            // 
+            this.splitContainerTimeline.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainerTimeline.Panel2.Controls.Add(this.timelineDockPanel);
+            this.splitContainerTimeline.Panel2MinSize = 175;
+            this.splitContainerTimeline.Size = new System.Drawing.Size(549, 436);
+            this.splitContainerTimeline.SplitterDistance = 258;
+            this.splitContainerTimeline.SplitterWidth = 3;
+            this.splitContainerTimeline.TabIndex = 0;
+            // 
+            // importDialog
+            // 
+            this.importDialog.Filter = "ASE 3D model files (*.ase)|*.ase";
+            this.importDialog.RestoreDirectory = true;
+            this.importDialog.SupportMultiDottedExtensions = true;
+            this.importDialog.Title = "Import ASE 3D model";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // modelDockPanel
             // 
@@ -331,42 +302,6 @@
             this.propsControl.TabIndex = 0;
             this.propsControl.NodeChanged += new System.EventHandler(this.propsControl_NodeChanged);
             // 
-            // toolbox
-            // 
-            this.toolbox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.toolbox.Location = new System.Drawing.Point(0, 0);
-            this.toolbox.MaximumSize = new System.Drawing.Size(0, 50);
-            this.toolbox.MinimumSize = new System.Drawing.Size(125, 50);
-            this.toolbox.Name = "toolbox";
-            this.toolbox.SelectedTool = ToolboxItem.Select;
-            this.toolbox.Size = new System.Drawing.Size(228, 50);
-            this.toolbox.TabIndex = 0;
-            this.toolbox.SelectedToolChanged += new System.EventHandler(this.toolbox_SelectedToolChanged);
-            // 
-            // splitContainerTimeline
-            // 
-            this.splitContainerTimeline.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.splitContainerTimeline.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerTimeline.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainerTimeline.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerTimeline.Name = "splitContainerTimeline";
-            this.splitContainerTimeline.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainerTimeline.Panel1
-            // 
-            this.splitContainerTimeline.Panel1.BackColor = System.Drawing.SystemColors.Control;
-            this.splitContainerTimeline.Panel1MinSize = 220;
-            // 
-            // splitContainerTimeline.Panel2
-            // 
-            this.splitContainerTimeline.Panel2.BackColor = System.Drawing.SystemColors.Control;
-            this.splitContainerTimeline.Panel2.Controls.Add(this.timelineDockPanel);
-            this.splitContainerTimeline.Panel2MinSize = 175;
-            this.splitContainerTimeline.Size = new System.Drawing.Size(549, 436);
-            this.splitContainerTimeline.SplitterDistance = 258;
-            this.splitContainerTimeline.SplitterWidth = 3;
-            this.splitContainerTimeline.TabIndex = 0;
-            // 
             // timelineDockPanel
             // 
             this.timelineDockPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -400,12 +335,94 @@
             this.timeline.PausePlayback += new System.EventHandler(this.timeline_PausePlayback);
             this.timeline.StopPlayback += new System.EventHandler(this.timeline_StopPlayback);
             // 
-            // importDialog
+            // openToolStripMenuItem
             // 
-            this.importDialog.Filter = "ASE 3D model files (*.ase)|*.ase";
-            this.importDialog.RestoreDirectory = true;
-            this.importDialog.SupportMultiDottedExtensions = true;
-            this.importDialog.Title = "Import ASE 3D model";
+            this.openToolStripMenuItem.Image = global::Animatum.Properties.Resources.fileopen;
+            this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.openToolStripMenuItem.Text = "&Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // importToolStripMenuItem
+            // 
+            this.importToolStripMenuItem.Image = global::Animatum.Properties.Resources.fileimport;
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.importToolStripMenuItem.Text = "&Import ASE...";
+            this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Image = global::Animatum.Properties.Resources.filesave;
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.saveToolStripMenuItem.Text = "&Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Image = global::Animatum.Properties.Resources.filesaveas;
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.saveAsToolStripMenuItem.Text = "Save &As...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Image = global::Animatum.Properties.Resources.exit;
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.exitToolStripMenuItem.Text = "E&xit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // undoToolStripMenuItem
+            // 
+            this.undoToolStripMenuItem.Enabled = false;
+            this.undoToolStripMenuItem.Image = global::Animatum.Properties.Resources.undo;
+            this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
+            this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.undoToolStripMenuItem.Text = "&Undo";
+            // 
+            // redoToolStripMenuItem
+            // 
+            this.redoToolStripMenuItem.Enabled = false;
+            this.redoToolStripMenuItem.Image = global::Animatum.Properties.Resources.redo;
+            this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
+            this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.redoToolStripMenuItem.Text = "&Redo";
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.Image = global::Animatum.Properties.Resources.configure;
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.optionsToolStripMenuItem.Text = "&Options";
+            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
+            // 
+            // reportABugToolStripMenuItem
+            // 
+            this.reportABugToolStripMenuItem.Image = global::Animatum.Properties.Resources.help;
+            this.reportABugToolStripMenuItem.Name = "reportABugToolStripMenuItem";
+            this.reportABugToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.reportABugToolStripMenuItem.Text = "Report a bug...";
+            this.reportABugToolStripMenuItem.Click += new System.EventHandler(this.reportABugToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Image = global::Animatum.Properties.Resources.info;
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Text = "&About...";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -430,13 +447,13 @@
             this.splitContainerProps.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerProps)).EndInit();
             this.splitContainerProps.ResumeLayout(false);
+            this.splitContainerTimeline.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTimeline)).EndInit();
+            this.splitContainerTimeline.ResumeLayout(false);
             this.modelDockPanel.Content.ResumeLayout(false);
             this.modelDockPanel.ResumeLayout(false);
             this.propsDockPanel.Content.ResumeLayout(false);
             this.propsDockPanel.ResumeLayout(false);
-            this.splitContainerTimeline.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTimeline)).EndInit();
-            this.splitContainerTimeline.ResumeLayout(false);
             this.timelineDockPanel.Content.ResumeLayout(false);
             this.timelineDockPanel.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -473,5 +490,7 @@
         private System.Windows.Forms.OpenFileDialog importDialog;
         private Controls.PropertiesControl propsControl;
         private Controls.TimelineControl timeline;
+        private System.Windows.Forms.ToolStripMenuItem reportABugToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }
