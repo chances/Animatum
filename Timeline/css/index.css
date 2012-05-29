@@ -1,0 +1,283 @@
+/* Animatum Timeline index.html CSS Document */
+body {
+	font-family: sans-serif;
+	overflow: hidden;
+	cursor: default;
+	z-index: 0;
+}
+
+.center {
+	text-align: center;
+}
+
+button {
+	cursor: default;
+}
+
+#tools {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 139px;
+	border-bottom: solid 1px rgba(0,0,0,0.3);
+	border-right: solid 1px rgba(0,0,0,0.3);
+	z-index: 2;
+}
+#tools button {
+	position: relative;
+	left: 1px;
+	width: 43px;
+	height: 22px;
+}
+
+#timeline {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 181px;
+	bottom: 26px;
+	background-color: rgba(0,0,0,0.1);
+	overflow-x: hidden;
+	overflow-y: auto;
+	z-index: 1;
+}
+
+#boneList {
+	display: inline-block;
+	margin: 23px 0 0 0;
+	padding: 4px 3px 0 3px;
+	width: 133px;
+	list-style: none;
+	background-color: white;
+	border-right: solid 1px rgba(0,0,0,0.3);
+	z-index: 1;
+}
+#boneList li {
+	padding: 4px 3px;
+	cursor: default;
+}
+
+#boneList ul {
+	margin-left: 10px;
+	padding: 3px;
+	list-style: none;
+}
+
+#keyframeArea {
+	position: absolute;
+	top: 0px;
+	left: 140px;
+	margin: 0;
+	z-index: 1;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+#keyframes {
+	background-image: url(../images/bg.png);
+}
+
+#scale {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 22px;
+	margin: 0;
+	background: white;
+	border-bottom: solid 1px rgba(0,0,0,0.3);
+	opacity: 0.6;
+	z-index: 3;
+}
+#scale span {
+	text-align: center;
+	display: inline-block;
+	position: relative;
+	top: 6px;
+	min-width: 25px;
+	max-width: 25px;
+	margin-right: 55px;
+	cursor: default;
+}
+#scale span:first-child {
+
+}
+#scale span:last-child {
+	margin-right: 0;
+}
+
+div.keyframe-row {
+	position: relative;
+	margin: 2px 0 2px 3.5px;
+	width: 100%;
+	height: 20px;
+	z-index: 2;
+}
+div.keyframe-row:first-child {
+	padding-top: 24px;
+}
+
+div.keyframe-row .line {
+	position: absolute;
+	top: 8px;
+	left: 10px;
+	height: 3px;
+	background-color: #3A7DE7;
+	z-index: 2;
+}
+div.keyframe-row:first-child .line {
+	top: 24px;
+}
+
+.keyframe {
+	position: absolute;
+	bottom: 1px;
+	left: 0;
+	width: 17px;
+	height: 18px;
+	margin-top: 3px;
+	background-image: url(../images/keyframe.png);
+	background-repeat: no-repeat;
+	z-index: 3;
+}
+.keyframe.selected {
+	background-image: url(../images/keyframeActive.png);
+}
+.keyframe.list {
+	background-image: url(../images/keyframeMult.png) !important;
+}
+.keyframe.list.sel {
+	background-image: url(../images/keyframeMultActive.png) !important;
+}
+.keyframe.multiple {
+	content: "...";
+	background-image: none;
+}
+
+#playHead {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin-left: 7px;
+	width: 11px;
+	height: 6px;
+	background: url(../images/playHead.png) no-repeat;
+	cursor: pointer;
+	opacity: 0.65;
+	z-index: 4;
+}
+#playHeadLine {
+	position: absolute;
+	top: 6px;
+	left: 0;
+	margin-left: 12px;
+	width: 1px;
+	background-color: #E50000;
+	opacity: 0.65;
+	z-index: 1;
+}
+
+#keyframeList {
+	position: absolute;
+	padding: 2px;
+	background-color: white;
+	border-radius: 4px;
+	box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+	z-index: 5;
+}
+#keyframeList .keyframe-alias {
+	display: block;
+	padding: 3px 2px 3px 18px;
+	background-image: url(../images/keyframe.png);
+	background-repeat: no-repeat;
+	cursor: default;
+}
+#keyframeList .keyframe-alias.selected {
+	background-image: url(../images/keyframeActive.png);
+}
+
+#props {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 26px;
+	width: 180px;
+	padding-top: 4px;
+	border-left: solid 1px rgba(0,0,0,0.3);
+	cursor: default;
+	z-index: 2;
+}
+#props > * {
+	margin-left: 4px;
+}
+
+#message {
+	text-align: center;
+	margin-top: 4px;
+}
+
+#keyframeInfo div.center {
+	margin: 3px 0px 7px 0px;
+}
+
+#keyframeInfo div.info-row:not(.center) {
+	margin: 0 0 1px 8px;
+}
+
+#time {
+	cursor: text;
+}
+#time:hover {
+	text-align: left;
+	padding: 4px;
+	width: 25px;
+	border: solid 1px gray;
+	border-radius: 4px;
+	background-color: white;
+}
+#time.focused, #time.focused:hover {
+	padding: 0;
+	border: none;
+	background-color: transparent;
+}
+#time input[type=text] {
+	font-size: inherit !important;
+	margin-top: -6px;
+	margin-bottom: -6px;
+	padding: 4px !important;
+	border: solid 1px gray;
+	border-radius: 4px;
+	background-color: white;
+}
+
+#props input[type=radio] {
+	position: relative;
+	top: 1px;
+	margin: auto 3px;
+	padding: 2px 2px 3px 3px;
+	outline: none;
+}
+
+#x, #y, #z {
+	margin: 0 0 3px 4px;
+	padding: 2px;
+	width: 70px;
+	border: solid 1px gray;
+	border-radius: 4px;
+	background-color: white;
+}
+
+#props .units {
+	position: relative;
+	top: -1px;
+	margin: 0 0 0 4px;
+}
+
+#playback {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	height: 25px;
+	border-top: solid 1px rgba(0,0,0,0.3);
+	z-index: 2;
+}

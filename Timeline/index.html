@@ -1,0 +1,67 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=9">
+		<title></title>
+
+		<link type="text/css" rel="stylesheet" href="css/index.css" />
+
+		<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.20.custom.min.js"></script>
+		<script type="text/javascript" src="js/selectivizr-min.js"></script>
+		<script type="text/javascript" src="js/cssfx.min.js"></script>
+		<script type="text/javascript" src="js/jQuery.stringify.js"></script>
+
+		<script type="text/javascript" src="js/Model.js"></script>
+		<script type="text/javascript" src="js/Keyframe.js"></script>
+		<script type="text/javascript" src="js/BoneList.js"></script>
+		<script type="text/javascript" src="js/KeyframeArea.js"></script>
+		<script type="text/javascript" src="js/api.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+	</head>
+	<body>
+		<div id="tools">
+			<button id="add" title="Add key frame" disabled>Add</button>
+			<button id="delete" title="Delete key frame" disabled>Del</button>
+			<button id="clear" title="Clear key frames" disabled>Clr</button>
+		</div>
+		<div id="timeline">
+			<ul id="boneList">
+
+			</ul>
+			<div id="keyframeArea">
+				<div id="scale"></div>
+				<div id="keyframes"></div>
+				<div id="playHead"></div>
+				<div id="playHeadLine"></div>
+			</div>
+		</div>
+		<div id="keyframeList"></div>
+		<div id="props">
+			<div id="message" class="center">Select a key frame.</div>
+			<div id="keyframeInfo">
+				<div class="info-row center">
+					<span id="bone">{boneName}</span> @ <span id="time" title="Click to edit">{time}</span> sec
+				</div>
+				<div class="info-row center" style="margin-left: -15px;">
+					<label for="translation"><input id="translation" name="type" type="radio" value="0" checked />Translation</label>
+					<label for="rotation"><input id="rotation" name="type" type="radio" value="1" />Rotation</label>
+				</div>
+				<div class="info-row">
+					<label for="x">X:</label><input id="x" type="text" /><label class="units">meters</label>
+				</div>
+				<div class="info-row">
+					<label for="y">Y:</label><input id="y" type="text" /><label class="units">meters</label>
+				</div>
+				<div class="info-row">
+					<label for="z">Z:</label><input id="z" type="text" /><label class="units">meters</label>
+				</div>
+			</div>
+		</div>
+		<div id="playback">
+			<button id="playPause" disabled>Play</button>
+			<button id="stop" disabled>Stop</button>
+			<span id="status"></span>
+		</div>
+	</body>
+</html>
