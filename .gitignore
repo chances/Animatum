@@ -21,6 +21,7 @@ Thumbs.db
 [Dd]ebug*/
 /Timeline
 /Icons
+/Screenshots
 Design Doc.txt
 *.lib
 *.sbr
@@ -28,3 +29,4 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+.gitignore
