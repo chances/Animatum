@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
+using Animatum.Controls;
 using Animatum.SceneGraph;
 using ASE = libASEsharp;
-using Animatum.Controls;
-using System.Diagnostics;
+using Animatum.Settings;
 
 namespace Animatum
 {
     public partial class MainForm : Form
     {
+        private Settings.Settings settings;
         private ModelViewControl modelView;
 
         public MainForm()
@@ -21,12 +23,21 @@ namespace Animatum
             //Hide until the timeline has loaded
             this.Visible = false;
 
+            //Init settings
+            settings = new Settings.Settings();
+
             menuStrip.Renderer = new VS2008StripRenderingLibrary.VS2008MenuRenderer();
 
             //Create model view
             modelView = new ModelViewControl();
             modelView.Dock = DockStyle.Fill;
             this.splitContainerTimeline.Panel1.Controls.Add(modelView);
+
+            //Set settings
+            modelView.RenderGrid = settings.GetSetting("display/renderGrid", true);
+            modelView.RenderAxies = settings.GetSetting("display/renderAxies", true);
+            modelView.FrameRate = settings.GetSetting("playback/frameRate", 32);
+            timeline.DebugMode = settings.GetSetting("timeline/debugMode", false);
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -82,7 +93,18 @@ namespace Animatum
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            OptionsForm options = new OptionsForm();
+            if (options.ShowDialog() == DialogResult.OK)
+            {
+                //Update settings
+                settings = new Settings.Settings();
+                modelView.RenderGrid = settings.GetSetting("display/renderGrid", true);
+                modelView.RenderAxies = settings.GetSetting("display/renderAxies", true);
+                modelView.FrameRate = settings.GetSetting("playback/frameRate", 32);
+                timeline.DebugMode = settings.GetSetting("timeline/debugMode", false);
+                //Invalidate
+                this.modelView.Invalidate();
+            }
         }
 
         private void reportABugToolStripMenuItem_Click(object sender, EventArgs e)

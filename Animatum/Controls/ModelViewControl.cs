@@ -14,13 +14,10 @@ namespace Animatum.Controls
 {
     public partial class ModelViewControl : UserControl
     {
-        private Color clearColor;
         private MovingLookAtCamera camera;
-        private bool renderGrid, renderAxies;
         private Grid grid;
         private Axies axies;
         private OpenGLAttributesEffect attrs;
-        private Model model;
 
         private Stopwatch frameTimer;
 
@@ -32,7 +29,7 @@ namespace Animatum.Controls
 
             openGLControl.FrameRate = 0;
 
-            clearColor = Color.Black;
+            ClearColor = Color.Black;
             camera = new MovingLookAtCamera()
             {
                 Position = new Vertex(10f, 0f, 7.5f),
@@ -42,8 +39,8 @@ namespace Animatum.Controls
                 Far = 250,
                 Theta = 0.785f
             };
-            renderGrid = true;
-            renderAxies = true;
+            RenderGrid = true;
+            RenderAxies = true;
             grid = new Grid();
             grid.Size = 150;
             axies = new Axies();
@@ -59,8 +56,8 @@ namespace Animatum.Controls
             attrs.ColorBufferAttributes.BlendingDestinationFactor = BlendingDestinationFactor.OneMinusSourceAlpha;
             attrs.LightingAttributes.TwoSided = false;
 
-            model = new Model();
-            model.AnimationEnded += new EventHandler(model_AnimationEnded);
+            Model = new Model();
+            Model.AnimationEnded += new EventHandler(model_AnimationEnded);
 
             Color col = Color.FromArgb(40, 40, 40);
 
@@ -72,7 +69,7 @@ namespace Animatum.Controls
                 Diffuse = col,
                 Specular = col
             };
-            model.Children.Add(light);
+            Model.Children.Add(light);
             light = new Light(OpenGL.GL_LIGHT1)
             {
                 Position = new Vertex(9, -9, 11),
@@ -80,7 +77,7 @@ namespace Animatum.Controls
                 Diffuse = col,
                 Specular = col
             };
-            model.Children.Add(light);
+            Model.Children.Add(light);
             light = new Light(OpenGL.GL_LIGHT2)
             {
                 Position = new Vertex(0, 15, 15),
@@ -88,47 +85,24 @@ namespace Animatum.Controls
                 Diffuse = col,
                 Specular = col
             };
-            model.Children.Add(light);
+            Model.Children.Add(light);
 
             frameTimer = new Stopwatch();
 
             CurrentTool = ToolboxItem.Select;
         }
 
-        public Model Model
-        {
-            get { return model; }
-            set {  model = value; }
-        }
+        public Model Model { get; set; }
 
-        public Color ClearColor
-        {
-            get { return clearColor; }
-            set { clearColor = value; }
-        }
+        public Color ClearColor { get; set; }
 
-        public bool RenderGrid
-        {
-            get { return renderGrid; }
-            set { renderGrid = value; }
-        }
+        public bool RenderGrid { get; set; }
 
-        public bool RenderAxies
-        {
-            get { return renderAxies; }
-            set { renderAxies = value; }
-        }
+        public bool RenderAxies { get; set; }
 
-        public ToolboxItem CurrentTool
-        {
-            get;
-            set;
-        }
+        public int FrameRate { get; set; }
 
-        public int FrameRate
-        {
-            get { return openGLControl.FrameRate; }
-        }
+        public ToolboxItem CurrentTool { get; set; }
 
         public bool IsPlaying
         {
@@ -137,7 +111,7 @@ namespace Animatum.Controls
 
         public void Play()
         {
-            openGLControl.FrameRate = 32;
+            openGLControl.FrameRate = FrameRate;
         }
 
         public void Pause()
@@ -238,13 +212,13 @@ namespace Animatum.Controls
                     model.CurrentTime += between / 1000;
                 }*/
                 float between = 1000 / FrameRate;
-                model.CurrentTime += between / 1000;
+                Model.CurrentTime += between / 1000;
             }
 
             //Render
             OpenGL gl = openGLControl.OpenGL;
 
-            float[] clear = Convert.ColorToGLColor(clearColor);
+            float[] clear = Convert.ColorToGLColor(ClearColor);
             gl.ClearColor(clear[0], clear[1], clear[2], clear[3]);
 
             camera.Project(gl);
@@ -254,13 +228,13 @@ namespace Animatum.Controls
 
             attrs.Push(gl, null);
 
-            if (renderGrid)
+            if (RenderGrid)
                 grid.Render(gl);
-            if (renderAxies)
+            if (RenderAxies)
                 axies.Render(gl);
 
-            if (model != null)
-                model.Render(gl);
+            if (Model != null)
+                Model.Render(gl);
 
             attrs.Pop(gl, null);
 

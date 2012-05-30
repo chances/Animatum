@@ -135,6 +135,13 @@
     <Compile Include="Menu Renderer\VS2008MenuRenderer.cs" />
     <Compile Include="SceneGraph\Serialization\JSONSerializer.cs" />
     <Compile Include="SceneGraph\Serialization\Serializer.cs" />
+    <Compile Include="Settings\OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings\OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Settings.cs" />
     <EmbeddedResource Include="Controls\DockToolPanel.resx">
       <DependentUpon>DockToolPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -163,6 +170,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Settings\OptionsForm.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -231,6 +241,7 @@
   <ItemGroup>
     <None Include="Resources\help.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

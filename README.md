@@ -19,6 +19,7 @@ Credits
 I used a few third party classes and libraries for this project. They are as follows:
 +  SharpGL: On [CodePlex](http://sharpgl.codeplex.com/)
 +  libASE-sharp: I ported [libASE](http://interreality.sourceforge.net/software/libASE/) to C# [here](http://github.com/XESoD/libASE-sharp)
-+  VS2008MenuRenderer.cs: From this [CodeProject](http://www.codeproject.com/Articles/70204/Custom-VisualStudio-2008-style-MenuStrip-and-ToolS) article
++  Settings.cs: Modified from [this CodeProject](http://www.codeproject.com/Articles/15530/Quick-and-Dirty-Settings-Persistence-with-XML) article
++  VS2008MenuRenderer.cs: From [this CodeProject](http://www.codeproject.com/Articles/70204/Custom-VisualStudio-2008-style-MenuStrip-and-ToolS) article
 
 The Vista Inspirat icon set is also used.

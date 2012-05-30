@@ -12,6 +12,7 @@ namespace Animatum.Controls
         private string path = Application.StartupPath + "\\Timeline\\index.html";
         private TimelineScriptingObject scriptObj;
         private Model model;
+        private bool debugMode;
 
         public event EventHandler Ready;
         public event EventHandler ModelUpdated;
@@ -46,6 +47,17 @@ namespace Animatum.Controls
                 scriptObj.model = model;
                 if (webBrowser.Document != null)
                     execScript("onModelUpdated();");
+            }
+        }
+
+        public bool DebugMode
+        {
+            get { return debugMode; }
+            set
+            {
+                debugMode = value;
+                this.reloadButton.Visible = debugMode;
+                this.webBrowser.ScriptErrorsSuppressed = !debugMode;
             }
         }
 
