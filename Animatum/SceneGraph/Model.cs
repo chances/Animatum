@@ -233,7 +233,7 @@ namespace Animatum.SceneGraph
                 }
             }
             //All bone animations have ended
-            if (endCount == Bones.Count)
+            if (endCount == countBonesWithKeyframes(this.children))
                 if (AnimationEnded != null)
                     AnimationEnded(this, new EventArgs());
         }
@@ -293,7 +293,27 @@ namespace Animatum.SceneGraph
                     if (node is Bone)
                     {
                         count++;
-                        count += countMeshes(node.Children);
+                        count += countBones(node.Children);
+                    }
+                }
+            }
+            return count;
+        }
+
+        private int countBonesWithKeyframes(List<Node> children)
+        {
+            int count = 0;
+            if (children != null)
+            {
+                foreach (Node node in children)
+                {
+                    if (node is Bone)
+                    {
+                        if (((Bone)node).Animation.Count > 0)
+                        {
+                            count++;
+                            count += countBonesWithKeyframes(node.Children);
+                        }
                     }
                 }
             }

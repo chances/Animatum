@@ -30,6 +30,18 @@ namespace Animatum.Settings
                 settings.GetSetting("playback/frameRate", 32);
             this.timelineDebugCheckBox.Checked=
                 settings.GetSetting("timeline/debugMode", false);
+            string handedness = settings.GetSetting("xml/handedness", "right");
+            if (handedness == "left")
+                this.handednessComboBox.SelectedIndex = 0;
+            if (handedness == "right")
+                this.handednessComboBox.SelectedIndex = 1;
+            string up = settings.GetSetting("xml/up", "z");
+            if (up == "x")
+                this.upComboBox.SelectedIndex = 0;
+            if (up == "y")
+                this.upComboBox.SelectedIndex = 1;
+            if (up == "z")
+                this.upComboBox.SelectedIndex = 2;
         }
 
         private void okayButton_Click(object sender, EventArgs e)
@@ -39,6 +51,10 @@ namespace Animatum.Settings
             settings.PutSetting("display/renderAxies", this.renderAxiesCheckBox.Checked);
             settings.PutSetting("playback/frameRate", (int)this.frameRateUpDown.Value);
             settings.PutSetting("timeline/debugMode", this.timelineDebugCheckBox.Checked);
+            settings.PutSetting("xml/handedness",
+                this.handednessComboBox.SelectedItem.ToString().ToLower());
+            settings.PutSetting("xml/up",
+                this.upComboBox.SelectedItem.ToString().ToLower());
             //Okay
             this.DialogResult = DialogResult.OK;
             this.Close();

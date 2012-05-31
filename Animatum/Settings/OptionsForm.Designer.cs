@@ -41,10 +41,16 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.timelineDebugCheckBox = new System.Windows.Forms.CheckBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.handednessComboBox = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.upComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.frameRateUpDown)).BeginInit();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -139,7 +145,7 @@
             // okayButton
             // 
             this.okayButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.okayButton.Location = new System.Drawing.Point(74, 236);
+            this.okayButton.Location = new System.Drawing.Point(74, 322);
             this.okayButton.Name = "okayButton";
             this.okayButton.Size = new System.Drawing.Size(75, 23);
             this.okayButton.TabIndex = 2;
@@ -151,7 +157,7 @@
             // 
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(156, 236);
+            this.cancelButton.Location = new System.Drawing.Point(156, 322);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 3;
@@ -179,13 +185,70 @@
             this.timelineDebugCheckBox.Text = "Enable debug mode";
             this.timelineDebugCheckBox.UseVisualStyleBackColor = true;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.upComboBox);
+            this.groupBox4.Controls.Add(this.label5);
+            this.groupBox4.Controls.Add(this.handednessComboBox);
+            this.groupBox4.Controls.Add(this.label4);
+            this.groupBox4.Location = new System.Drawing.Point(13, 235);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(222, 78);
+            this.groupBox4.TabIndex = 5;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "XML";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 23);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(70, 13);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "Handedness:";
+            // 
+            // handednessComboBox
+            // 
+            this.handednessComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.handednessComboBox.FormattingEnabled = true;
+            this.handednessComboBox.Items.AddRange(new object[] {
+            "Left",
+            "Right"});
+            this.handednessComboBox.Location = new System.Drawing.Point(85, 20);
+            this.handednessComboBox.Name = "handednessComboBox";
+            this.handednessComboBox.Size = new System.Drawing.Size(127, 21);
+            this.handednessComboBox.TabIndex = 1;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(9, 50);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(24, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Up:";
+            // 
+            // upComboBox
+            // 
+            this.upComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.upComboBox.FormattingEnabled = true;
+            this.upComboBox.Items.AddRange(new object[] {
+            "X",
+            "Y",
+            "Z"});
+            this.upComboBox.Location = new System.Drawing.Point(85, 47);
+            this.upComboBox.Name = "upComboBox";
+            this.upComboBox.Size = new System.Drawing.Size(127, 21);
+            this.upComboBox.TabIndex = 3;
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.okayButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(243, 271);
+            this.ClientSize = new System.Drawing.Size(243, 357);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okayButton);
@@ -207,6 +270,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.frameRateUpDown)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -225,5 +290,10 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox timelineDebugCheckBox;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.ComboBox handednessComboBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox upComboBox;
+        private System.Windows.Forms.Label label5;
     }
 }

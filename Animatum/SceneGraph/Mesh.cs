@@ -101,9 +101,18 @@ namespace Animatum.SceneGraph
             set
             {
                 bone = value;
-                polygon.Transformation.TranslateX = bone.Translation.X;
-                polygon.Transformation.TranslateY = bone.Translation.Y;
-                polygon.Transformation.TranslateZ = bone.Translation.Z;
+                if (bone != null)
+                {
+                    polygon.Transformation.TranslateX = bone.Translation.X;
+                    polygon.Transformation.TranslateY = bone.Translation.Y;
+                    polygon.Transformation.TranslateZ = bone.Translation.Z;
+                }
+                else
+                {
+                    polygon.Transformation.TranslateX = 0;
+                    polygon.Transformation.TranslateY = 0;
+                    polygon.Transformation.TranslateZ = 0;
+                }
             }
         }
 

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using Animatum.Controls;
 using Animatum.SceneGraph;
-using ASE = libASEsharp;
+using Animatum.SceneGraph.Serialization;
 using Animatum.Settings;
+using ASE = libASEsharp;
 
 namespace Animatum
 {
@@ -12,6 +14,8 @@ namespace Animatum
     {
         private Settings.Settings settings;
         private ModelViewControl modelView;
+        private bool unsaved = false;
+        private string currentFile = null;
 
         public MainForm()
         {
@@ -42,7 +46,25 @@ namespace Animatum
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                currentFile = openDialog.FileName;
+                AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
+                    modelView.Model, null);
+                aniXML.Deserialize(File.ReadAllText(openDialog.FileName));
 
+                string animationName = Path.GetFileName(currentFile);
+                this.Text = "Animatum - " + animationName;
+
+                //Update the modelTreeView
+                this.modelTreeView.Model = this.modelView.Model;
+                //Update properties
+                this.propsControl.Model = this.modelView.Model;
+                //Update timeline
+                this.timeline.Model = this.modelView.Model;
+
+                modelView.Invalidate();
+            }
         }
 
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
@@ -65,6 +87,11 @@ namespace Animatum
                     else //It's a mesh
                         model.Add(new Mesh(obj));
                 }
+
+                this.Text = "Animatum";
+                currentFile = null;
+                unsaved = true;
+
                 //Update the modelTreeView
                 this.modelTreeView.Model = model;
                 //Update properties
@@ -78,12 +105,45 @@ namespace Animatum
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (currentFile != null)
+            {
+                string animationName = Path.GetFileNameWithoutExtension(currentFile);
+                AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
+                    modelView.Model, animationName);
+                aniXML.Save(currentFile);
 
+                unsaved = false;
+                this.Text = "Animatum - " + animationName + ".xml";
+            }
+            else
+            {
+                if (saveDialog.ShowDialog() == DialogResult.OK)
+                {
+                    currentFile = saveDialog.FileName;
+                    string animationName = Path.GetFileNameWithoutExtension(currentFile);
+                    AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
+                        modelView.Model, animationName);
+                    aniXML.Save(currentFile);
+
+                    unsaved = false;
+                    this.Text = "Animatum - " + animationName + ".xml";
+                }
+            }
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                currentFile = saveDialog.FileName;
+                string animationName = Path.GetFileNameWithoutExtension(currentFile);
+                AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
+                    modelView.Model, animationName);
+                aniXML.Save(currentFile);
 
+                unsaved = false;
+                this.Text = "Animatum - " + animationName + ".xml";
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -129,6 +189,10 @@ namespace Animatum
 
         private void propsControl_NodeChanged(object sender, EventArgs e)
         {
+            //Let the user know there's a change
+            updateTitle();
+            //Update
+            this.modelTreeView.Model = this.propsControl.Model;
             this.timeline.Model = this.propsControl.Model;
             //Invalidate
             this.modelView.Invalidate();
@@ -144,6 +208,8 @@ namespace Animatum
 
         private void timeline_ModelUpdated(object sender, EventArgs e)
         {
+            //Let the user know there's a change
+            updateTitle();
             //Invalidate
             this.modelView.Invalidate();
         }
@@ -166,6 +232,20 @@ namespace Animatum
             this.timeline.Model = this.modelView.Model;
             //Invalidate
             this.modelView.Invalidate();
+        }
+
+        private void updateTitle()
+        {
+            if (currentFile != null)
+            {
+                string animationName = Path.GetFileName(currentFile);
+                this.Text = "Animatum - " + animationName + "*";
+            }
+            else
+            {
+                this.Text = "Animatum";
+            }
+            unsaved = true;
         }
     }
 }
