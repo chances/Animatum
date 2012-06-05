@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.reloadButton = new System.Windows.Forms.Button();
-            this.webBrowser = new System.Windows.Forms.WebBrowser();
+            this.webBrowser = new HotkeyWebBrowser();
             this.SuspendLayout();
             // 
             // reloadButton
@@ -72,7 +72,7 @@
         #endregion
 
         private System.Windows.Forms.Button reloadButton;
-        private System.Windows.Forms.WebBrowser webBrowser;
+        private HotkeyWebBrowser webBrowser;
 
     }
 }

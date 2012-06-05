@@ -448,7 +448,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "MainForm";
-            this.Text = "Animatum";
+            this.Text = "Animatum 1.0b";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();

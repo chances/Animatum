@@ -14,12 +14,15 @@ namespace Animatum
     {
         private Settings.Settings settings;
         private ModelViewControl modelView;
+        private string title = "";
         private bool unsaved = false;
         private string currentFile = null;
 
         public MainForm()
         {
             InitializeComponent();
+
+            title = Text;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -54,7 +57,7 @@ namespace Animatum
                 aniXML.Deserialize(File.ReadAllText(openDialog.FileName));
 
                 string animationName = Path.GetFileName(currentFile);
-                this.Text = "Animatum - " + animationName;
+                this.Text = title + " - " + animationName;
 
                 //Update the modelTreeView
                 this.modelTreeView.Model = this.modelView.Model;
@@ -88,7 +91,7 @@ namespace Animatum
                         model.Add(new Mesh(obj));
                 }
 
-                this.Text = "Animatum";
+                this.Text = title;
                 currentFile = null;
                 unsaved = true;
 
@@ -113,7 +116,7 @@ namespace Animatum
                 aniXML.Save(currentFile);
 
                 unsaved = false;
-                this.Text = "Animatum - " + animationName + ".xml";
+                this.Text = title + " - " + animationName + ".xml";
             }
             else
             {
@@ -126,7 +129,7 @@ namespace Animatum
                     aniXML.Save(currentFile);
 
                     unsaved = false;
-                    this.Text = "Animatum - " + animationName + ".xml";
+                    this.Text = title + " - " + animationName + ".xml";
                 }
             }
         }
@@ -142,7 +145,7 @@ namespace Animatum
                 aniXML.Save(currentFile);
 
                 unsaved = false;
-                this.Text = "Animatum - " + animationName + ".xml";
+                this.Text = title + " - " + animationName + ".xml";
             }
         }
 
@@ -239,11 +242,11 @@ namespace Animatum
             if (currentFile != null)
             {
                 string animationName = Path.GetFileName(currentFile);
-                this.Text = "Animatum - " + animationName + "*";
+                this.Text = title + " - " + animationName + "*";
             }
             else
             {
-                this.Text = "Animatum";
+                this.Text = title;
             }
             unsaved = true;
         }
