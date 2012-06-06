@@ -4,6 +4,7 @@ using Animatum.SceneGraph;
 using System.Drawing;
 using System.Threading;
 using System.IO;
+using mshtml;
 
 namespace Animatum.Controls
 {
@@ -127,7 +128,8 @@ namespace Animatum.Controls
         {
             HtmlElement scriptElem = webBrowser.Document.CreateElement("script");
             scriptElem.SetAttribute("type", "text/javascript");
-            scriptElem.InnerText = script;
+            IHTMLScriptElement elem = (IHTMLScriptElement)scriptElem.DomElement;
+            elem.text = script;
             webBrowser.Document.GetElementsByTagName("head")[0].AppendChild(scriptElem);
         }
 
