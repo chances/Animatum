@@ -172,7 +172,7 @@ namespace Animatum
 
         private void reportABugToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start("http://github.com/XESoD/Animatum/issues");
+            Process.Start("http://animatum.uservoice.com/");
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
