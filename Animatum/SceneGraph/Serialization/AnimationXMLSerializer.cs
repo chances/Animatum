@@ -56,6 +56,7 @@ namespace Animatum.SceneGraph.Serialization
                 boneName.Value = bone.Name;
                 boneElem.Attributes.Append(boneName);
                 //If it has a parent bone assign it
+                /* Importer doesn't like this :/
                 if (!(bone.Parent is Model))
                 {
                     if (bone.Parent is Bone)
@@ -64,12 +65,18 @@ namespace Animatum.SceneGraph.Serialization
                         parent.Value = ((Bone)bone.Parent).Name;
                         boneElem.Attributes.Append(parent);
                     }
-                }
+                }*/
                 //Get all keyframes sorted by time
                 List<Keyframe> keyframes = bone.Animation.OrderBy(o => o.Time).ToList();
-                //Add keyframes
+                //Translations should only occur before rotations
+                //Add translate keyframes
                 foreach (Keyframe keyframe in keyframes)
-                    boneElem.AppendChild(createKeyframe(keyframe));
+                    if (keyframe.Type == KeyframeType.Translation)
+                        boneElem.AppendChild(createKeyframe(keyframe));
+                //Add rotate keyframes
+                foreach (Keyframe keyframe in keyframes)
+                    if (keyframe.Type == KeyframeType.Rotation)
+                        boneElem.AppendChild(createKeyframe(keyframe));
                 //Add bone to animation, if there's animation for the bone
                 if (bone.Animation.Count > 0)
                     animation.AppendChild(boneElem);
