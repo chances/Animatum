@@ -116,7 +116,7 @@ namespace Animatum.Controls
             //Background
             style += "background-color:" + ColorTranslator.ToHtml(this.BackColor) + ";";
             //Font
-            style += "font-family:\"" + this.Font.FontFamily.Name + "\";";
+            style += "font-family: \"" + this.Font.FontFamily.Name + "\";";
             style += "font-size:" + this.Font.SizeInPoints + "pt;";
             style += "}";
             //Set style

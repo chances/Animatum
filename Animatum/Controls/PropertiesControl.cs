@@ -9,6 +9,9 @@ using System.Windows.Forms;
 using Animatum.SceneGraph;
 using System.Diagnostics;
 using SharpGL.SceneGraph;
+using Animatum.Dialogs;
+
+// Default height: 145
 
 namespace Animatum.Controls
 {
@@ -108,8 +111,8 @@ namespace Animatum.Controls
                     else
                         boneColorComboBox.Enabled = false;
                     */
-                    // Selected mesh
-                    getSelectedMesh(bone);
+                    // Selected meshes
+                    getSelectedMeshes(bone);
                     // Selected bone
                     getSelectedBone(bone);
 
@@ -121,38 +124,23 @@ namespace Animatum.Controls
             selChanging = false;
         }
 
-        private void getSelectedMesh(Bone bone)
+        private void getSelectedMeshes(Bone bone)
         {
-            meshComboBox.Items.Clear();
-            meshComboBox.Items.Add(Mesh.Null);
-            bool sel = false;
-            //Add all meshes not already assigned to a bone and
-            // the mesh assigned to this bone (if any)
-            foreach (Node node in model.Children)
+            string selectedMeshes = "";
+            if (bone.Meshes.Count > 0)
             {
-                if (node is Mesh)
+                foreach (Mesh mesh in bone.Meshes)
                 {
-                    Mesh mesh = (Mesh)node;
-                    if (mesh != Mesh.Null)
-                    {
-                        if (model.IsMeshAssigned(mesh, model.Children))
-                        {
-                            if (bone.Mesh == mesh)
-                            {
-                                meshComboBox.Items.Add(mesh);
-                                meshComboBox.SelectedIndex = meshComboBox.Items.Count - 1;
-                                sel = true;
-                            }
-                        }
-                        else
-                        {
-                            meshComboBox.Items.Add(mesh);
-                        }
-                    }
+                    selectedMeshes += mesh.Name + ", ";
                 }
+                selectedMeshes = 
+                    selectedMeshes.Substring(0, selectedMeshes.Length - 2);
             }
-            if (!sel)
-                meshComboBox.SelectedIndex = 0;
+            else
+            {
+                selectedMeshes = "(none)";
+            }
+            meshesLabel.Text = selectedMeshes;
         }
 
         private void getSelectedBone(Bone childBone)
@@ -208,32 +196,6 @@ namespace Animatum.Controls
             }
         }
 
-        private void meshComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Node node = (Node)meshComboBox.SelectedItem;
-            if (node is Mesh && !selChanging)
-            {
-                Bone bone = (Bone)selNode;
-                if (((Mesh)node) == Mesh.Null)
-                {
-                    if (bone.Mesh != null)
-                    {
-                        bone.Mesh.Bone = null;
-                        bone.Mesh = null;
-                        OnNodeChanged();
-                    }
-                }
-                else
-                {
-                    if (bone.Mesh != (Mesh)node)
-                    {
-                        bone.Mesh = (Mesh)node;
-                        OnNodeChanged();
-                    }
-                }
-            }
-        }
-
         private void parentComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Node node = (Node)parentComboBox.SelectedItem;
@@ -263,11 +225,19 @@ namespace Animatum.Controls
 
         private void meshAlphaCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            Node node = (Node)meshComboBox.SelectedItem;
-            if (node is Mesh && !selChanging)
+            
+        }
+
+        private void editMeshesButton_Click(object sender, EventArgs e)
+        {
+            if (selNode is Bone)
             {
-                Mesh mesh = (Mesh)node;
-                OnNodeChanged();
+                MeshesDialog meshes = new MeshesDialog(model, selNode as Bone);
+                if (meshes.ShowDialog() == DialogResult.OK)
+                {
+                    getSelectedMeshes(selNode as Bone);
+                    OnNodeChanged();
+                }
             }
         }
     }

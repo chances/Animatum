@@ -16,14 +16,13 @@ namespace Animatum.SceneGraph
     /// <summary>
     /// A single-vertex Bone belonging to a Model.
     /// </summary>
-    [ComVisible(true)]
     public class Bone : Node
     {
         private string name;
         private Vertex position, translate;
         private RotateTransform parentRotate;
         private Color color;
-        private Mesh mesh;
+        private List<Mesh> meshes;
         private List<Keyframe> ani;
 
         //Visual representation
@@ -42,7 +41,7 @@ namespace Animatum.SceneGraph
             translate = new Vertex();
             parentRotate = null;
             color = Colors.Random();
-            mesh = null;
+            meshes = new List<Mesh>();
             ani = new List<Keyframe>();
             sphere = null;
         }
@@ -60,7 +59,7 @@ namespace Animatum.SceneGraph
             position = new Vertex(v.x, v.y, v.z);
             translate = new Vertex();
             parentRotate = null;
-            mesh = null;
+            meshes = new List<Mesh>();
             ani = new List<Keyframe>();
 
             //Create visual representation
@@ -107,10 +106,10 @@ namespace Animatum.SceneGraph
         }
 
         [ScriptIgnore()]
-        public Mesh Mesh
+        public List<Mesh> Meshes
         {
-            get { return mesh; }
-            set { mesh = value; }
+            get { return meshes; }
+            set { meshes = value; }
         }
 
         public List<Keyframe> Animation

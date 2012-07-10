@@ -34,8 +34,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.meshNameLabel = new System.Windows.Forms.Label();
             this.meshColorComboBox = new Animatum.Controls.ColorComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.meshAlphaCheckBox = new System.Windows.Forms.CheckBox();
             this.bonePanel = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
@@ -44,19 +42,22 @@
             this.boneNameLabel = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.meshComboBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.parentComboBox = new System.Windows.Forms.ComboBox();
             this.boneColorComboBox = new Animatum.Controls.ColorComboBox();
             this.nonePanel = new System.Windows.Forms.Panel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.noneLabel = new System.Windows.Forms.Label();
+            this.meshesPanel = new System.Windows.Forms.Panel();
+            this.editMeshesButton = new System.Windows.Forms.Button();
+            this.meshesLabel = new System.Windows.Forms.Label();
             this.meshPanel.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.bonePanel.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.nonePanel.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.meshesPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -64,7 +65,7 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 27);
+            this.label1.Size = new System.Drawing.Size(51, 28);
             this.label1.TabIndex = 0;
             this.label1.Text = "Name:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -76,7 +77,7 @@
             this.meshPanel.Controls.Add(this.tableLayoutPanel1);
             this.meshPanel.Location = new System.Drawing.Point(0, 0);
             this.meshPanel.Name = "meshPanel";
-            this.meshPanel.Size = new System.Drawing.Size(228, 82);
+            this.meshPanel.Size = new System.Drawing.Size(228, 57);
             this.meshPanel.TabIndex = 1;
             // 
             // tableLayoutPanel1
@@ -88,24 +89,21 @@
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.meshNameLabel, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.meshColorComboBox, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.meshAlphaCheckBox, 1, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(228, 82);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(228, 57);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // label3
             // 
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Location = new System.Drawing.Point(3, 27);
+            this.label3.Location = new System.Drawing.Point(3, 28);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(51, 27);
+            this.label3.Size = new System.Drawing.Size(51, 29);
             this.label3.TabIndex = 4;
             this.label3.Text = "Color:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -115,7 +113,7 @@
             this.meshNameLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.meshNameLabel.Location = new System.Drawing.Point(60, 0);
             this.meshNameLabel.Name = "meshNameLabel";
-            this.meshNameLabel.Size = new System.Drawing.Size(165, 27);
+            this.meshNameLabel.Size = new System.Drawing.Size(165, 28);
             this.meshNameLabel.TabIndex = 2;
             this.meshNameLabel.Text = "{Mesh Name}";
             this.meshNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -142,37 +140,21 @@
             System.Drawing.Color.Black,
             System.Drawing.Color.Red,
             System.Drawing.Color.Blue,
+            System.Drawing.Color.Green,
+            System.Drawing.Color.Black,
+            System.Drawing.Color.Red,
+            System.Drawing.Color.Blue,
+            System.Drawing.Color.Green,
+            System.Drawing.Color.Black,
+            System.Drawing.Color.Red,
+            System.Drawing.Color.Blue,
             System.Drawing.Color.Green});
-            this.meshColorComboBox.Location = new System.Drawing.Point(60, 30);
+            this.meshColorComboBox.Location = new System.Drawing.Point(60, 31);
             this.meshColorComboBox.Name = "meshColorComboBox";
             this.meshColorComboBox.SelectedColor = System.Drawing.Color.Black;
             this.meshColorComboBox.Size = new System.Drawing.Size(137, 21);
             this.meshColorComboBox.TabIndex = 5;
             this.meshColorComboBox.SelectedIndexChanged += new System.EventHandler(this.meshColorComboBox_SelectedIndexChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoEllipsis = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Location = new System.Drawing.Point(3, 54);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(51, 28);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Alpha:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // meshAlphaCheckBox
-            // 
-            this.meshAlphaCheckBox.AutoSize = true;
-            this.meshAlphaCheckBox.Enabled = false;
-            this.meshAlphaCheckBox.Location = new System.Drawing.Point(60, 60);
-            this.meshAlphaCheckBox.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
-            this.meshAlphaCheckBox.Name = "meshAlphaCheckBox";
-            this.meshAlphaCheckBox.Size = new System.Drawing.Size(96, 17);
-            this.meshAlphaCheckBox.TabIndex = 7;
-            this.meshAlphaCheckBox.Text = "Is transparent?";
-            this.meshAlphaCheckBox.UseVisualStyleBackColor = true;
-            this.meshAlphaCheckBox.CheckedChanged += new System.EventHandler(this.meshAlphaCheckBox_CheckedChanged);
             // 
             // bonePanel
             // 
@@ -195,10 +177,10 @@
             this.tableLayoutPanel2.Controls.Add(this.boneNameLabel, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.label8, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.label9, 0, 3);
-            this.tableLayoutPanel2.Controls.Add(this.meshComboBox, 1, 3);
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 4);
             this.tableLayoutPanel2.Controls.Add(this.parentComboBox, 1, 4);
             this.tableLayoutPanel2.Controls.Add(this.boneColorComboBox, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.meshesPanel, 1, 3);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -268,21 +250,8 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(51, 28);
             this.label9.TabIndex = 6;
-            this.label9.Text = "Mesh:";
+            this.label9.Text = "Meshes:";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // meshComboBox
-            // 
-            this.meshComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.meshComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.meshComboBox.FormattingEnabled = true;
-            this.meshComboBox.Location = new System.Drawing.Point(60, 89);
-            this.meshComboBox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
-            this.meshComboBox.Name = "meshComboBox";
-            this.meshComboBox.Size = new System.Drawing.Size(165, 21);
-            this.meshComboBox.TabIndex = 7;
-            this.meshComboBox.SelectedIndexChanged += new System.EventHandler(this.meshComboBox_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -318,6 +287,14 @@
             this.boneColorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.boneColorComboBox.FormattingEnabled = true;
             this.boneColorComboBox.Items.AddRange(new object[] {
+            System.Drawing.Color.Black,
+            System.Drawing.Color.Red,
+            System.Drawing.Color.Blue,
+            System.Drawing.Color.Green,
+            System.Drawing.Color.Black,
+            System.Drawing.Color.Red,
+            System.Drawing.Color.Blue,
+            System.Drawing.Color.Green,
             System.Drawing.Color.Black,
             System.Drawing.Color.Red,
             System.Drawing.Color.Blue,
@@ -376,6 +353,37 @@
             this.noneLabel.Text = "Nothing selected.\r\n\r\nSelect a bone or mesh from the tree above.";
             this.noneLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // meshesPanel
+            // 
+            this.meshesPanel.Controls.Add(this.meshesLabel);
+            this.meshesPanel.Controls.Add(this.editMeshesButton);
+            this.meshesPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.meshesPanel.Location = new System.Drawing.Point(57, 84);
+            this.meshesPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.meshesPanel.Name = "meshesPanel";
+            this.meshesPanel.Size = new System.Drawing.Size(171, 28);
+            this.meshesPanel.TabIndex = 11;
+            // 
+            // editMeshesButton
+            // 
+            this.editMeshesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.editMeshesButton.Location = new System.Drawing.Point(142, 3);
+            this.editMeshesButton.Name = "editMeshesButton";
+            this.editMeshesButton.Size = new System.Drawing.Size(27, 23);
+            this.editMeshesButton.TabIndex = 0;
+            this.editMeshesButton.Text = "...";
+            this.editMeshesButton.UseVisualStyleBackColor = true;
+            this.editMeshesButton.Click += new System.EventHandler(this.editMeshesButton_Click);
+            // 
+            // meshesLabel
+            // 
+            this.meshesLabel.AutoEllipsis = true;
+            this.meshesLabel.Location = new System.Drawing.Point(3, 8);
+            this.meshesLabel.Name = "meshesLabel";
+            this.meshesLabel.Size = new System.Drawing.Size(133, 13);
+            this.meshesLabel.TabIndex = 1;
+            this.meshesLabel.Text = "(none)";
+            // 
             // PropertiesControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -387,12 +395,12 @@
             this.Size = new System.Drawing.Size(228, 145);
             this.meshPanel.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
             this.bonePanel.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.nonePanel.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.meshesPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -412,7 +420,6 @@
         private System.Windows.Forms.Label boneNameLabel;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox meshComboBox;
         private System.Windows.Forms.Panel nonePanel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label noneLabel;
@@ -420,7 +427,8 @@
         private System.Windows.Forms.ComboBox parentComboBox;
         private ColorComboBox meshColorComboBox;
         private ColorComboBox boneColorComboBox;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox meshAlphaCheckBox;
+        private System.Windows.Forms.Panel meshesPanel;
+        private System.Windows.Forms.Label meshesLabel;
+        private System.Windows.Forms.Button editMeshesButton;
     }
 }

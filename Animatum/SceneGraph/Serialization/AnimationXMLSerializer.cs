@@ -68,7 +68,7 @@ namespace Animatum.SceneGraph.Serialization
                 }*/
                 //Get all keyframes sorted by time
                 List<Keyframe> keyframes = bone.Animation.OrderBy(o => o.Time).ToList();
-                //Translations should only occur before rotations
+                //Translations should only appear before rotations
                 //Add translate keyframes
                 foreach (Keyframe keyframe in keyframes)
                     if (keyframe.Type == KeyframeType.Translation)

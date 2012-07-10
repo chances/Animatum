@@ -117,6 +117,12 @@ namespace Animatum.SceneGraph
             }
         }
 
+        /// <summary>
+        /// Determines if a given Mesh is assigned to a Bone
+        /// </summary>
+        /// <param name="mesh">The Mesh to check</param>
+        /// <param name="start">The SceneGraph Node to begin serching</param>
+        /// <returns>Whether or not the Mesh is assigned to a Bone</returns>
         public bool IsMeshAssigned(Mesh mesh, List<Node> start)
         {
             bool assigned = false;
@@ -125,17 +131,26 @@ namespace Animatum.SceneGraph
                 if (node is Bone)
                 {
                     Bone bone = (Bone)node;
-                    if (bone.Mesh == mesh)
+                    foreach (Mesh assignedMesh in bone.Meshes)
                     {
-                        assigned = true;
-                        break;
+                        if (assignedMesh == mesh)
+                        {
+                            assigned = true;
+                            break;
+                        }
                     }
-                    assigned = IsMeshAssigned(mesh, bone.Children);
+                    if (!assigned)
+                    {
+                        assigned = IsMeshAssigned(mesh, bone.Children);
+                    }
                 }
             }
             return assigned;
         }
 
+        /// <summary>
+        /// Update the SceneGraph's Mesh transformations with the current time
+        /// </summary>
         private void updateMeshTransforms()
         {
             int endCount = 0;
@@ -227,9 +242,12 @@ namespace Animatum.SceneGraph
                 }
                 bone.Translation = translate;
                 bone.Rotation = rotate;
-                if (bone.Mesh != null)
+                if (bone.Meshes.Count != 0)
                 {
-                    bone.Mesh.Bone = bone;
+                    foreach (Mesh mesh in bone.Meshes)
+                    {
+                        mesh.Bone = bone;
+                    }
                 }
             }
             //All bone animations have ended
@@ -238,6 +256,11 @@ namespace Animatum.SceneGraph
                     AnimationEnded(this, new EventArgs());
         }
 
+        /// <summary>
+        /// Get a List of all of the meshes belonging to a given Node
+        /// </summary>
+        /// <param name="start">The Node to begin searching</param>
+        /// <returns>A List of all of the meshes belonging to the given Node</returns>
         private List<Mesh> getMeshes(List<Node> start)
         {
             List<Mesh> meshes = new List<Mesh>();
@@ -252,6 +275,11 @@ namespace Animatum.SceneGraph
             return meshes;
         }
 
+        /// <summary>
+        /// Get a List of all of the bones belonging to a given Node
+        /// </summary>
+        /// <param name="start">The Node to begin searching</param>
+        /// <returns>A List of all of the bones belonging to the given Node</returns>
         private List<Bone> getBones(List<Node> start)
         {
             List<Bone> bones = new List<Bone>();
