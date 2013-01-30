@@ -9,7 +9,7 @@ using System.Drawing;
 namespace Animatum.SceneGraph
 {
     /// <summary>
-    /// A LookAtCamera that can be zoomed and orbited.
+    /// A LookAtCamera that can be zoomed and orbited horizontally around a point.
     /// </summary>
     class MovingLookAtCamera : LookAtCamera
     {
@@ -32,7 +32,7 @@ namespace Animatum.SceneGraph
         }
 
         /// <summary>
-        /// Zoom the camera
+        /// Zoom the camera given a zoom factor
         /// </summary>
         /// <param name="factor"></param>
         public void Zoom(float factor)
@@ -57,7 +57,7 @@ namespace Animatum.SceneGraph
         private void updateTheta()
         {
             //Distance from focus to camera on the XY plane.
-            //This is the radius of the circle.
+            //This is the radius of the rotation circle.
             float r = Helpers.PointDistance(
                 new PointF(this.Target.X, this.Target.Y),
                 new PointF(this.Position.X, this.Position.Y));
@@ -70,6 +70,8 @@ namespace Animatum.SceneGraph
 
         private void normalizeTheta()
         {
+            //Ensures theta doesn't increase/decrease forever
+            // We wouldn't want the float to overflow
             if (theta <= -6.3f)
                 theta += 6.3f * (float)Math.Floor(theta / -6.3f);
             if (theta >= 6.3f)

@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Animatum.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="libASE-sharp">
       <HintPath>..\..\libASE-sharp\libASE-sharp\bin\Release\libASE-sharp.dll</HintPath>
@@ -261,6 +264,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Animatum.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
