@@ -3,14 +3,11 @@ Animatum
 
 This project is the result of my laziness and unwillingness to sit down and actually learn Blender. I personally don't want to use a full fledged 3D modeller just to animate objects for RCT3, so I created this.
 
-Basically, a user would import an ASE model (Made in SketchUp, or whatever. The application is modeler agnostic.) and begin assigning meshes to bones and parent those bones to other bones if needed. Then the user could start animating the model by adding keyframes of different types to the animation timeline and watch their animated model take shape.
+Basically, a user imports an ASE model (Made in SketchUp, or whatever. The application is modeler agnostic.) and assigns meshes to bones and parents those bones to other bones, if needed. Then the user can then start animating the model by adding keyframes of different types to the animation timeline and watch their animated model take shape.
 
-A screen shot could best illustrate this:
 ![Screenshot](http://i204.photobucket.com/albums/bb63/xavier0794/Animatum/dev01.png "Screenshot")
 
 Hopefully the result is satisfactory and the workflow doesn't seem too complex. (I know it's a hell of a lot less complex than what needs to be done with Blender.)
-
-Anyway, this repository now houses this project. Enjoy.
 
 
 Credits
