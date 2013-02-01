@@ -10,6 +10,7 @@ namespace Animatum.Controls
 {
     public partial class TimelineControl : UserControl
     {
+        private const float FONT_SIZE = 8.25f;
         private string path = Application.StartupPath + "\\Timeline\\index.html";
         private TimelineScriptingObject scriptObj;
         private Model model;
@@ -117,7 +118,7 @@ namespace Animatum.Controls
             style += "background-color:" + ColorTranslator.ToHtml(this.BackColor) + ";";
             //Font
             style += "font-family: \"" + this.Font.FontFamily.Name + "\";";
-            style += "font-size:" + this.Font.SizeInPoints + "pt;";
+            style += "font-size:" + FONT_SIZE + "pt;";
             style += "}";
             //Set style
             styleElem.InnerText = style;

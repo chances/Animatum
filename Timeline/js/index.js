@@ -25,6 +25,7 @@ var animationEnded = false;
 $(function () {
 	api = new API();
 
+	//Prevent text selection
 	$('*').disableTextSelect();
 
 	adjustMetrics();
