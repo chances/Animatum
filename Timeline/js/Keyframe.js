@@ -33,11 +33,8 @@ function Keyframe(keyframe) {
 		this.time = time;
 		this.type = type;
 		this.transform = {
-			x: 0, y: 0, z: 0
+			x: x, y: y, z: z
 		};
-		this.transform.x = x;
-		this.transform.y = y;
-		this.transform.z = z;
 
 		return {Time: time, Type: type, Transform: this.transform};
 	};

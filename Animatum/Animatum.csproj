@@ -50,6 +50,9 @@
     <Reference Include="SharpGL.WinForms">
       <HintPath>..\..\..\..\..\Desktop\Programming\SharpGL\Core\SharpGL.WinForms\bin\Release\SharpGL.WinForms.dll</HintPath>
     </Reference>
+    <Reference Include="SlimMath">
+      <HintPath>..\..\..\..\..\Desktop\Programming\C#\SlimMath\slimmath-read-only\SlimMath\bin\Release\SlimMath.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />

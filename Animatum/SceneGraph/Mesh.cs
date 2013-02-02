@@ -72,12 +72,18 @@ namespace Animatum.SceneGraph
             bone = null;
         }
 
+        /// <summary>
+        /// The Mesh's name.
+        /// </summary>
         public string Name
         {
             get { return name; }
             set { name = value; }
         }
 
+        /// <summary>
+        /// The Mesh's color.
+        /// </summary>
         [ScriptIgnore()]
         public Color Color
         {
@@ -89,12 +95,18 @@ namespace Animatum.SceneGraph
             }
         }
 
+        /// <summary>
+        /// The Mesh's number of polygons.
+        /// </summary>
         [ScriptIgnore()]
         public int PolygonCount
         {
             get { return polygon.Faces.Count; }
         }
 
+        /// <summary>
+        /// The bone assigned to this mesh.
+        /// </summary>
         public Bone Bone
         {
             get { return bone; }
@@ -116,12 +128,18 @@ namespace Animatum.SceneGraph
             }
         }
 
+        /// <summary>
+        /// The low-level <see cref="SharpGL.SceneGraph.Primitives.Polygon"/> this Mesh is based on.
+        /// </summary>
         [ScriptIgnore()]
         public Polygon Polygon
         {
             get { return polygon; }
         }
 
+        /// <summary>
+        /// The verticies that compose this Mesh.
+        /// </summary>
         [ScriptIgnore()]
         public List<Vertex> Vertices
         {
@@ -129,6 +147,9 @@ namespace Animatum.SceneGraph
             set { polygon.Vertices = value; }
         }
 
+        /// <summary>
+        /// The faces of this Mesh.
+        /// </summary>
         [ScriptIgnore()]
         public List<Face> Faces
         {
@@ -136,6 +157,9 @@ namespace Animatum.SceneGraph
             set { polygon.Faces = value; }
         }
 
+        /// <summary>
+        /// The normals of this Mesh.
+        /// </summary>
         [ScriptIgnore()]
         public List<Vertex> Normals
         {
@@ -143,6 +167,10 @@ namespace Animatum.SceneGraph
             set { polygon.Normals = value; }
         }
 
+        /// <summary>
+        /// Render this Mesh to the current OpenGL context.
+        /// </summary>
+        /// <param name="gl">The OpenGL render context</param>
         public override void Render(OpenGL gl)
         {
             //Render

@@ -10,6 +10,7 @@ using ASE = libASEsharp;
 using System.Runtime.InteropServices;
 using System.Web.Script.Serialization;
 using System.Diagnostics;
+using System;
 
 namespace Animatum.SceneGraph
 {
@@ -66,12 +67,18 @@ namespace Animatum.SceneGraph
             sphere = makeSphere();
         }
 
+        /// <summary>
+        /// The Bone's name.
+        /// </summary>
         public string Name
         {
             get { return name; }
             set { name = value; }
         }
 
+        /// <summary>
+        /// The Bone's position.
+        /// </summary>
         public Vertex Position
         {
             get { return position; }
@@ -82,6 +89,20 @@ namespace Animatum.SceneGraph
             }
         }
 
+        /// <summary>
+        /// The Bone's absolute position after it has been transformed.
+        /// </summary>
+        public Vertex TransformedPosition
+        {
+            get
+            {
+                return getTransformedPosition(this);
+            }
+        }
+
+        /// <summary>
+        /// The translation applied to this Bone.
+        /// </summary>
         public Vertex Translation
         {
             get { return translate; }
@@ -92,8 +113,14 @@ namespace Animatum.SceneGraph
             }
         }
 
+        /// <summary>
+        /// The rotation applied to this Bone.
+        /// </summary>
         public Vertex Rotation { get; set; }
 
+        /// <summary>
+        /// The Bone's color.
+        /// </summary>
         [ScriptIgnore()]
         public Color Color
         {
@@ -105,6 +132,9 @@ namespace Animatum.SceneGraph
             }
         }
 
+        /// <summary>
+        /// The meshes assigned to this Bone.
+        /// </summary>
         [ScriptIgnore()]
         public List<Mesh> Meshes
         {
@@ -112,6 +142,9 @@ namespace Animatum.SceneGraph
             set { meshes = value; }
         }
 
+        /// <summary>
+        /// The keyframed animation applied to this Bone.
+        /// </summary>
         public List<Keyframe> Animation
         {
             get { return ani; }
@@ -121,15 +154,23 @@ namespace Animatum.SceneGraph
         public override void Render(OpenGL gl)
         {
             sphere.PushObjectSpace(gl);
-            parentTranslation(gl, this);
-            rotate(gl, this);
+            if (!(this.parent is Bone))
+            {
+                parentTranslation(gl, this);
+            }
+            else
+            {
+                Vertex negPos = Position * -1;
+                gl.Translate(negPos.X, negPos.Y, negPos.Z);
+                gl.Translate(TransformedPosition.X, TransformedPosition.Y,
+                    TransformedPosition.Z);
+            }
             sphere.Render(gl);
             sphere.PopObjectSpace(gl);
             //Render children and the lines connecting them
             foreach (Bone bone in children)
             {
-                //TODO: Find the line's absolute coordinates :/
-                //DrawLine(gl, position + translate, bone.Position + bone.Translation, Color, bone.Color);
+                DrawLine(gl, TransformedPosition, bone.TransformedPosition, Color, bone.Color);
                 bone.Render(gl);
             }
         }
@@ -148,19 +189,49 @@ namespace Animatum.SceneGraph
             }
         }
 
-        private void rotate(OpenGL gl, Bone bone)
+        private Vertex parentTranslationDiff(Bone bone)
         {
+            Vertex diff = new Vertex(0, 0, 0);
+
             if (!(bone.Parent is Model))
             {
                 if (bone.Parent is Bone)
                 {
-                    rotate(gl, (Bone)bone.Parent);
+                    Bone parent = bone.Parent as Bone;
+                    diff += parentTranslationDiff(parent);
+                    diff += parent.Translation;
                 }
             }
-            RotateTransform rotation = new RotateTransform();
-            rotation.FocalPoint = bone.Position + bone.Translation - (position + translate);
-            rotation.Rotation = bone.Rotation;
-            rotation.Rotate(gl);
+
+            return diff;
+        }
+
+        /// <summary>
+        /// Calculates a given Bone's absolute position after being transformed.
+        /// </summary>
+        /// <param name="bone">The Bone to get the position for</param>
+        /// <returns>The given Bone's absolute position after being transformed</returns>
+        private Vertex getTransformedPosition(Bone bone)
+        {
+            Vertex translation = bone.Position;
+            translation += Translation;
+            Bone parent = null;
+            if (!(bone.Parent is Model))
+            {
+                if (bone.Parent is Bone)
+                {
+                    parent = bone.Parent as Bone;
+                }
+            }
+
+            if (parent != null)
+            {
+                translation += parentTranslationDiff(bone);
+                translation = Helpers.VertexRotateTransform(
+                    translation, parent.TransformedPosition, parent.Rotation);
+            }
+
+            return translation;
         }
 
         public Keyframe GetLeftMostKeyframe()

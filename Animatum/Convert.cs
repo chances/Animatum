@@ -22,5 +22,15 @@ namespace Animatum
             col.ColorNET = c;
             return col;
         }
+
+        public static SlimMath.Vector3 VertexToSlimMathVector3(Vertex vertex)
+        {
+            return new SlimMath.Vector3(vertex.X, vertex.Y, vertex.Z);
+        }
+
+        public static Vertex SlimMathVector3ToVertex(SlimMath.Vector3 vector)
+        {
+            return new Vertex(vector.X, vector.Y, vector.Z);
+        }
     }
 }
