@@ -161,12 +161,8 @@ $(function () {
 
 	$('#translation, #rotation').change(function () {
 		var type = 0;
-		//Change transform units
-		$('.info-row .units').text('meters');
 		if ($('#rotation').is(':checked')) {
 			type = 1;
-			//Change transform units
-			$('.info-row .units').text('degrees');
 		}
 		var keyframe = $('.keyframe.selected')[0];
 		$(keyframe).attr('data-type', type);
@@ -174,6 +170,7 @@ $(function () {
 		$('#keyframeList').fadeOut(100);
 		checkForConflicts();
 		checkPlaybackEnabled();
+		updateUnitLabels();
 	});
 
 	$('#x, #y, #z').focus(function () {
@@ -317,6 +314,7 @@ function onModelUpdated() {
 				var keyframe = $('div[data-bone=' + selectedKeyframe.bone + ']');
 				keyframe = keyframe.find('.keyframe')[selectedKeyframe.index];
 				keyframeArea.selectKeyframe(keyframe);
+				alert(selectedKeyframe.bone + "[" + selectedKeyframe.index + "]");
 			} else {
 				$('#keyframeInfo').hide();
 				$('#message').show();
@@ -350,6 +348,13 @@ function updateCurrentTime(time) {
 		var x = time * 80;
 		$('#playHead').css('left', x + 'px');
 		$('#playHeadLine').css('left', x + 'px');
+	}
+}
+
+function updateUnitLabels() {
+	$('.info-row .units').text('meters');
+	if ($('#rotation').is(':checked')) {
+		$('.info-row .units').text('degrees');
 	}
 }
 
@@ -388,21 +393,25 @@ function checkForConflicts() {
 					if (!$(this).hasClass('list')) { $(this).addClass('list'); }
 					//Make them multiples and change item to its keyframe index
 					var last = keyframes[keyframes.length - 1];
-					for (var i in keyframes) {
+					for (var i = 0; i < keyframes.length; i++) {
 						$(keyframes[i]).addClass('multiple');
 						keyframes[i] = keyframeArea.getKeyframeIndex(bone, keyframes[i]);
 					}
 					keyframes.splice(0, 0, keyframeArea.getKeyframeIndex(bone, thatKf));
 					//Convert list of indices to a string
 					var indices = "";
-					for (i in keyframes) { indices += keyframes[i] + ","; }
-					indices = indices.substr(indices.length - 1, 1);
+					for (i = 0; i < keyframes.length; i++) { indices += keyframes[i] + ","; }
+					indices = indices.substr(0, indices.length - 1);
+					if (selectedKeyframe !== null) {
+					$('#status').text(bone.Name + ' - ' + indices + ' - ' + selectedKeyframe.index);
+					}
+					indices = indices.split(",");
 					//Any selected?
-					for (var i in indices) {
+					for (i = 0; i < indices.length; i++) {
 						if (selectedKeyframe !== null) {
-							if (selectedKeyframe.bone == bone.Name && selectedKeyframe.index == indices[i]) {
+							if (selectedKeyframe.bone === bone.Name && selectedKeyframe.index === indices[i]) {
 								//Show the multi keyframe select image
-								var multSel = $(that).find('.keyframe')[ indices[0] ];
+								var multSel = $(that).find('.keyframe')[ indices[indices.length - 1] ];
 								$(multSel).addClass('sel');
 							}
 						}
@@ -424,7 +433,7 @@ function checkForConflicts() {
 							//window.alert(trans);
 							$(kf).text(type + ": " + trans.replace(/:/g, ", "));
 							if (selectedKeyframe !== null) {
-								if (selectedKeyframe.bone == bone.Name && selectedKeyframe.index == indices[i]) {
+								if (selectedKeyframe.bone === bone.Name && selectedKeyframe.index === indices[i]) {
 									//Show the multi keyframe select image
 									var multSel = $(that).find('.keyframe')[ indices[0] ];
 									$(multSel).addClass('sel');

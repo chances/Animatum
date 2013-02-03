@@ -59,6 +59,7 @@ function KeyframeArea() {
 		var trans = keyframe.Transform.x + ":" + keyframe.Transform.y + ":" + keyframe.Transform.z;
 		model.setKeyframe(bone.Name, index, keyframe.Time, keyframe.Type, trans);
 		adjustMetrics();
+		checkForConflicts();
 	};
 
 	this.deleteKeyframe = function (keyframe) {
@@ -106,6 +107,7 @@ function KeyframeArea() {
 		//Enable clear button
 		$('#clear').removeAttr('disabled');
 		selectedKeyframe = {bone: bone.Name, index: this.getKeyframeIndex(bone, keyframe)};
+		checkForConflicts();
 		//Show keyframe props
 		$('#bone').text(bone.Name);
 		var time = parseFloat( $(keyframe).attr('data-time') );
@@ -118,6 +120,7 @@ function KeyframeArea() {
 			$('#translation').removeAttr('checked');
 			$('#rotation').attr('checked','');
 		}
+		updateUnitLabels();
 		var transform = apiKeyframe.Transform;
 		$('#x').val(transform.x);
 		$('#y').val(transform.y);
