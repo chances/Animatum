@@ -19,7 +19,8 @@ namespace Animatum.Controls
         private Axies axies;
         private OpenGLAttributesEffect attrs;
 
-        private Stopwatch frameTimer;
+        private bool mouseDown = false;
+        private Point mousePos;
 
         private bool initialized = false;
 
@@ -32,12 +33,13 @@ namespace Animatum.Controls
             ClearColor = Color.Black;
             camera = new MovingLookAtCamera()
             {
-                Position = new Vertex(10f, 0f, 7.5f),
+                Position = new Vertex(10f, 0f, 0f),
                 Target = new Vertex(0f, 0f, 0f),
                 UpVector = new Vertex(0f, 0f, 1f),
                 Near = 0,
                 Far = 250,
-                HorizontalTheta = 0.785f
+                HorizontalTheta = 0.785f,
+                VerticalTheta = -0.785f
             };
             RenderGrid = true;
             RenderAxies = true;
@@ -87,8 +89,6 @@ namespace Animatum.Controls
             };
             Model.Children.Add(light);
 
-            frameTimer = new Stopwatch();
-
             CurrentTool = ToolboxItem.Select;
         }
 
@@ -133,18 +133,15 @@ namespace Animatum.Controls
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             //Zoom by moving the camera closer or farther away from the origin
-            float delta = 0.0f;
+            float factor = 0.0f;
             if (e.Delta > 0)
-                delta = 1.0f - (e.Delta / (float)(e.Delta * 6));
+                factor = 1 - (float)e.Delta / 960f;
             else
-                delta = (e.Delta * 0.01f) * -1.0f;
-            camera.Zoom(delta);
+                factor = 1 + ((float)(e.Delta * -1) / 960f);
+            camera.Zoom(factor);
             openGLControl.Invalidate();
             base.OnMouseWheel(e);
         }
-
-        bool mouseDown = false;
-        Point mousePos;
 
         private void openGLControl_MouseDown(object sender, MouseEventArgs e)
         {
@@ -161,9 +158,10 @@ namespace Animatum.Controls
                 {
                     int diffX = mousePos.X - e.X;
                     int diffY = mousePos.Y - e.Y;
-                    //Rotation in degrees
-                    float delta = diffX * 0.01f;
-                    camera.RotateHorizontal(delta);
+                    float deltaX = diffX * 0.01f;
+                    float deltaY = diffY * 0.01f;
+                    //Rotation in radians
+                    camera.Rotate(deltaX, deltaY);
                     //Project the camera so that stuff looks right
                     camera.Project(openGLControl.OpenGL);
                     openGLControl.Invalidate();

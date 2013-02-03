@@ -9,10 +9,12 @@ using System.Drawing;
 namespace Animatum.SceneGraph
 {
     /// <summary>
-    /// A LookAtCamera that can be zoomed and orbited horizontally around a point.
+    /// A LookAtCamera that can be zoomed and orbited around a point.
     /// </summary>
     class MovingLookAtCamera : LookAtCamera
     {
+        private Vertex initialPosition;
+        private bool thetaSet = false;
         private float horizontalTheta;
         private float verticalTheta;
 
@@ -21,21 +23,48 @@ namespace Animatum.SceneGraph
             horizontalTheta = 0.0f;
         }
 
+        /// <summary>
+        /// Gets or sets the current horizontal rotation of the camera around its Target.
+        /// </summary>
         public float HorizontalTheta
         {
             get { return horizontalTheta; }
             set
             {
+                if (!thetaSet)
+                {
+                    initialPosition = this.Position;
+                    thetaSet = true;
+                }
                 horizontalTheta = value;
                 normalizeHorizontalTheta();
-                updateHorizontalRotation();
+                updateRotation();
             }
         }
 
         /// <summary>
-        /// Zoom the camera given a zoom factor
+        /// Gets or sets the current vertical rotation of the camera around its Target.
         /// </summary>
-        /// <param name="factor"></param>
+        public float VerticalTheta
+        {
+            get { return verticalTheta; }
+            set
+            {
+                if (!thetaSet)
+                {
+                    initialPosition = this.Position;
+                    thetaSet = true;
+                }
+                verticalTheta = value;
+                normalizeVerticalTheta();
+                updateRotation();
+            }
+        }
+
+        /// <summary>
+        /// Zoom the camera given a zoom factor.
+        /// </summary>
+        /// <param name="factor">The zoom factor</param>
         public void Zoom(float factor)
         {
             Vertex A = this.Target;
@@ -45,41 +74,47 @@ namespace Animatum.SceneGraph
         }
 
         /// <summary>
-        /// Rotate the camera around the Target horizontally
+        /// Rotate the camera around the Target horizontally.
         /// </summary>
         /// <param name="delta">Change in theta</param>
         public void RotateHorizontal(float delta)
         {
             horizontalTheta += delta;
             normalizeHorizontalTheta();
-            updateHorizontalRotation();
+            updateRotation();
         }
 
-        /*
         /// <summary>
-        /// Rotate the camera around the Target vertically
+        /// Rotate the camera around the Target vertically.
         /// </summary>
         /// <param name="delta">Change in theta</param>
         public void RotateVertical(float delta)
         {
             verticalTheta += delta;
             normalizeVerticalTheta();
-            updateVerticalRotation();
+            updateRotation();
         }
-        */
 
-        private void updateHorizontalRotation()
+        /// <summary>
+        /// Rotate the camera around the Target both horizontally and vertically.
+        /// </summary>
+        /// <param name="horizontalDelta">Change in horizontal theta</param>
+        /// <param name="verticalDelta">Change in vertical theta</param>
+        public void Rotate(float horizontalDelta, float verticalDelta)
         {
-            //Distance from focus to camera on the XY plane.
-            //This is the radius of the rotation circle.
-            float r = Helpers.PointDistance(
-                new PointF(this.Target.X, this.Target.Y),
-                new PointF(this.Position.X, this.Position.Y));
-            //New X and Y coordinate
-            float x = r * (float)Math.Cos(horizontalTheta);
-            float y = r * (float)Math.Sin(horizontalTheta);
-            //Update position
-            this.Position = new Vertex(x, y, this.Position.Z);
+            horizontalTheta += horizontalDelta;
+            normalizeHorizontalTheta();
+
+            verticalTheta += verticalDelta;
+            normalizeVerticalTheta();
+
+            updateRotation();
+        }
+
+        private void updateRotation()
+        {
+            this.Position = Helpers.VertexRotateRadianTransform(
+                initialPosition, this.Target, new Vertex(0, verticalTheta, horizontalTheta));
         }
 
         private void normalizeHorizontalTheta()

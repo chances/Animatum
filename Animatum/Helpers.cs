@@ -33,9 +33,27 @@ namespace Animatum
         /// </summary>
         /// <param name="vertex">The given vertex</param>
         /// <param name="focalPoint">The point to rotate around</param>
-        /// <param name="rotation">The rotation to apply</param>
+        /// <param name="rotation">The rotation to apply (in degrees)</param>
         /// <returns>The transformed vertex</returns>
         public static Vertex VertexRotateTransform(Vertex vertex,
+            Vertex focalPoint, Vertex rotation)
+        {
+            Vertex rotationRadians = rotation;
+            rotationRadians.X = Convert.degreesToRadians(rotation.X);
+            rotationRadians.Y = Convert.degreesToRadians(rotation.Y);
+            rotationRadians.Z = Convert.degreesToRadians(rotation.Z);
+
+            return VertexRotateRadianTransform(vertex, focalPoint, rotationRadians);
+        }
+
+        /// <summary>
+        /// Apply a rotation transformation to a given Vertex.
+        /// </summary>
+        /// <param name="vertex">The given vertex</param>
+        /// <param name="focalPoint">The point to rotate around</param>
+        /// <param name="rotation">The rotation to apply (in radians)</param>
+        /// <returns>The transformed vertex</returns>
+        public static Vertex VertexRotateRadianTransform(Vertex vertex,
             Vertex focalPoint, Vertex rotation)
         {
             //Convert to SlimMath Vectors
@@ -50,9 +68,9 @@ namespace Animatum
             transform.TranslationVector = vector;
 
             transform *= SlimMath.Matrix.Translation(focalPointV * -1);
-            transform *= SlimMath.Matrix.RotationX(Convert.degreesToRadians(rotationV.X));
-            transform *= SlimMath.Matrix.RotationY(Convert.degreesToRadians(rotationV.Y));
-            transform *= SlimMath.Matrix.RotationZ(Convert.degreesToRadians(rotationV.Z));
+            transform *= SlimMath.Matrix.RotationX(rotationV.X);
+            transform *= SlimMath.Matrix.RotationY(rotationV.Y);
+            transform *= SlimMath.Matrix.RotationZ(rotationV.Z);
             transform *= SlimMath.Matrix.Translation(focalPointV);
 
             return Convert.SlimMathVector3ToVertex(transform.TranslationVector);
