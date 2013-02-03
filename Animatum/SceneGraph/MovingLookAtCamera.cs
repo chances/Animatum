@@ -68,9 +68,10 @@ namespace Animatum.SceneGraph
         public void Zoom(float factor)
         {
             Vertex A = this.Target;
-            Vertex B = this.Position;
+            Vertex B = initialPosition;
             Vertex magnitude = new Vertex(B.X - A.X, B.Y - A.Y, B.Z - A.Z);
-            this.Position = magnitude * factor;
+            initialPosition = magnitude * factor;
+            updateRotation();
         }
 
         /// <summary>

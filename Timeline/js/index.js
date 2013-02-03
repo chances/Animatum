@@ -44,6 +44,7 @@ $(function () {
 		keyframeArea.addKeyframe(bone);
 		$('#keyframeList').fadeOut(100);
 		checkForConflicts();
+		checkPlaybackEnabled();
 	});
 
 	$('#delete').click(function () {
@@ -51,6 +52,7 @@ $(function () {
 		keyframeArea.deleteKeyframe(keyframe);
 		$('#keyframeList').fadeOut(100);
 		checkForConflicts();
+		checkPlaybackEnabled();
 	});
 
 	$('#clear').click(function () {
@@ -60,6 +62,7 @@ $(function () {
 			$('#keyframeList').fadeOut(100);
 			$('.keyframe-row[data-bone=' + bone.Name + ']').find('.keyframe').each(function () {
 				keyframeArea.deleteKeyframe(this);
+				checkPlaybackEnabled();
 			});
 			$(this).attr('disabled','');
 		}
@@ -82,6 +85,7 @@ $(function () {
 			var left = $(this).position().left;
 			$('#playHeadLine').css('left', left + $('#keyframeArea').scrollLeft() + 'px');
 			ext.setCurrentTime(parseFloat(left / 80));
+			checkPlaybackEnabled();
 		}
 	});
 
@@ -124,6 +128,7 @@ $(function () {
 					keyframeArea.updateKeyframe(keyframe);
 					$('#keyframeList').fadeOut(100);
 					checkForConflicts();
+					checkPlaybackEnabled();
 				} else {
 					$(this).css('border-color', 'red');
 					$(that).focus().select();
@@ -150,6 +155,7 @@ $(function () {
 		keyframeArea.updateKeyframe(keyframe);
 		$('#keyframeList').fadeOut(100);
 		checkForConflicts();
+		checkPlaybackEnabled();
 	});
 
 	$('#x, #y, #z').focus(function () {
@@ -180,7 +186,7 @@ $(function () {
 	$('#playPause').click(function () {
 		if (!isPlaying) {
 			isPlaying = true;
-			if (animationEnded === true) {
+			if (!ext.getCanPlay() && animationEnded === true) {
 				updateCurrentTime(parseFloat(0.0));
 				ext.setCurrentTime(parseFloat(0.0));
 				animationEnded = false;
@@ -331,9 +337,12 @@ function updateCurrentTime(time) {
 
 function checkPlaybackEnabled() {
 	//Enable/Disable play/pause button
-	if ($('.keyframe').size() > 1) {
+	if (ext.getPlaybackEnabled()) {
 		$('#playPause').removeAttr('disabled');
 		$('#stop').removeAttr('disabled');
+		if (ext.getCanPlay()) {
+			$('#playPause').removeAttr('disabled');
+		}
 	} else {
 		$('#playPause').attr('disabled','');
 		$('#stop').attr('disabled','');

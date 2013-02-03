@@ -142,6 +142,46 @@ namespace Animatum.Controls
                 ModelUpdated(this, new EventArgs());
         }
 
+        public bool getPlaybackEnabled()
+        {
+            bool kfCountGood = false;
+            foreach (Bone bone in model.Bones)
+            {
+                foreach (Keyframe keyframeI in bone.Animation)
+                {
+                    foreach (Keyframe keyframeV in bone.Animation)
+                    {
+                        if (keyframeI != keyframeV &&
+                            keyframeI.Type == keyframeV.Type &&
+                            keyframeI.Time != keyframeV.Time)
+                            return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool getCanPlay()
+        {
+            if (getPlaybackEnabled())
+            {
+                int notEndedCount = 0;
+                foreach (Bone bone in model.Bones)
+                {
+                    if (bone.Animation.Count > 0)
+                    {
+                        if (model.CurrentTime < bone.GetRightMostKeyframe().Time)
+                            notEndedCount++;
+                    }
+                }
+                if (notEndedCount == model.BonesWithKeyframesCount)
+                    return true;
+            }
+
+            return false;
+        }
+
         public void play()
         {
             if (BeginPlayback != null)

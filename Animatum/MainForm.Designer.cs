@@ -49,17 +49,17 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainerProject = new System.Windows.Forms.SplitContainer();
             this.splitContainerProps = new System.Windows.Forms.SplitContainer();
-            this.splitContainerTimeline = new System.Windows.Forms.SplitContainer();
-            this.importDialog = new System.Windows.Forms.OpenFileDialog();
-            this.openDialog = new System.Windows.Forms.OpenFileDialog();
-            this.saveDialog = new System.Windows.Forms.SaveFileDialog();
             this.modelDockPanel = new Animatum.Controls.DockToolPanel();
             this.modelTreeView = new Animatum.Controls.ModelTreeView();
             this.propsDockPanel = new Animatum.Controls.DockToolPanel();
             this.propsControl = new Animatum.Controls.PropertiesControl();
             this.toolbox = new Animatum.Controls.Toolbox();
+            this.splitContainerTimeline = new System.Windows.Forms.SplitContainer();
             this.timelineDockPanel = new Animatum.Controls.DockToolPanel();
             this.timeline = new Animatum.Controls.TimelineControl();
+            this.importDialog = new System.Windows.Forms.OpenFileDialog();
+            this.openDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveDialog = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerProject)).BeginInit();
             this.splitContainerProject.Panel1.SuspendLayout();
@@ -69,13 +69,13 @@
             this.splitContainerProps.Panel1.SuspendLayout();
             this.splitContainerProps.Panel2.SuspendLayout();
             this.splitContainerProps.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTimeline)).BeginInit();
-            this.splitContainerTimeline.Panel2.SuspendLayout();
-            this.splitContainerTimeline.SuspendLayout();
             this.modelDockPanel.Content.SuspendLayout();
             this.modelDockPanel.SuspendLayout();
             this.propsDockPanel.Content.SuspendLayout();
             this.propsDockPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTimeline)).BeginInit();
+            this.splitContainerTimeline.Panel2.SuspendLayout();
+            this.splitContainerTimeline.SuspendLayout();
             this.timelineDockPanel.Content.SuspendLayout();
             this.timelineDockPanel.SuspendLayout();
             this.SuspendLayout();
@@ -290,47 +290,6 @@
             this.splitContainerProps.SplitterWidth = 3;
             this.splitContainerProps.TabIndex = 1;
             // 
-            // splitContainerTimeline
-            // 
-            this.splitContainerTimeline.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.splitContainerTimeline.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainerTimeline.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainerTimeline.Location = new System.Drawing.Point(0, 0);
-            this.splitContainerTimeline.Name = "splitContainerTimeline";
-            this.splitContainerTimeline.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainerTimeline.Panel1
-            // 
-            this.splitContainerTimeline.Panel1.BackColor = System.Drawing.SystemColors.Control;
-            this.splitContainerTimeline.Panel1MinSize = 220;
-            // 
-            // splitContainerTimeline.Panel2
-            // 
-            this.splitContainerTimeline.Panel2.BackColor = System.Drawing.SystemColors.Control;
-            this.splitContainerTimeline.Panel2.Controls.Add(this.timelineDockPanel);
-            this.splitContainerTimeline.Panel2MinSize = 175;
-            this.splitContainerTimeline.Size = new System.Drawing.Size(549, 436);
-            this.splitContainerTimeline.SplitterDistance = 258;
-            this.splitContainerTimeline.SplitterWidth = 3;
-            this.splitContainerTimeline.TabIndex = 0;
-            // 
-            // importDialog
-            // 
-            this.importDialog.Filter = "ASE 3D model files (*.ase)|*.ase";
-            this.importDialog.RestoreDirectory = true;
-            this.importDialog.SupportMultiDottedExtensions = true;
-            this.importDialog.Title = "Import ASE 3D model";
-            // 
-            // openDialog
-            // 
-            this.openDialog.Filter = "Animation XML (*.xml)|*.xml";
-            this.openDialog.Title = "Open Animation XML...";
-            // 
-            // saveDialog
-            // 
-            this.saveDialog.Filter = "Animation XML (*.xml)|*.xml";
-            this.saveDialog.Title = "Save Animation XML...";
-            // 
             // modelDockPanel
             // 
             this.modelDockPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -404,6 +363,30 @@
             this.toolbox.TabIndex = 0;
             this.toolbox.SelectedToolChanged += new System.EventHandler(this.toolbox_SelectedToolChanged);
             // 
+            // splitContainerTimeline
+            // 
+            this.splitContainerTimeline.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.splitContainerTimeline.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerTimeline.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainerTimeline.Location = new System.Drawing.Point(0, 0);
+            this.splitContainerTimeline.Name = "splitContainerTimeline";
+            this.splitContainerTimeline.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainerTimeline.Panel1
+            // 
+            this.splitContainerTimeline.Panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainerTimeline.Panel1MinSize = 220;
+            // 
+            // splitContainerTimeline.Panel2
+            // 
+            this.splitContainerTimeline.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainerTimeline.Panel2.Controls.Add(this.timelineDockPanel);
+            this.splitContainerTimeline.Panel2MinSize = 175;
+            this.splitContainerTimeline.Size = new System.Drawing.Size(549, 436);
+            this.splitContainerTimeline.SplitterDistance = 258;
+            this.splitContainerTimeline.SplitterWidth = 3;
+            this.splitContainerTimeline.TabIndex = 0;
+            // 
             // timelineDockPanel
             // 
             this.timelineDockPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -438,6 +421,23 @@
             this.timeline.PausePlayback += new System.EventHandler(this.timeline_PausePlayback);
             this.timeline.StopPlayback += new System.EventHandler(this.timeline_StopPlayback);
             // 
+            // importDialog
+            // 
+            this.importDialog.Filter = "ASE 3D model files (*.ase)|*.ase";
+            this.importDialog.RestoreDirectory = true;
+            this.importDialog.SupportMultiDottedExtensions = true;
+            this.importDialog.Title = "Import ASE 3D model";
+            // 
+            // openDialog
+            // 
+            this.openDialog.Filter = "Animation XML (*.xml)|*.xml";
+            this.openDialog.Title = "Open Animation XML...";
+            // 
+            // saveDialog
+            // 
+            this.saveDialog.Filter = "Animation XML (*.xml)|*.xml";
+            this.saveDialog.Title = "Save Animation XML...";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -451,6 +451,7 @@
             this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "MainForm";
             this.Text = "Animatum 1.0b";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
@@ -462,13 +463,13 @@
             this.splitContainerProps.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerProps)).EndInit();
             this.splitContainerProps.ResumeLayout(false);
-            this.splitContainerTimeline.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTimeline)).EndInit();
-            this.splitContainerTimeline.ResumeLayout(false);
             this.modelDockPanel.Content.ResumeLayout(false);
             this.modelDockPanel.ResumeLayout(false);
             this.propsDockPanel.Content.ResumeLayout(false);
             this.propsDockPanel.ResumeLayout(false);
+            this.splitContainerTimeline.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerTimeline)).EndInit();
+            this.splitContainerTimeline.ResumeLayout(false);
             this.timelineDockPanel.Content.ResumeLayout(false);
             this.timelineDockPanel.ResumeLayout(false);
             this.ResumeLayout(false);

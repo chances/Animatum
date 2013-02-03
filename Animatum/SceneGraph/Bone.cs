@@ -215,14 +215,50 @@ namespace Animatum.SceneGraph
 
         public Keyframe GetLeftMostKeyframe()
         {
-            Keyframe keyframe = null;
-            GetLeftMostKeyframe(KeyframeType.Translation);
+            Keyframe keyframe = GetLeftMostKeyframe(KeyframeType.Translation);
             if (keyframe == null)
-                GetLeftMostKeyframe(KeyframeType.Rotation);
+                keyframe = GetLeftMostKeyframe(KeyframeType.Rotation);
             return keyframe;
         }
 
         public Keyframe GetLeftMostKeyframe(KeyframeType type)
+        {
+            List<Keyframe> keyframes = Animation.OrderBy(o => o.Time).ToList();
+            foreach (Keyframe keyframe in keyframes)
+            {
+                if (keyframe.Type == type)
+                {
+                    return keyframe;
+                }
+            }
+            return null;
+        }
+
+        public Keyframe GetRightMostKeyframe()
+        {
+            Keyframe keyframe = GetRightMostKeyframe(KeyframeType.Translation);
+            if (keyframe == null)
+                keyframe = GetRightMostKeyframe(KeyframeType.Rotation);
+            return keyframe;
+        }
+
+        public Keyframe GetRightMostKeyframe(KeyframeType type)
+        {
+            List<Keyframe> keyframes = Animation.OrderBy(o => o.Time).ToList();
+            if (keyframes.Count > 0)
+            {
+                for (int i = keyframes.Count - 1; i > -1; i--)
+                {
+                    if (keyframes[i].Type == type)
+                    {
+                        return keyframes[i];
+                    }
+                }
+            }
+            return null;
+        }
+
+        public Keyframe GetKeyframeLeftOfTime(KeyframeType type, float time)
         {
             List<Keyframe> keyframes = Animation.OrderBy(o => o.Time).ToList();
             Keyframe left = null;
@@ -230,79 +266,31 @@ namespace Animatum.SceneGraph
             {
                 if (keyframe.Type == type)
                 {
-                    left = keyframe;
-                    break;
+                    if (time >= keyframe.Time)
+                        left = keyframe;
+                    else
+                        break;
                 }
             }
             return left;
         }
 
-        public Keyframe GetRightMostKeyframe()
-        {
-            Keyframe keyframe = null;
-            GetRightMostKeyframe(KeyframeType.Translation);
-            if (keyframe == null)
-                GetRightMostKeyframe(KeyframeType.Rotation);
-            return keyframe;
-        }
-
-        public Keyframe GetRightMostKeyframe(KeyframeType type)
+        public Keyframe GetKeyframeRightOfTime(KeyframeType type, float time)
         {
             List<Keyframe> keyframes = Animation.OrderBy(o => o.Time).ToList();
             Keyframe right = null;
-            for (int i = keyframes.Count - 1; i >= 0; i--)
+            for (int i = keyframes.Count - 1; i > -1; i--)
             {
                 Keyframe keyframe = keyframes[i];
                 if (keyframe.Type == type)
                 {
-                    right = keyframe;
-                    break;
+                    if (time <= keyframe.Time)
+                        right = keyframe;
+                    else
+                        break;
                 }
             }
             return right;
-        }
-
-        public Keyframe GetKeyframeLeftOfTime(KeyframeType type, float time)
-        {
-            if (Animation.Count > 1)
-            {
-                List<Keyframe> keyframes = Animation.OrderBy(o => o.Time).ToList();
-                Keyframe left = null;
-                foreach (Keyframe keyframe in keyframes)
-                {
-                    if (keyframe.Type == type)
-                    {
-                        if (time >= keyframe.Time)
-                            left = keyframe;
-                        else
-                            break;
-                    }
-                }
-                return left;
-            }
-            return null;
-        }
-
-        public Keyframe GetKeyframeRightOfTime(KeyframeType type, float time)
-        {
-            if (Animation.Count > 1)
-            {
-                List<Keyframe> keyframes = Animation.OrderBy(o => o.Time).ToList();
-                Keyframe right = null;
-                for (int i = keyframes.Count - 1; i > -1; i--)
-                {
-                    Keyframe keyframe = keyframes[i];
-                    if (keyframe.Type == type)
-                    {
-                        if (time <= keyframe.Time)
-                            right = keyframe;
-                        else
-                            break;
-                    }
-                }
-                return right;
-            }
-            return null;
         }
 
         public override string ToString()

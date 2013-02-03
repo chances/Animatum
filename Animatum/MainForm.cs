@@ -47,8 +47,21 @@ namespace Animatum
             timeline.DebugMode = settings.GetSetting("timeline/debugMode", false);
         }
 
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (unsaved)
+            {
+                if (MessageBox.Show("Are you sure you want to exit?\n\n" +
+                    "Unsaved changes will be lossed.", "Unsaved Changes",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) ==
+                    DialogResult.No)
+                    e.Cancel = true;
+            }
+        }
+
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             if (openDialog.ShowDialog() == DialogResult.OK)
             {
                 currentFile = openDialog.FileName;
@@ -68,10 +81,12 @@ namespace Animatum
 
                 modelView.Invalidate();
             }
+            this.Cursor = Cursors.Default;
         }
 
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             if (importDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 this.propsControl.SelectedNode = null;
@@ -104,10 +119,12 @@ namespace Animatum
 
                 modelView.Invalidate();
             }
+            this.Cursor = Cursors.Default;
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             if (currentFile != null)
             {
                 string animationName = Path.GetFileNameWithoutExtension(currentFile);
@@ -132,10 +149,12 @@ namespace Animatum
                     this.Text = title + " - " + animationName + ".xml";
                 }
             }
+            this.Cursor = Cursors.Default;
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
                 currentFile = saveDialog.FileName;
@@ -147,6 +166,7 @@ namespace Animatum
                 unsaved = false;
                 this.Text = title + " - " + animationName + ".xml";
             }
+            this.Cursor = Cursors.Default;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)

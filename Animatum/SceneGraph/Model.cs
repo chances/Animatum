@@ -41,15 +41,6 @@ namespace Animatum.SceneGraph
         }
 
         /// <summary>
-        /// Number of meshes in model
-        /// </summary>
-        [ScriptIgnore()]
-        public int MeshCount
-        {
-            get { return countMeshes(children); }
-        }
-
-        /// <summary>
         /// All of the model's meshes
         /// </summary>
         [ScriptIgnore()]
@@ -59,20 +50,19 @@ namespace Animatum.SceneGraph
         }
 
         /// <summary>
-        /// Number of bones in model
-        /// </summary>
-        [ScriptIgnore()]
-        public int BoneCount
-        {
-            get { return countBones(children); }
-        }
-
-        /// <summary>
         /// All of the model's bones
         /// </summary>
         public List<Bone> Bones
         {
             get { return getBones(this.children); }
+        }
+
+        /// <summary>
+        /// The number of bones within this model that have any keyframes
+        /// </summary>
+        public int BonesWithKeyframesCount
+        {
+            get { return countBonesWithKeyframes(); }
         }
 
         public override void Render(OpenGL gl)
@@ -121,7 +111,7 @@ namespace Animatum.SceneGraph
         /// Determines if a given Mesh is assigned to a Bone
         /// </summary>
         /// <param name="mesh">The Mesh to check</param>
-        /// <param name="start">The SceneGraph Node to begin serching</param>
+        /// <param name="start">The SceneGraph Node to begin searching</param>
         /// <returns>Whether or not the Mesh is assigned to a Bone</returns>
         public bool IsMeshAssigned(Mesh mesh, List<Node> start)
         {
@@ -242,16 +232,13 @@ namespace Animatum.SceneGraph
                 }
                 bone.Translation = translate;
                 bone.Rotation = rotate;
-                if (bone.Meshes.Count != 0)
+                foreach (Mesh mesh in bone.Meshes)
                 {
-                    foreach (Mesh mesh in bone.Meshes)
-                    {
-                        mesh.Bone = bone;
-                    }
+                    mesh.Bone = bone;
                 }
             }
             //All bone animations have ended
-            if (endCount == countBonesWithKeyframes(this.children))
+            if (endCount == countBonesWithKeyframes())
                 if (AnimationEnded != null)
                     AnimationEnded(this, new EventArgs());
         }
@@ -328,20 +315,16 @@ namespace Animatum.SceneGraph
             return count;
         }
 
-        private int countBonesWithKeyframes(List<Node> children)
+        private int countBonesWithKeyframes()
         {
             int count = 0;
             if (children != null)
             {
-                foreach (Node node in children)
+                foreach (Bone bone in Bones)
                 {
-                    if (node is Bone)
+                    if (bone.Animation.Count > 0)
                     {
-                        if (((Bone)node).Animation.Count > 0)
-                        {
-                            count++;
-                            count += countBonesWithKeyframes(node.Children);
-                        }
+                        count++;
                     }
                 }
             }
