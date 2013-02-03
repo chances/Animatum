@@ -37,7 +37,7 @@ namespace Animatum.Controls
                 UpVector = new Vertex(0f, 0f, 1f),
                 Near = 0,
                 Far = 250,
-                Theta = 0.785f
+                HorizontalTheta = 0.785f
             };
             RenderGrid = true;
             RenderAxies = true;
@@ -197,20 +197,6 @@ namespace Animatum.Controls
             //If animating, increment current time
             if (IsPlaying)
             {
-                /*frameTimer.Stop();
-                long elapsed = frameTimer.ElapsedMilliseconds;
-                frameTimer.Reset();
-                //Desired milliseconds between frames
-                float between = 1000 / FrameRate;
-                //If the actuall time passed is longer, compensate
-                if (elapsed > between)
-                {
-                    model.CurrentTime += elapsed / 1000;
-                }
-                else //We're okay, no compensation
-                {
-                    model.CurrentTime += between / 1000;
-                }*/
                 float between = 1000 / FrameRate;
                 Model.CurrentTime += between / 1000;
             }
@@ -239,12 +225,6 @@ namespace Animatum.Controls
             attrs.Pop(gl, null);
 
             gl.Flush();
-
-            //Start measuring time between frames
-            if (IsPlaying)
-            {
-                //frameTimer.Start();
-            }
         }
     }
 }

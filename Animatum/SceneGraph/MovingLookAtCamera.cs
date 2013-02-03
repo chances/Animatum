@@ -13,21 +13,22 @@ namespace Animatum.SceneGraph
     /// </summary>
     class MovingLookAtCamera : LookAtCamera
     {
-        private float theta;
+        private float horizontalTheta;
+        private float verticalTheta;
 
         public MovingLookAtCamera()
         {
-            theta = 0.0f;
+            horizontalTheta = 0.0f;
         }
 
-        public float Theta
+        public float HorizontalTheta
         {
-            get { return theta; }
+            get { return horizontalTheta; }
             set
             {
-                theta = value;
-                normalizeTheta();
-                updateTheta();
+                horizontalTheta = value;
+                normalizeHorizontalTheta();
+                updateHorizontalRotation();
             }
         }
 
@@ -44,17 +45,30 @@ namespace Animatum.SceneGraph
         }
 
         /// <summary>
-        /// Rotate the camera around the Target
+        /// Rotate the camera around the Target horizontally
         /// </summary>
         /// <param name="delta">Change in theta</param>
         public void RotateHorizontal(float delta)
         {
-            theta += delta;
-            normalizeTheta();
-            updateTheta();
+            horizontalTheta += delta;
+            normalizeHorizontalTheta();
+            updateHorizontalRotation();
         }
 
-        private void updateTheta()
+        /*
+        /// <summary>
+        /// Rotate the camera around the Target vertically
+        /// </summary>
+        /// <param name="delta">Change in theta</param>
+        public void RotateVertical(float delta)
+        {
+            verticalTheta += delta;
+            normalizeVerticalTheta();
+            updateVerticalRotation();
+        }
+        */
+
+        private void updateHorizontalRotation()
         {
             //Distance from focus to camera on the XY plane.
             //This is the radius of the rotation circle.
@@ -62,20 +76,30 @@ namespace Animatum.SceneGraph
                 new PointF(this.Target.X, this.Target.Y),
                 new PointF(this.Position.X, this.Position.Y));
             //New X and Y coordinate
-            float x = r * (float)Math.Cos(theta);
-            float y = r * (float)Math.Sin(theta);
+            float x = r * (float)Math.Cos(horizontalTheta);
+            float y = r * (float)Math.Sin(horizontalTheta);
             //Update position
             this.Position = new Vertex(x, y, this.Position.Z);
         }
 
-        private void normalizeTheta()
+        private void normalizeHorizontalTheta()
         {
             //Ensures theta doesn't increase/decrease forever
             // We wouldn't want the float to overflow
-            if (theta <= -6.3f)
-                theta += 6.3f * (float)Math.Floor(theta / -6.3f);
-            if (theta >= 6.3f)
-                theta -= 6.3f * (float)Math.Floor(theta / 6.3f);
+            if (horizontalTheta <= -6.3f)
+                horizontalTheta += 6.3f * (float)Math.Floor(horizontalTheta / -6.3f);
+            if (horizontalTheta >= 6.3f)
+                horizontalTheta -= 6.3f * (float)Math.Floor(horizontalTheta / 6.3f);
+        }
+
+        private void normalizeVerticalTheta()
+        {
+            //Ensures theta doesn't increase/decrease forever
+            // We wouldn't want the float to overflow
+            if (verticalTheta <= -6.3f)
+                verticalTheta += 6.3f * (float)Math.Floor(verticalTheta / -6.3f);
+            if (verticalTheta >= 6.3f)
+                verticalTheta -= 6.3f * (float)Math.Floor(verticalTheta / 6.3f);
         }
     }
 }

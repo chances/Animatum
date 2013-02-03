@@ -150,19 +150,15 @@ namespace Animatum.Controls
             bool sel = false;
             //Add all bones not already parented to a bone and
             // the parent of this bone (if any)
-            foreach (Node node in model.Children)
+            foreach (Bone modelBone in model.Bones)
             {
-                if (node is Bone)
+                if (modelBone != childBone)
                 {
-                    Bone bone = (Bone)node;
-                    if (bone != childBone)
+                    parentComboBox.Items.Add(modelBone);
+                    if (childBone.Parent == modelBone)
                     {
-                        parentComboBox.Items.Add(bone);
-                        if (childBone.Parent == bone)
-                        {
-                            sel = true;
-                            parentComboBox.SelectedIndex = parentComboBox.Items.Count - 1;
-                        }
+                        sel = true;
+                        parentComboBox.SelectedIndex = parentComboBox.Items.Count - 1;
                     }
                 }
             }
@@ -213,6 +209,7 @@ namespace Animatum.Controls
                 }
                 else
                 {
+                    //If the selected parent bone changed
                     if (bone.Parent != (Bone)node)
                     {
                         ((Bone)node).Add(bone.Parent.Remove(bone));

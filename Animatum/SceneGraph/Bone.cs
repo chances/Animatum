@@ -153,18 +153,11 @@ namespace Animatum.SceneGraph
 
         public override void Render(OpenGL gl)
         {
-            sphere.PushObjectSpace(gl);
-            if (!(this.parent is Bone))
-            {
-                parentTranslation(gl, this);
-            }
-            else
-            {
-                Vertex negPos = Position * -1;
-                gl.Translate(negPos.X, negPos.Y, negPos.Z);
-                gl.Translate(TransformedPosition.X, TransformedPosition.Y,
-                    TransformedPosition.Z);
-            }
+            gl.PushMatrix();
+            if (sphere.Material != null)
+                sphere.Material.Push(gl);
+            gl.Translate(TransformedPosition.X, TransformedPosition.Y,
+                TransformedPosition.Z);
             sphere.Render(gl);
             sphere.PopObjectSpace(gl);
             //Render children and the lines connecting them
@@ -172,20 +165,6 @@ namespace Animatum.SceneGraph
             {
                 DrawLine(gl, TransformedPosition, bone.TransformedPosition, Color, bone.Color);
                 bone.Render(gl);
-            }
-        }
-
-        private void parentTranslation(OpenGL gl, Bone bone)
-        {
-            if (!(bone.Parent is Model))
-            {
-                if (bone.Parent is Bone)
-                {
-                    Bone parent = bone.Parent as Bone;
-                    parentTranslation(gl, parent);
-                    gl.Translate(parent.Translation.X,
-                        parent.Translation.Y, parent.Translation.Z);
-                }
             }
         }
 
