@@ -78,29 +78,47 @@ $(function () {
 		scroll: true,
 		drag: function () {
 			var left = $(this).position().left;
-			$('#playHeadLine').css('left', left + $('#keyframeArea').scrollLeft() + 'px');
+			var scrollLeft = $('#keyframeArea').scrollLeft();
+			left = (left + scrollLeft);
+			$('#playHeadLine').css('left', left + 'px');
 			ext.setCurrentTime(parseFloat(left / 80));
 		},
 		stop: function () {
 			var left = $(this).position().left;
-			$('#playHeadLine').css('left', left + $('#keyframeArea').scrollLeft() + 'px');
+			var scrollLeft = $('#keyframeArea').scrollLeft();
+			left = (left + scrollLeft);
+			$('#playHeadLine').css('left', left + 'px');
 			ext.setCurrentTime(parseFloat(left / 80));
 			checkPlaybackEnabled();
 		}
 	});
 
 	$(window).keydown(function (event) {
+		if ($(event.target).is('input')) { return; }
 		var currentTime = ext.getCurrentTime();
+		var scrollLeft = $('#keyframeArea').scrollLeft();
 		if (event.keyCode === 37) { //Left arrow key
 			if (currentTime > 0) {
 				currentTime -= 0.1;
 			}
+			event.preventDefault();
 		} else if (event.keyCode === 39) { //Right arrow key
 			currentTime += 0.1;
 		}
+		var left = currentTime * 80;
+		var scrollLeft = $('#keyframeArea').scrollLeft();
+		var nonScrollWidth = ($('#keyframeArea').width() + scrollLeft - 27);
+		if (left < nonScrollWidth) {
+			event.preventDefault();
+		}
+		if (left < scrollLeft) {
+			scrollLeft = scrollLeft - 20;
+			if (scrollLeft < 0) { scrollLeft = 0; }
+			$('#keyframeArea').stop(true, true).animate({scrollLeft: scrollLeft}, 200);
+		}
 		if (currentTime < 0) { currentTime = 0; }
-		if (currentTime > $('#keyframes').width() * 80 + 8) {
-			currentTime = ($('#keyframes').width() - 8) / 80;
+		if (currentTime * 80 > $('#keyframes').outerWidth(true) - 26) {
+			currentTime = ($('#keyframes').outerWidth(true) - 26) / 80;
 		}
 		updateCurrentTime(parseFloat(currentTime));
 		ext.setCurrentTime(parseFloat(currentTime));
@@ -219,13 +237,13 @@ function adjustMetrics() {
 	listHeight = $('#timeline').height() -  $('#boneList').css('margin-top');
 	//Keyframe area and scale minimum width
 	var kareaWidth = $('#timeline').width() - $('#boneList').width() - 7;
-	var kareaHeight = $(document).height() - $('#playback').height();
+	var kareaHeight = $(document).height() - $('#playback').outerHeight(true);
 	if ($('#keyframes').outerHeight(true) > kareaHeight) { kareaWidth -= 18; }
 	$('#keyframeArea').css({
 		'min-width': kareaWidth + 'px',
 		'max-width': kareaWidth + 'px',
-		'height': kareaHeight - 4 + 'px',
-		'max-height': kareaHeight - 4 + 'px'
+		'height': kareaHeight + 'px',
+		'max-height': kareaHeight + 'px'
 	});
 	//Keyframe x positions
 	var farW = 0;
@@ -243,13 +261,13 @@ function adjustMetrics() {
 	if (farW > kareaWidth) { width = farW; }
 	//Keyframes div and scale
 	$('#keyframes').css({
-		'min-width': farW - 20 + 'px',
+		'min-width': farW - 20 - 4 + 'px',
 		'min-height': kareaHeight + 'px'
 	});
-	var scaleWidth = $('#keyframes').width();
-	$('#scale').css('min-width', scaleWidth + 4 + 'px');
+	var scaleWidth = $('#keyframes').outerWidth(true);
+	$('#scale').css('width', scaleWidth + 'px');
 	//Auto unit numbering for scale
-	var nums = Math.ceil( ($('#scale').outerWidth(true) - 25) / 80 );
+	var nums = Math.ceil( ($('#scale').outerWidth(true) - 25) / 80 ) + 1;
 	$('#scale').empty();
 	for (var i=0; i < nums; i++) {
 		//Scale num
@@ -259,7 +277,7 @@ function adjustMetrics() {
 		$(numSpan).css('margin-right', margin + 'px');
 	}
 	//Scrubber line
-	$('#playHeadLine').css('height', $('#keyframes').height());
+	$('#playHeadLine').css('height', $('#keyframes').height() - 6);
 	//Keyframe line x position and width
 	$('.keyframe-row').each(function () {
 		if ($(this).find('.keyframe').size() > 1) {
@@ -440,5 +458,3 @@ function checkForConflicts() {
 		});
 	});
 }
-
-(function($){if($.browser.mozilla){$.fn.disableTextSelect=function(){return this.each(function(){$(this).css({"MozUserSelect":"none"})})};$.fn.enableTextSelect=function(){return this.each(function(){$(this).css({"MozUserSelect":""})})}}else{if($.browser.msie){$.fn.disableTextSelect=function(){return this.each(function(){$(this).bind("selectstart.disableTextSelect",function(){return false})})};$.fn.enableTextSelect=function(){return this.each(function(){$(this).unbind("selectstart.disableTextSelect")})}}else{$.fn.disableTextSelect=function(){return this.each(function(){$(this).bind("mousedown.disableTextSelect",function(){return false})})};$.fn.enableTextSelect=function(){return this.each(function(){$(this).unbind("mousedown.disableTextSelect")})}}}})(jQuery);
