@@ -50,7 +50,7 @@
             this.select.Text = "Select";
             this.select.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.select.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.toolTip.SetToolTip(this.select, "Click to select a mesh.");
+            this.toolTip.SetToolTip(this.select, "Click to select a mesh. (Doesn\'t work yet.)");
             this.select.UseVisualStyleBackColor = true;
             this.select.CheckedChanged += new System.EventHandler(this.select_CheckedChanged);
             // 

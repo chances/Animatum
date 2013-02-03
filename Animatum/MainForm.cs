@@ -197,7 +197,7 @@ namespace Animatum
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            new Dialogs.AboutDialog().Show();
         }
 
         private void toolbox_SelectedToolChanged(object sender, EventArgs e)

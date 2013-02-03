@@ -21,7 +21,6 @@ namespace Animatum.SceneGraph
     {
         private string name;
         private Vertex position, translate;
-        private RotateTransform parentRotate;
         private Color color;
         private List<Mesh> meshes;
         private List<Keyframe> ani;
@@ -40,7 +39,6 @@ namespace Animatum.SceneGraph
             name = "";
             position = new Vertex();
             translate = new Vertex();
-            parentRotate = null;
             color = Colors.Random();
             meshes = new List<Mesh>();
             ani = new List<Keyframe>();
@@ -59,7 +57,6 @@ namespace Animatum.SceneGraph
             ASE.Vector3D v = obj.mesh.verticies[0];
             position = new Vertex(v.x, v.y, v.z);
             translate = new Vertex();
-            parentRotate = null;
             meshes = new List<Mesh>();
             ani = new List<Keyframe>();
 

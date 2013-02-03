@@ -144,7 +144,6 @@ namespace Animatum.Controls
 
         public bool getPlaybackEnabled()
         {
-            bool kfCountGood = false;
             foreach (Bone bone in model.Bones)
             {
                 foreach (Keyframe keyframeI in bone.Animation)
