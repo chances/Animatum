@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Threading;
 using System.IO;
 using mshtml;
+using System.ComponentModel;
 
 namespace Animatum.Controls
 {
@@ -16,10 +17,36 @@ namespace Animatum.Controls
         private Model model;
         private bool debugMode;
 
+        /// <summary>
+        /// Occurs when the timeline has loaded and is ready.
+        /// </summary>
+        [Browsable(false)]
         public event EventHandler Ready;
+        /// <summary>
+        /// Occurs when the user performed a keyboard shortcut.
+        /// </summary>
+        [Category("Key")]
+        [Description("Occurs when the user performed a keyboard shortcut.")]
+        public event HotkeyWebBrowser.KeyCommandHandler KeyCommand;
+        /// <summary>
+        /// Occurs when the Model has been updated by the user in the timeline.
+        /// </summary>
+        [Browsable(false)]
         public event EventHandler ModelUpdated;
+        /// <summary>
+        /// Occurs when the user begins playback from the timeline.
+        /// </summary>
+        [Browsable(false)]
         public event EventHandler BeginPlayback;
+        /// <summary>
+        /// Occurs when the user pauses playback from the timeline.
+        /// </summary>
+        [Browsable(false)]
         public event EventHandler PausePlayback;
+        /// <summary>
+        /// Occurs when the user stops playback from the timeline.
+        /// </summary>
+        [Browsable(false)]
         public event EventHandler StopPlayback;
 
         public TimelineControl()
@@ -154,6 +181,13 @@ namespace Animatum.Controls
         private void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             OnReady();
+        }
+
+        private bool webBrowser_KeyCommand(object sender, int key)
+        {
+            if (KeyCommand != null)
+                return KeyCommand(sender, key);
+            return false;
         }
     }
 }

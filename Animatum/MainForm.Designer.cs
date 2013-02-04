@@ -416,6 +416,7 @@
             this.timeline.Size = new System.Drawing.Size(549, 155);
             this.timeline.TabIndex = 0;
             this.timeline.Ready += new System.EventHandler(this.timeline_Ready);
+            this.timeline.KeyCommand += new Animatum.Controls.HotkeyWebBrowser.KeyCommandHandler(this.timeline_KeyCommand);
             this.timeline.ModelUpdated += new System.EventHandler(this.timeline_ModelUpdated);
             this.timeline.BeginPlayback += new System.EventHandler(this.timeline_BeginPlayback);
             this.timeline.PausePlayback += new System.EventHandler(this.timeline_PausePlayback);

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.reloadButton = new System.Windows.Forms.Button();
-            this.webBrowser = new HotkeyWebBrowser();
+            this.webBrowser = new Animatum.Controls.HotkeyWebBrowser();
             this.SuspendLayout();
             // 
             // reloadButton
@@ -54,6 +54,7 @@
             this.webBrowser.ScrollBarsEnabled = false;
             this.webBrowser.Size = new System.Drawing.Size(150, 150);
             this.webBrowser.TabIndex = 2;
+            this.webBrowser.KeyCommand += new Animatum.Controls.HotkeyWebBrowser.KeyCommandHandler(this.webBrowser_KeyCommand);
             this.webBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_DocumentCompleted);
             this.webBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.webBrowser_Navigated);
             // 

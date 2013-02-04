@@ -4,11 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace Animatum.Controls
 {
-    class HotkeyWebBrowser : WebBrowser
+    public class HotkeyWebBrowser : WebBrowser
     {
+        /// <summary>
+        /// Occurs when the user performed a keyboard shortcut.
+        /// </summary>
+        [Category("Key")]
+        [Description("Occurs when the user performed a keyboard shortcut.")]
+        public event KeyCommandHandler KeyCommand;
+
+        public delegate bool KeyCommandHandler(object sender, int key);
+
         public override bool PreProcessMessage(ref Message msg)
         {
             if (msg.Msg == 0x100    //WM_KEYDOWN 
@@ -16,16 +26,11 @@ namespace Animatum.Controls
             {
                 bool block = false;
                 int key = msg.WParam.ToInt32();
-                const int KEY_O = 79;
-                if (ModifierKeys == Keys.Control && key == KEY_O)
-                    block = true;
-
-                //Debug.WriteLine("Key: " + msg.WParam.ToInt32());
+                    if (KeyCommand != null)
+                        block = KeyCommand(this, key);
 
                 if (block)
                 {
-                    //msg.HWnd = this.Parent.Parent.Handle;
-                    //WndProc(ref msg);
                     return true;
                 }
             }

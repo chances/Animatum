@@ -62,110 +62,28 @@ namespace Animatum
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            if (openDialog.ShowDialog() == DialogResult.OK)
-            {
-                currentFile = openDialog.FileName;
-                AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
-                    modelView.Model, null);
-                aniXML.Deserialize(File.ReadAllText(openDialog.FileName));
-
-                string animationName = Path.GetFileName(currentFile);
-                this.Text = title + " - " + animationName;
-
-                //Update the modelTreeView
-                this.modelTreeView.Model = this.modelView.Model;
-                //Update properties
-                this.propsControl.Model = this.modelView.Model;
-                //Update timeline
-                this.timeline.Model = this.modelView.Model;
-
-                modelView.Invalidate();
-            }
+            open();
             this.Cursor = Cursors.Default;
         }
 
         private void importToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            if (importDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                this.propsControl.SelectedNode = null;
-
-                //Load ASE file
-                ASE.Parser parser = new ASE.Parser();
-                ASE.Scene scn = parser.loadFilename(importDialog.FileName);
-                Model model = modelView.Model;
-                model.Clear();
-                //Get meshes and bones
-                foreach (ASE.GeomObject obj in scn.objs)
-                {
-                    //If the mesh has only one vertex, it's a bone
-                    if (obj.mesh.vertexCount == 1)
-                        model.Add(new Bone(obj));
-                    else //It's a mesh
-                        model.Add(new Mesh(obj));
-                }
-
-                this.Text = title;
-                currentFile = null;
-                unsaved = true;
-
-                //Update the modelTreeView
-                this.modelTreeView.Model = model;
-                //Update properties
-                this.propsControl.Model = model;
-                //Update timeline
-                this.timeline.Model = model;
-
-                modelView.Invalidate();
-            }
+            import();
             this.Cursor = Cursors.Default;
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            if (currentFile != null)
-            {
-                string animationName = Path.GetFileNameWithoutExtension(currentFile);
-                AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
-                    modelView.Model, animationName);
-                aniXML.Save(currentFile);
-
-                unsaved = false;
-                this.Text = title + " - " + animationName + ".xml";
-            }
-            else
-            {
-                if (saveDialog.ShowDialog() == DialogResult.OK)
-                {
-                    currentFile = saveDialog.FileName;
-                    string animationName = Path.GetFileNameWithoutExtension(currentFile);
-                    AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
-                        modelView.Model, animationName);
-                    aniXML.Save(currentFile);
-
-                    unsaved = false;
-                    this.Text = title + " - " + animationName + ".xml";
-                }
-            }
+            save();
             this.Cursor = Cursors.Default;
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            if (saveDialog.ShowDialog() == DialogResult.OK)
-            {
-                currentFile = saveDialog.FileName;
-                string animationName = Path.GetFileNameWithoutExtension(currentFile);
-                AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
-                    modelView.Model, animationName);
-                aniXML.Save(currentFile);
-
-                unsaved = false;
-                this.Text = title + " - " + animationName + ".xml";
-            }
+            saveAs();
             this.Cursor = Cursors.Default;
         }
 
@@ -229,6 +147,35 @@ namespace Animatum
             this.timeline.Model = this.modelView.Model;
         }
 
+        private bool timeline_KeyCommand(object sender, int key)
+        {
+            if (ModifierKeys == Keys.Control && key == (int)Keys.I)
+            {
+                import();
+                return true;
+            }
+
+            if (ModifierKeys == Keys.Control && key == (int)Keys.O)
+            {
+                open();
+                return true;
+            }
+
+            if (ModifierKeys == Keys.Control && key == (int)Keys.S)
+            {
+                save();
+                return true;
+            }
+
+            if (ModifierKeys == (Keys.Control | Keys.Shift) && key == (int)Keys.S)
+            {
+                saveAs();
+                return true;
+            }
+
+            return false;
+        }
+
         private void timeline_ModelUpdated(object sender, EventArgs e)
         {
             //Let the user know there's a change
@@ -266,9 +213,109 @@ namespace Animatum
             }
             else
             {
-                this.Text = title;
+                this.Text = title + " *";
             }
             unsaved = true;
+        }
+
+        private void import()
+        {
+            if (importDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                this.propsControl.SelectedNode = null;
+
+                //Load ASE file
+                ASE.Parser parser = new ASE.Parser();
+                ASE.Scene scn = parser.loadFilename(importDialog.FileName);
+                Model model = modelView.Model;
+                model.Clear();
+                //Get meshes and bones
+                foreach (ASE.GeomObject obj in scn.objs)
+                {
+                    //If the mesh has only one vertex, it's a bone
+                    if (obj.mesh.vertexCount == 1)
+                        model.Add(new Bone(obj));
+                    else //It's a mesh
+                        model.Add(new Mesh(obj));
+                }
+
+                this.Text = title;
+                currentFile = null;
+                unsaved = true;
+
+                //Update the modelTreeView
+                this.modelTreeView.Model = model;
+                //Update properties
+                this.propsControl.Model = model;
+                //Update timeline
+                this.timeline.Model = model;
+
+                modelView.Invalidate();
+            }
+        }
+
+        private void open()
+        {
+            if (unsaved)
+            {
+                if (MessageBox.Show("Unsaved changes will be lossed.\n\n" +
+                    "Do you want to save these changes?", "Unsaved Changes",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) ==
+                    DialogResult.Yes)
+                    save();
+            }
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                currentFile = openDialog.FileName;
+                AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
+                    modelView.Model, null);
+                aniXML.Deserialize(File.ReadAllText(openDialog.FileName));
+
+                string animationName = Path.GetFileName(currentFile);
+                this.Text = title + " - " + animationName;
+
+                //Update the modelTreeView
+                this.modelTreeView.Model = this.modelView.Model;
+                //Update properties
+                this.propsControl.Model = this.modelView.Model;
+                //Update timeline
+                this.timeline.Model = this.modelView.Model;
+
+                modelView.Invalidate();
+            }
+        }
+
+        private void save()
+        {
+            if (currentFile != null)
+            {
+                string animationName = Path.GetFileNameWithoutExtension(currentFile);
+                AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
+                    modelView.Model, animationName);
+                aniXML.Save(currentFile);
+
+                unsaved = false;
+                this.Text = title + " - " + animationName + ".xml";
+            }
+            else
+            {
+                saveAs();
+            }
+        }
+
+        private void saveAs()
+        {
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                currentFile = saveDialog.FileName;
+                string animationName = Path.GetFileNameWithoutExtension(currentFile);
+                AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
+                    modelView.Model, animationName);
+                aniXML.Save(currentFile);
+
+                unsaved = false;
+                this.Text = title + " - " + animationName + ".xml";
+            }
         }
     }
 }
