@@ -53,9 +53,6 @@ namespace Animatum.Controls
             attrs.EnableAttributes.EnableNormalize = true;
             attrs.EnableAttributes.EnableLighting = true;
             attrs.EnableAttributes.EnableTexture2D = true;
-            attrs.EnableAttributes.EnableBlend = true;
-            attrs.ColorBufferAttributes.BlendingSourceFactor = BlendingSourceFactor.SourceAlpha;
-            attrs.ColorBufferAttributes.BlendingDestinationFactor = BlendingDestinationFactor.OneMinusSourceAlpha;
             attrs.LightingAttributes.TwoSided = false;
 
             Model = new Model();
@@ -221,8 +218,13 @@ namespace Animatum.Controls
             if (RenderAxies)
                 axies.Render(gl);
 
+			gl.Enable(OpenGL.GL_BLEND);
+			gl.BlendFunc(OpenGL.GL_ONE, OpenGL.GL_ONE);
+
             if (Model != null)
                 Model.Render(gl);
+
+			gl.Disable(OpenGL.GL_BLEND);
 
 			if (openGLControl.RenderContext.MultisamplingSupported) {
 				gl.Disable(gl.GL_MULTISAMPLE_ARB);
