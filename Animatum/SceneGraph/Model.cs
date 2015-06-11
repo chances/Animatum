@@ -91,6 +91,14 @@ namespace Animatum.SceneGraph
             }
         }
 
+		public override void RenderForHitTest (OpenGL gl, Dictionary<uint, SceneElement> hitMap, ref uint currentName)
+		{
+			updateMeshTransforms();
+
+			foreach (Node node in children)
+				node.RenderForHitTest(gl, hitMap, ref currentName);
+		}
+
         /// <summary>
         /// Clear all meshes and bones from model
         /// </summary>

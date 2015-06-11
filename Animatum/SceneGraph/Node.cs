@@ -91,5 +91,13 @@ namespace Animatum.SceneGraph
         /// </summary>
         /// <param name="gl">OpenGL object</param>
         public abstract void Render(OpenGL gl);
+
+		/// <summary>
+		/// Renders the node for hit testing.
+		/// </summary>
+		/// <param name="gl">OpenGL object</param>
+		/// <param name="hitMap">Hit test result map</param>
+		/// <param name="currentName">Current hit name</param>
+		public abstract void RenderForHitTest(OpenGL gl, Dictionary<uint, SceneElement> hitMap, ref uint currentName);
     }
 }

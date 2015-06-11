@@ -9,6 +9,7 @@ using Animatum.SceneGraph.Primitives;
 using SharpGL.SceneGraph.Effects;
 using SharpGL.Enumerations;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Animatum.Controls
 {
@@ -234,5 +235,73 @@ namespace Animatum.Controls
 
             gl.Flush();
         }
+
+		private IEnumerable<Node> HitTest(int x, int y)
+		{
+			if (Model.Meshes.Count == 0 && Model.Bones.Count == 0)
+				return null;
+
+			List<Node> resultSet = new List<Node>();
+			Dictionary<uint, Node> hitMap = new Dictionary<uint, Node>();
+
+			OpenGL gl = openGLControl.OpenGL;
+
+			int[] viewport = new int[4];
+
+			// Get the viewport, then convert the mouse point to an opengl point.
+			gl.GetInteger(OpenGL.GL_VIEWPORT, viewport);
+			y = viewport[3] - y;
+
+			uint[] selectBuffer = new uint[512];
+			gl.SelectBuffer(512, selectBuffer);
+
+			gl.RenderMode(OpenGL.GL_SELECT);
+
+			// Initialise the names, and add the first name.
+			gl.InitNames();
+			gl.PushName(0);
+
+			// Push picking projection  matrix
+			gl.MatrixMode(OpenGL.GL_PROJECTION);
+			gl.PushMatrix();
+			gl.LoadIdentity();
+			gl.PickMatrix(x, y, 4, 4, viewport);
+			currentCamera.TransformProjectionMatrix(gl);
+			gl.MatrixMode(OpenGL.GL_MODELVIEW);
+			gl.LoadIdentity();
+
+			uint currentName = 1;
+
+			Model.RenderForHitTest(gl, hitMap, ref currentName);
+
+			// Pop matrix and flush commands.
+			gl.MatrixMode(OpenGL.GL_PROJECTION);
+			gl.PopMatrix();
+			gl.MatrixMode(OpenGL.GL_MODELVIEW);
+			gl.Flush();
+
+			// End selection.
+			int hits = gl.RenderMode(OpenGL.GL_RENDER);
+
+			// Get hit Nodes
+			uint posinarray = 0;
+			for (int hit = 0; hit < hits; hits++) {
+				uint nameCount = selectBuffer[posinarray++];
+				uint z1 = selectBuffer[posinarray++];
+				uint z2 = selectBuffer[posinarray++];
+
+				if (nameCount == 0)
+					continue;
+
+				// Add each hit element to the result set
+				for (int name = 0; name < nameCount; name++)
+				{
+					uint hitName = selectBuffer[posinarray++];
+					resultSet.Add(hitMap[hitName]);
+				}
+			}
+
+			return resultSet;
+		}
     }
 }

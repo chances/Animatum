@@ -165,6 +165,28 @@ namespace Animatum.SceneGraph
             }
         }
 
+		public override void RenderForHitTest(OpenGL gl, Dictionary<uint, SceneElement> hitMap, ref uint currentName)
+		{
+			gl.PushMatrix();
+			gl.Translate(TransformedPosition.X, TransformedPosition.Y,
+				TransformedPosition.Z);
+
+			gl.LoadName(currentName);
+			hitMap[currentName] = this;
+
+			sphere.Render(gl);
+
+			currentName++;
+
+			sphere.PopObjectSpace(gl);
+
+			// Render children
+			foreach (Bone bone in children)
+			{
+				bone.RenderForHitTest(gl, hitMap, ref currentName);
+			}
+		}
+
         private Vertex parentTranslationDiff(Bone bone)
         {
             Vertex diff = new Vertex(0, 0, 0);

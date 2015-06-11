@@ -66,6 +66,11 @@ namespace Animatum.SceneGraph
             light.Push(gl);
         }
 
+		public override void RenderForHitTest (OpenGL gl, Dictionary<uint, SceneElement> hitMap, ref uint currentName)
+		{
+			return;
+		}
+
         public void Pop(OpenGL gl)
         {
             light.Pop(gl);

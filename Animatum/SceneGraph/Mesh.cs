@@ -189,6 +189,29 @@ namespace Animatum.SceneGraph
             foreach (Node node in children) node.Render(gl);
         }
 
+		public override void RenderForHitTest(OpenGL gl, Dictionary<uint, SceneElement> hitMap, ref uint currentName)
+		{
+			polygon.PushObjectSpace(gl);
+			if (bone != null)
+			{
+				parentTranslation(gl, bone);
+				rotate(gl, bone);
+			}
+
+			gl.LoadName(currentName);
+			hitMap[currentName] = this;
+
+			polygon.Render(gl, SharpGL.SceneGraph.Core.RenderMode.HitTest);
+
+			currentName++;
+
+			// Render children
+			// (there's never going to be any, but this is just for consistency)
+			foreach (Node node in children) node.RenderForHitTest(gl, hitMap, ref currentName);
+
+			polygon.PopObjectSpace(gl);
+		}
+
         public override string ToString()
         {
             return this.name;
