@@ -236,6 +236,12 @@ namespace Animatum.Controls
             gl.Flush();
         }
 
+		/// <summary>
+		/// Performs a hit test on the Model.
+		/// </summary>
+		/// <returns>The list of <see cref="Animatum.SharpGL.SceneGraph.Node"/>'s hit at the specified point</returns>
+		/// <param name="x">The x coordinate.</param>
+		/// <param name="y">The y coordinate.</param>
 		private IEnumerable<Node> HitTest(int x, int y)
 		{
 			if (Model.Meshes.Count == 0 && Model.Bones.Count == 0)
@@ -265,8 +271,8 @@ namespace Animatum.Controls
 			gl.MatrixMode(OpenGL.GL_PROJECTION);
 			gl.PushMatrix();
 			gl.LoadIdentity();
-			gl.PickMatrix(x, y, 4, 4, viewport);
-			currentCamera.TransformProjectionMatrix(gl);
+			gl.PickMatrix(x, y, 1, 1, viewport);
+			camera.TransformProjectionMatrix(gl);
 			gl.MatrixMode(OpenGL.GL_MODELVIEW);
 			gl.LoadIdentity();
 
