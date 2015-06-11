@@ -203,11 +203,13 @@ namespace Animatum.SceneGraph
                             .GetKeyframeLeftOfTime(KeyframeType.Translation, curTime);
                         Keyframe right = bone
                             .GetKeyframeRightOfTime(KeyframeType.Translation, curTime);
-                        if (left != null && right == null)
-                            translate = left.Transformation;
-                        else if (left == null && right != null)
-                            translate = right.Transformation;
-                        else if (left != null && right != null)
+						if (left != null && right == null)
+							translate = left.Transformation;
+						else if (left == null && right != null)
+							translate = right.Transformation;
+						else if (left != null && right != null && left == right)
+							translate = left.Transformation;
+						else if (left != null && right != null)
                         {
                             //Difference in time between keyframes
                             float timeDiff = right.Time - left.Time;
@@ -222,11 +224,13 @@ namespace Animatum.SceneGraph
                             .GetKeyframeLeftOfTime(KeyframeType.Rotation, curTime);
                         right = bone
                             .GetKeyframeRightOfTime(KeyframeType.Rotation, curTime);
-                        if (left != null && right == null)
-                            rotate = left.Transformation;
-                        else if (left == null && right != null)
-                            rotate = right.Transformation;
-                        else if (left != null && right != null)
+						if (left != null && right == null)
+							rotate = left.Transformation;
+						else if (left == null && right != null)
+							rotate = right.Transformation;
+						else if (left != null && right != null && left == right)
+							rotate = left.Transformation;
+						else if (left != null && right != null)
                         {
                             //Difference in time between keyframes
                             float timeDiff = right.Time - left.Time;
