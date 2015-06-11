@@ -208,6 +208,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SharpGL\MultisampledNativeWindowRenderContextProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\exit.png" />
@@ -293,4 +294,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Folder Include="SharpGL\" />
+  </ItemGroup>
 </Project>

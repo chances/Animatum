@@ -212,6 +212,10 @@ namespace Animatum.Controls
 
             attrs.Push(gl, null);
 
+			if (openGLControl.RenderContext.MultisamplingSupported) {
+				gl.Enable(gl.GL_MULTISAMPLE_ARB);
+			}
+
             if (RenderGrid)
                 grid.Render(gl);
             if (RenderAxies)
@@ -219,6 +223,10 @@ namespace Animatum.Controls
 
             if (Model != null)
                 Model.Render(gl);
+
+			if (openGLControl.RenderContext.MultisamplingSupported) {
+				gl.Disable(gl.GL_MULTISAMPLE_ARB);
+			}
 
             attrs.Pop(gl, null);
 

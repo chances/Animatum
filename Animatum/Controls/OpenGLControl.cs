@@ -11,6 +11,7 @@ namespace Animatum.Controls
 {
     class OpenGLControl : SharpGL.OpenGLControl
     {
+		private Animatum.SharpGL.MultisampledNativeWindowRenderContextProvider renderContext;
         private int frameRate = 0;
 
         public OpenGLControl()
@@ -21,6 +22,8 @@ namespace Animatum.Controls
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+
+			renderContext = null;
 
             FrameRate = 0;
         }
@@ -45,6 +48,15 @@ namespace Animatum.Controls
             }
         }
 
+		/// <summary>
+		/// Gets the current OpenGL render context.
+		/// </summary>
+		/// <value>The render context.</value>
+		public Animatum.SharpGL.MultisampledNativeWindowRenderContextProvider RenderContext
+		{
+			get { return renderContext; }
+		}
+
         private void InitializeComponent()
         {
             this.SuspendLayout();
@@ -58,6 +70,37 @@ namespace Animatum.Controls
             this.Name = "OpenGLControl";
             this.ResumeLayout(false);
         }
+
+		protected override void InitialiseOpenGL()
+		{
+			object parameter = null;
+
+			//  Native render context providers need a little bit more attention.
+			if(RenderContextType == RenderContextType.NativeWindow)
+			{
+				SetStyle(ControlStyles.OptimizedDoubleBuffer, false);
+				parameter = Handle;
+			}
+
+			//  Create the render context.
+			renderContext = new Animatum.SharpGL.MultisampledNativeWindowRenderContextProvider ();
+
+			renderContext.Create(OpenGLVersion, gl, Width, Height, 32, parameter);
+
+			//  Set the most basic OpenGL styles.
+			gl.ShadeModel(OpenGL.GL_SMOOTH);
+			gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			gl.ClearDepth(1.0f);
+			gl.Enable(OpenGL.GL_DEPTH_TEST);
+			gl.DepthFunc(OpenGL.GL_LEQUAL);
+			gl.Hint(OpenGL.GL_PERSPECTIVE_CORRECTION_HINT, OpenGL.GL_NICEST);
+
+			//  Fire the OpenGL initialized event.
+			DoOpenGLInitialized();
+
+			//  Set the draw timer.
+			timerDrawing.Tick += timerDrawing_Tick;
+		}
 
         protected override void OnLoad(EventArgs e)
         {
