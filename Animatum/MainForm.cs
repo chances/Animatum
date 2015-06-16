@@ -33,8 +33,6 @@ namespace Animatum
             //Init settings
             settings = new Settings.Settings();
 
-            menuStrip.Renderer = new VS2008StripRenderingLibrary.VS2008MenuRenderer();
-
             //Create model view
             modelView = new ModelViewControl();
             modelView.Dock = DockStyle.Fill;
