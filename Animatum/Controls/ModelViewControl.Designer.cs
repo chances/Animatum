@@ -35,7 +35,6 @@
             // openGLControl
             // 
             this.openGLControl.BackColor = System.Drawing.Color.Black;
-            this.openGLControl.BitDepth = 24;
             this.openGLControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.openGLControl.DrawFPS = false;
             this.openGLControl.ForeColor = System.Drawing.Color.White;
@@ -46,7 +45,7 @@
             this.openGLControl.Size = new System.Drawing.Size(350, 350);
             this.openGLControl.TabIndex = 0;
             this.openGLControl.OpenGLInitialized += new System.EventHandler(this.openGLControl_OpenGLInitialized);
-            this.openGLControl.OpenGLDraw += new System.Windows.Forms.PaintEventHandler(this.openGLControl_OpenGLDraw);
+            this.openGLControl.OpenGLDraw += new SharpGL.RenderEventHandler(this.openGLControl_OpenGLDraw);
             this.openGLControl.Resized += new System.EventHandler(this.openGLControl_Resized);
             this.openGLControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.openGLControl_MouseDown);
             this.openGLControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.openGLControl_MouseMove);

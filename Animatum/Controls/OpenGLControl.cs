@@ -11,21 +11,20 @@ namespace Animatum.Controls
 {
     class OpenGLControl : SharpGL.OpenGLControl
     {
-		private Animatum.SharpGL.MultisampledNativeWindowRenderContextProvider renderContext;
-        private int frameRate = 0;
+		private int frameRate = 0;
 
-        public OpenGLControl()
+        /// <summary>
+        /// The timer used for drawing the control.
+        /// </summary>
+        private readonly Timer timerDrawing = new Timer();
+
+        public OpenGLControl(): base()
         {
-            InitializeComponent();
-
-            //  Set the user draw styles.
-            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            SetStyle(ControlStyles.UserPaint, true);
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-
-			renderContext = null;
-
             FrameRate = 0;
+
+            this.OpenGLInitialized += OpenGLControl_OpenGLInitialized;
+
+            SetupDrawingTimer();
         }
 
         [Description("The rate at which the control should be re-drawn, in Hertz. If zero, call Invalidate() to draw."), Category("SharpGL")]
@@ -48,15 +47,6 @@ namespace Animatum.Controls
             }
         }
 
-		/// <summary>
-		/// Gets the current OpenGL render context.
-		/// </summary>
-		/// <value>The render context.</value>
-		public Animatum.SharpGL.MultisampledNativeWindowRenderContextProvider RenderContext
-		{
-			get { return renderContext; }
-		}
-
         private void InitializeComponent()
         {
             this.SuspendLayout();
@@ -71,36 +61,45 @@ namespace Animatum.Controls
             this.ResumeLayout(false);
         }
 
-		protected override void InitialiseOpenGL()
-		{
-			object parameter = null;
+        void OpenGLControl_OpenGLInitialized(object sender, EventArgs e)
+        {
+            timerDrawing.Tick += timerDrawing_Tick;
+        }
 
-			//  Native render context providers need a little bit more attention.
-			if(RenderContextType == RenderContextType.NativeWindow)
-			{
-				SetStyle(ControlStyles.OptimizedDoubleBuffer, false);
-				parameter = Handle;
-			}
+        private void timerDrawing_Tick(object sender, EventArgs e)
+        {
+            //  If we're in manual mode, we do not care about the timer.
+            if (RenderTrigger == RenderTrigger.Manual)
+                return;
 
-			//  Create the render context.
-			renderContext = new Animatum.SharpGL.MultisampledNativeWindowRenderContextProvider ();
+            //  The timer for drawing simply invalidates the control at a regular interval.
+            Invalidate();
+        }
 
-			renderContext.Create(OpenGLVersion, gl, Width, Height, 32, parameter);
+        /// <summary>
+        /// Setups the drawing timer, based on the framerate settings.
+        /// </summary>
+        private void SetupDrawingTimer()
+        {
+            //  First, if the framerate is less than zero, set it to zero.
+            if (frameRate < 0)
+                frameRate = 0;
 
-			//  Set the most basic OpenGL styles.
-			gl.ShadeModel(OpenGL.GL_SMOOTH);
-			gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-			gl.ClearDepth(1.0f);
-			gl.Enable(OpenGL.GL_DEPTH_TEST);
-			gl.DepthFunc(OpenGL.GL_LEQUAL);
-			gl.Hint(OpenGL.GL_PERSPECTIVE_CORRECTION_HINT, OpenGL.GL_NICEST);
+            //  Now, if the framerate is zero, we're going to disable the timer.
+            if (frameRate == 0)
+            {
+                //  Disable the timer - at this stage we're done.
+                timerDrawing.Enabled = false;
+                return;
+            }
 
-			//  Fire the OpenGL initialized event.
-			DoOpenGLInitialized();
+            //  Now set the interval.
+            timerDrawing.Interval = (int)(1000.0 / FrameRate);
 
-			//  Set the draw timer.
-			timerDrawing.Tick += timerDrawing_Tick;
-		}
+            //  Finally, if the timer is not enabled, enable it now.
+            if (timerDrawing.Enabled == false)
+                timerDrawing.Enabled = true;
+        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -142,7 +141,7 @@ namespace Animatum.Controls
             {
                 OpenGL.MakeCurrent();
 
-                DoOpenGLDraw(e);
+                DoOpenGLDraw(new RenderEventArgs(e.Graphics));
 
                 //  Draw the FPS.
                 if (DrawFPS)

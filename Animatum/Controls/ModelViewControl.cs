@@ -29,7 +29,7 @@ namespace Animatum.Controls
         {
             InitializeComponent();
 
-            openGLControl.FrameRate = 0;
+            //openGLControl.FrameRate = 0;
 
             ClearColor = Color.Black;
             camera = new MovingLookAtCamera()
@@ -188,7 +188,7 @@ namespace Animatum.Controls
             }
         }
 
-        private void openGLControl_OpenGLDraw(object sender, PaintEventArgs e)
+        private void openGLControl_OpenGLDraw(object sender, RenderEventArgs e)
         {
             //If animating, increment current time
             if (IsPlaying)
@@ -210,10 +210,6 @@ namespace Animatum.Controls
 
             attrs.Push(gl, null);
 
-			if (openGLControl.RenderContext.MultisamplingSupported) {
-				gl.Enable(gl.GL_MULTISAMPLE_ARB);
-			}
-
             if (RenderGrid)
                 grid.Render(gl);
             if (RenderAxies)
@@ -226,10 +222,6 @@ namespace Animatum.Controls
                 Model.Render(gl);
 
 			gl.Disable(OpenGL.GL_BLEND);
-
-			if (openGLControl.RenderContext.MultisamplingSupported) {
-				gl.Disable(gl.GL_MULTISAMPLE_ARB);
-			}
 
             attrs.Pop(gl, null);
 
