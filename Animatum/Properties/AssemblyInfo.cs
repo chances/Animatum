@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 #else
 [assembly: AssemblyConfiguration("Release")]
 #endif
-[assembly: AssemblyCompany("XESoD")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Animatum")]
 [assembly: AssemblyCopyright("Copyright © 2012 Chance Snow")]
 
