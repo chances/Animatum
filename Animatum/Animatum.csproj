@@ -37,21 +37,27 @@
   <PropertyGroup>
     <ApplicationIcon>Animatum.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Animatum.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="libASE-sharp">
       <HintPath>..\..\libASE-sharp\libASE-sharp\bin\Release\libASE-sharp.dll</HintPath>
     </Reference>
-    <Reference Include="SharpGL">
-      <HintPath>..\..\..\..\..\Desktop\Programming\SharpGL\Core\SharpGL.WinForms\bin\Release\SharpGL.dll</HintPath>
+    <Reference Include="SharpGL, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpGL.2.4.0.0\lib\net40\SharpGL.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="SharpGL.SceneGraph">
-      <HintPath>..\..\..\..\..\Desktop\Programming\SharpGL\Core\SharpGL.WinForms\bin\Release\SharpGL.SceneGraph.dll</HintPath>
+    <Reference Include="SharpGL.SceneGraph, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpGL.2.4.0.0\lib\net40\SharpGL.SceneGraph.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="SharpGL.WinForms">
-      <HintPath>..\..\..\..\..\Desktop\Programming\SharpGL\Core\SharpGL.WinForms\bin\Release\SharpGL.WinForms.dll</HintPath>
+    <Reference Include="SharpGL.WinForms, Version=2.4.0.0, Culture=neutral, PublicKeyToken=27fc851303210b27, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpGL.WinForms.2.4.0.0\lib\net40\SharpGL.WinForms.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="SlimMath">
-      <HintPath>..\..\..\..\..\Desktop\Programming\C#\SlimMath\slimmath-read-only\SlimMath\bin\Release\SlimMath.dll</HintPath>
+      <HintPath>..\..\slimmath\SlimMath\bin\Release\SlimMath.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -128,7 +134,6 @@
       <DependentUpon>MeshesDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers.cs" />
-    <Compile Include="Menu Renderer\clsColor.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,7 +155,6 @@
     <Compile Include="SceneGraph\Primitives\Primitive.cs" />
     <Compile Include="SceneGraph\Primitives\Sphere.cs" />
     <Compile Include="SceneGraph\RotateTransform.cs" />
-    <Compile Include="Menu Renderer\VS2008MenuRenderer.cs" />
     <Compile Include="SceneGraph\Serialization\AnimationXMLSerializer.cs" />
     <Compile Include="SceneGraph\Serialization\JSONSerializer.cs" />
     <Compile Include="SceneGraph\Serialization\Serializer.cs" />
@@ -199,6 +203,7 @@
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -208,7 +213,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="SharpGL\MultisampledNativeWindowRenderContextProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\exit.png" />
@@ -294,7 +298,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="SharpGL\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

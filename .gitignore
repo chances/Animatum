@@ -28,5 +28,6 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+packages/**/*
+!packages/repositories.config
 Timeline/.idea/
-.gitignore
