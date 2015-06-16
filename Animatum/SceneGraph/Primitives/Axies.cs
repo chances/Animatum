@@ -20,7 +20,7 @@ namespace Animatum.SceneGraph.Primitives
             set { lineWidth = value; }
         }
 
-        public override void Render(SharpGL.OpenGL gl)
+        public override void Render(OpenGL gl)
         {
             if (displayList == null)
                 CreateDisplayList(gl);
