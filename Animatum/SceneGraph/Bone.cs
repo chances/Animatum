@@ -165,7 +165,7 @@ namespace Animatum.SceneGraph
             }
         }
 
-		public override void RenderForHitTest(OpenGL gl, Dictionary<uint, SceneElement> hitMap, ref uint currentName)
+		public override void RenderForHitTest(OpenGL gl, Dictionary<uint, Node> hitMap, ref uint currentName)
 		{
 			gl.PushMatrix();
 			gl.Translate(TransformedPosition.X, TransformedPosition.Y,

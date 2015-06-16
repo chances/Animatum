@@ -91,7 +91,7 @@ namespace Animatum.SceneGraph
             }
         }
 
-		public override void RenderForHitTest (OpenGL gl, Dictionary<uint, SceneElement> hitMap, ref uint currentName)
+		public override void RenderForHitTest (OpenGL gl, Dictionary<uint, Node> hitMap, ref uint currentName)
 		{
 			updateMeshTransforms();
 

@@ -189,7 +189,7 @@ namespace Animatum.SceneGraph
             foreach (Node node in children) node.Render(gl);
         }
 
-		public override void RenderForHitTest(OpenGL gl, Dictionary<uint, SceneElement> hitMap, ref uint currentName)
+		public override void RenderForHitTest(OpenGL gl, Dictionary<uint, Node> hitMap, ref uint currentName)
 		{
 			polygon.PushObjectSpace(gl);
 			if (bone != null)
