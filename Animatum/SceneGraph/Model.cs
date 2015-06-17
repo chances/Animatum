@@ -76,7 +76,7 @@ namespace Animatum.SceneGraph
             gl.CullFace(OpenGL.GL_BACK);
             foreach (Node node in children)
             {
-                if (node.GetType() != typeof(Light))
+                if (node is Mesh || node is Bone)
                 {
                     node.Render(gl);
                 }
