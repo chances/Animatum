@@ -72,8 +72,6 @@ namespace Animatum.SceneGraph
 
             updateMeshTransforms();
             
-            gl.Enable(OpenGL.GL_CULL_FACE);
-            gl.CullFace(OpenGL.GL_BACK);
             foreach (Node node in children)
             {
                 if (node is Mesh || node is Bone)
@@ -81,7 +79,6 @@ namespace Animatum.SceneGraph
                     node.Render(gl);
                 }
             }
-            gl.Disable(OpenGL.GL_CULL_FACE);
         }
 
 		public override void RenderForHitTest (OpenGL gl, Dictionary<uint, Node> hitMap, ref uint currentName)
