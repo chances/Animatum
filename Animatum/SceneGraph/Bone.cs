@@ -150,6 +150,9 @@ namespace Animatum.SceneGraph
 
         public override void Render(OpenGL gl)
         {
+            if (!Visible)
+                return;
+
             gl.PushMatrix();
             if (sphere.Material != null)
                 sphere.Material.Push(gl);
@@ -167,6 +170,9 @@ namespace Animatum.SceneGraph
 
 		public override void RenderForHitTest(OpenGL gl, Dictionary<uint, Node> hitMap, ref uint currentName)
 		{
+            if (!Visible)
+                return;
+
 			gl.PushMatrix();
 			gl.Translate(TransformedPosition.X, TransformedPosition.Y,
 				TransformedPosition.Z);

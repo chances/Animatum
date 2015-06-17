@@ -67,6 +67,9 @@ namespace Animatum.SceneGraph
 
         public override void Render(OpenGL gl)
         {
+            if (!Visible)
+                return;
+
             updateMeshTransforms();
             //Render
             foreach (Node node in children)
@@ -93,6 +96,9 @@ namespace Animatum.SceneGraph
 
 		public override void RenderForHitTest (OpenGL gl, Dictionary<uint, Node> hitMap, ref uint currentName)
 		{
+            if (!Visible)
+                return;
+
 			updateMeshTransforms();
 
 			foreach (Node node in children)

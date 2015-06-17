@@ -29,6 +29,11 @@ namespace Animatum.SceneGraph
         }
 
         /// <summary>
+        /// Whether or not this Node is visible
+        /// </summary>
+        public bool Visible { get; set; }
+
+        /// <summary>
         /// The parent of this Node
         /// </summary>
         [ScriptIgnore()]

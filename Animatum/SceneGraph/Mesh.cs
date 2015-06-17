@@ -173,7 +173,9 @@ namespace Animatum.SceneGraph
         /// <param name="gl">The OpenGL render context</param>
         public override void Render(OpenGL gl)
         {
-            //Render
+            if (!Visible)
+                return;
+
             //boneRotation.PushObjectSpace(gl, polygon.Transformation);
             //Do bone and bone's parents rotations
             polygon.PushObjectSpace(gl);
@@ -191,6 +193,9 @@ namespace Animatum.SceneGraph
 
 		public override void RenderForHitTest(OpenGL gl, Dictionary<uint, Node> hitMap, ref uint currentName)
 		{
+            if (!Visible)
+                return;
+
 			polygon.PushObjectSpace(gl);
 			if (bone != null)
 			{
