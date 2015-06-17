@@ -255,7 +255,7 @@ namespace Animatum.SceneGraph
         {
             foreach (Face face in polygon.Faces)
             {
-                face.Material.Emission = color;
+                face.Material.Diffuse = color;
             }
         }
     }
