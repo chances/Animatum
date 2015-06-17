@@ -50,7 +50,7 @@ namespace Animatum
             if (unsaved)
             {
                 if (MessageBox.Show("Are you sure you want to exit?\n\n" +
-                    "Unsaved changes will be lossed.", "Unsaved Changes",
+                    "Unsaved changes will be lost.", "Unsaved Changes",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning) ==
                     DialogResult.No)
                     e.Cancel = true;
@@ -256,7 +256,7 @@ namespace Animatum
         {
             if (unsaved)
             {
-                if (MessageBox.Show("Unsaved changes will be lossed.\n\n" +
+                if (MessageBox.Show("Unsaved changes will be lost.\n\n" +
                     "Do you want to save these changes?", "Unsaved Changes",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning) ==
                     DialogResult.Yes)
