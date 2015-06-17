@@ -19,6 +19,7 @@ namespace Animatum.SceneGraph
         /// </summary>
         public Node()
         {
+            Visible = true;
             parent = null;
             children = new List<Node>();
         }
