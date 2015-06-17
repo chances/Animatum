@@ -39,8 +39,8 @@ namespace Animatum
             this.splitContainerTimeline.Panel1.Controls.Add(modelView);
 
             //Set settings
-            modelView.RenderGrid = settings.GetSetting("display/renderGrid", true);
-            modelView.RenderAxies = settings.GetSetting("display/renderAxies", true);
+            modelView.Scene.RenderGrid = settings.GetSetting("display/renderGrid", true);
+            modelView.Scene.RenderAxies = settings.GetSetting("display/renderAxies", true);
             modelView.FrameRate = settings.GetSetting("playback/frameRate", 32);
             timeline.DebugMode = settings.GetSetting("timeline/debugMode", false);
         }
@@ -97,8 +97,8 @@ namespace Animatum
             {
                 //Update settings
                 settings = new Settings.Settings();
-                modelView.RenderGrid = settings.GetSetting("display/renderGrid", true);
-                modelView.RenderAxies = settings.GetSetting("display/renderAxies", true);
+                modelView.Scene.RenderGrid = settings.GetSetting("display/renderGrid", true);
+                modelView.Scene.RenderAxies = settings.GetSetting("display/renderAxies", true);
                 modelView.FrameRate = settings.GetSetting("playback/frameRate", 32);
                 timeline.DebugMode = settings.GetSetting("timeline/debugMode", false);
                 //Invalidate
@@ -142,7 +142,7 @@ namespace Animatum
             //Show the form. We don't want to see an ugly browser ;)
             this.Visible = true;
             //Update timeline model
-            this.timeline.Model = this.modelView.Model;
+            this.timeline.Model = this.modelView.Scene.Model;
         }
 
         private bool timeline_KeyCommand(object sender, int key)
@@ -195,9 +195,9 @@ namespace Animatum
         private void timeline_StopPlayback(object sender, EventArgs e)
         {
             this.modelView.Pause();
-            this.modelView.Model.CurrentTime = 0.0f;
+            this.modelView.Scene.Model.CurrentTime = 0.0f;
             //Update timeline model
-            this.timeline.Model = this.modelView.Model;
+            this.timeline.Model = this.modelView.Scene.Model;
             //Invalidate
             this.modelView.Invalidate();
         }
@@ -225,7 +225,7 @@ namespace Animatum
                 //Load ASE file
                 ASE.Parser parser = new ASE.Parser();
                 ASE.Scene scn = parser.loadFilename(importDialog.FileName);
-                Model model = modelView.Model;
+                Model model = modelView.Scene.Model;
                 model.Clear();
                 //Get meshes and bones
                 foreach (ASE.GeomObject obj in scn.objs)
@@ -266,18 +266,18 @@ namespace Animatum
             {
                 currentFile = openDialog.FileName;
                 AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
-                    modelView.Model, null);
+                    modelView.Scene.Model, null);
                 aniXML.Deserialize(File.ReadAllText(openDialog.FileName));
 
                 string animationName = Path.GetFileName(currentFile);
                 this.Text = title + " - " + animationName;
 
                 //Update the modelTreeView
-                this.modelTreeView.Model = this.modelView.Model;
+                this.modelTreeView.Model = this.modelView.Scene.Model;
                 //Update properties
-                this.propsControl.Model = this.modelView.Model;
+                this.propsControl.Model = this.modelView.Scene.Model;
                 //Update timeline
-                this.timeline.Model = this.modelView.Model;
+                this.timeline.Model = this.modelView.Scene.Model;
 
                 modelView.Invalidate();
             }
@@ -289,7 +289,7 @@ namespace Animatum
             {
                 string animationName = Path.GetFileNameWithoutExtension(currentFile);
                 AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
-                    modelView.Model, animationName);
+                    modelView.Scene.Model, animationName);
                 aniXML.Save(currentFile);
 
                 unsaved = false;
@@ -308,7 +308,7 @@ namespace Animatum
                 currentFile = saveDialog.FileName;
                 string animationName = Path.GetFileNameWithoutExtension(currentFile);
                 AnimationXMLSerializer aniXML = new AnimationXMLSerializer(
-                    modelView.Model, animationName);
+                    modelView.Scene.Model, animationName);
                 aniXML.Save(currentFile);
 
                 unsaved = false;

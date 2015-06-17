@@ -11,7 +11,7 @@ namespace Animatum.SceneGraph
     /// <summary>
     /// A LookAtCamera that can be zoomed and orbited around a point.
     /// </summary>
-    class MovingLookAtCamera : LookAtCamera
+    public class MovingLookAtCamera : LookAtCamera
     {
         private Vertex initialPosition;
         private bool thetaSet = false;

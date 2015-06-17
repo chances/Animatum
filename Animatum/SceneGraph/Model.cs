@@ -10,7 +10,7 @@ using System;
 namespace Animatum.SceneGraph
 {
     /// <summary>
-    /// A 3D model, the root of a scene graph.
+    /// A 3D model, animatable by the user.
     /// </summary>
     [ComVisible(true)]
     public class Model : Node
@@ -71,12 +71,7 @@ namespace Animatum.SceneGraph
                 return;
 
             updateMeshTransforms();
-            //Render
-            foreach (Node node in children)
-            {
-                if (node is Light)
-                    node.Render(gl);
-            }
+            
             gl.Enable(OpenGL.GL_CULL_FACE);
             gl.CullFace(OpenGL.GL_BACK);
             foreach (Node node in children)
@@ -87,11 +82,6 @@ namespace Animatum.SceneGraph
                 }
             }
             gl.Disable(OpenGL.GL_CULL_FACE);
-            foreach (Node node in children)
-            {
-                if (node is Light)
-                    ((Light)node).Pop(gl);
-            }
         }
 
 		public override void RenderForHitTest (OpenGL gl, Dictionary<uint, Node> hitMap, ref uint currentName)

@@ -155,6 +155,7 @@
     <Compile Include="SceneGraph\Primitives\Primitive.cs" />
     <Compile Include="SceneGraph\Primitives\Sphere.cs" />
     <Compile Include="SceneGraph\RotateTransform.cs" />
+    <Compile Include="SceneGraph\Scene.cs" />
     <Compile Include="SceneGraph\Serialization\AnimationXMLSerializer.cs" />
     <Compile Include="SceneGraph\Serialization\JSONSerializer.cs" />
     <Compile Include="SceneGraph\Serialization\Serializer.cs" />
