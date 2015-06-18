@@ -140,6 +140,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ManifastResourceLoader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SceneGraph\Bone.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="SceneGraph\Serialization\AnimationXMLSerializer.cs" />
     <Compile Include="SceneGraph\Serialization\JSONSerializer.cs" />
     <Compile Include="SceneGraph\Serialization\Serializer.cs" />
+    <Compile Include="SceneGraph\Shader.cs" />
     <Compile Include="Settings\OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,6 +218,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Shaders\screen.frag" />
+    <EmbeddedResource Include="Resources\Shaders\screen.vert" />
     <None Include="Resources\exit.png" />
   </ItemGroup>
   <ItemGroup>

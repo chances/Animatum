@@ -5,22 +5,27 @@ using SharpGL.SceneGraph.Effects;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 
 namespace Animatum.SceneGraph
 {
     /// <summary>
     /// A 3D scene, the root of a scene graph.
     /// </summary>
-    public class Scene : Node
+    public class Scene : Node, IDisposable
     {
         private MovingLookAtCamera camera;
         private Size viewportSize;
         private Grid grid;
         private Axies axies;
         private OpenGLAttributesEffect attrs;
+
         private bool postprocessingEnabled;
+        private uint[] glFrameBufferTexArray = new uint[1] { 0 },
+            glRenderBufferArray = new uint[1] { 0 },
+            glFrameBufferArray = new uint[1] { 0 };
+        private uint fbo, fboTexture, rboDepth;
+
+        private Shader postShader = null;
 
         private Model model;
 
@@ -122,7 +127,20 @@ namespace Animatum.SceneGraph
             get { return postprocessingEnabled; }
             set
             {
+                UpdatePostProcessing(value);
+            }
+        }
 
+        public void Dispose()
+        {
+            if (postprocessingEnabled)
+            {
+                gl.DeleteRenderbuffersEXT(1, glRenderBufferArray);
+                gl.DeleteTextures(1, glFrameBufferTexArray);
+                gl.DeleteFramebuffersEXT(1, glFrameBufferArray);
+
+                postShader.Dispose();
+                postShader = null;
             }
         }
 
@@ -155,6 +173,22 @@ namespace Animatum.SceneGraph
                 camera.AspectRatio = (float)viewportSize.Width / (float)viewportSize.Height;
                 camera.Project(gl);
             }
+
+            if (postprocessingEnabled)
+            {
+                // Resize frame buffer
+                gl.BindTexture(OpenGL.GL_TEXTURE_2D, fboTexture);
+                gl.TexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGBA,
+                    viewportSize.Width, viewportSize.Height, 0,
+                    OpenGL.GL_RGBA, OpenGL.GL_UNSIGNED_BYTE, null);
+                gl.BindTexture(OpenGL.GL_TEXTURE_2D, 0);
+
+                // Resize render buffer
+                gl.BindRenderbufferEXT(OpenGL.GL_RENDERBUFFER, rboDepth);
+                gl.RenderbufferStorageEXT(OpenGL.GL_RENDERBUFFER, OpenGL.GL_DEPTH_COMPONENT16,
+                    viewportSize.Width, viewportSize.Height);
+                gl.BindRenderbufferEXT(OpenGL.GL_RENDERBUFFER, 0);
+            }
         }
 
         public override void Render(OpenGL gl)
@@ -164,6 +198,11 @@ namespace Animatum.SceneGraph
 
         public void Render()
         {
+            if (postprocessingEnabled && postShader != null && postShader.Compiled)
+            {
+                gl.BindFramebufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, fbo);
+            }
+
             float[] clear = Convert.ColorToGLColor(ClearColor);
             gl.ClearColor(clear[0], clear[1], clear[2], clear[3]);
 
@@ -202,6 +241,35 @@ namespace Animatum.SceneGraph
             attrs.Pop(gl, null);
 
             gl.Flush();
+
+            if (postprocessingEnabled && postShader != null && postShader.Compiled)
+            {
+                gl.BindFramebufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, 0);
+
+                gl.ClearColor(0, 0, 0, 1);
+                gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
+
+                gl.MatrixMode(OpenGL.GL_PROJECTION);
+                gl.LoadIdentity();
+                gl.Ortho(0, viewportSize.Width, viewportSize.Height, 0, -1, 1);
+                gl.MatrixMode(OpenGL.GL_MODELVIEW);
+                gl.LoadIdentity();
+
+                postShader.Bind();
+
+                gl.ActiveTexture(OpenGL.GL_TEXTURE0);
+                gl.BindTexture(OpenGL.GL_TEXTURE_2D, fboTexture);
+                postShader.SetUniform1("texFramebuffer", 0);
+
+                gl.Begin(OpenGL.GL_QUADS);
+                gl.TexCoord(0, 1); gl.Vertex(0, 0);
+                gl.TexCoord(0, 0); gl.Vertex(0, (float)viewportSize.Height);
+                gl.TexCoord(1, 0); gl.Vertex((float)viewportSize.Width, (float)viewportSize.Height);
+                gl.TexCoord(1, 1); gl.Vertex((float)viewportSize.Width, 0);
+                gl.End();
+
+                postShader.Unbind();
+            }
         }
 
         public override void RenderForHitTest(OpenGL gl, Dictionary<uint, Node> hitMap, ref uint currentName)
@@ -285,6 +353,80 @@ namespace Animatum.SceneGraph
             }
 
             return resultSet;
+        }
+
+        private void UpdatePostProcessing(bool enabled)
+        {
+            if (!postprocessingEnabled && enabled)
+            {
+                // Setup back buffer
+                gl.ActiveTexture(OpenGL.GL_TEXTURE0);
+                gl.GenTextures(1, glFrameBufferTexArray);
+                fboTexture = glFrameBufferTexArray[0];
+                gl.BindTexture(OpenGL.GL_TEXTURE_2D, fboTexture);
+                gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MAG_FILTER, OpenGL.GL_LINEAR);
+                gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_MIN_FILTER, OpenGL.GL_LINEAR);
+                gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_WRAP_S, OpenGL.GL_CLAMP_TO_EDGE);
+                gl.TexParameter(OpenGL.GL_TEXTURE_2D, OpenGL.GL_TEXTURE_WRAP_T, OpenGL.GL_CLAMP_TO_EDGE);
+                gl.TexImage2D(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_RGBA,
+                    viewportSize.Width, viewportSize.Height, 0,
+                    OpenGL.GL_RGBA, OpenGL.GL_UNSIGNED_BYTE, null);
+                gl.BindTexture(OpenGL.GL_TEXTURE_2D, 0);
+
+                // Setup depth buffer
+                gl.GenRenderbuffersEXT(1, glRenderBufferArray);
+                rboDepth = glRenderBufferArray[0];
+                gl.BindRenderbufferEXT(OpenGL.GL_RENDERBUFFER, rboDepth);
+                gl.RenderbufferStorageEXT(OpenGL.GL_RENDERBUFFER, OpenGL.GL_DEPTH_COMPONENT16,
+                    viewportSize.Width, viewportSize.Height);
+                gl.BindRenderbufferEXT(OpenGL.GL_RENDERBUFFER, 0);
+
+                // Setup framebuffer
+                gl.GenFramebuffersEXT(1, glFrameBufferArray);
+                fbo = glFrameBufferArray[0];
+                gl.BindFramebufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, fbo);
+                gl.FramebufferTexture2DEXT(OpenGL.GL_FRAMEBUFFER_EXT, OpenGL.GL_COLOR_ATTACHMENT0_EXT,
+                    OpenGL.GL_TEXTURE_2D, fboTexture, 0);
+                gl.FramebufferRenderbufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, OpenGL.GL_DEPTH_ATTACHMENT_EXT,
+                    OpenGL.GL_RENDERBUFFER, rboDepth);
+
+                uint fboStatus = gl.CheckFramebufferStatusEXT(OpenGL.GL_FRAMEBUFFER_EXT);
+
+                if (gl.CheckFramebufferStatusEXT(OpenGL.GL_FRAMEBUFFER_EXT) != OpenGL.GL_FRAMEBUFFER_COMPLETE_EXT)
+                {
+                    postprocessingEnabled = false;
+
+                    gl.DeleteRenderbuffersEXT(1, glRenderBufferArray);
+                    gl.DeleteTextures(1, glFrameBufferTexArray);
+                    gl.DeleteFramebuffersEXT(1, glFrameBufferArray);
+
+                    return;
+                }
+
+                gl.BindFramebufferEXT(OpenGL.GL_FRAMEBUFFER_EXT, 0);
+
+                // Setup post-processing shader
+                postShader = new Shader(gl, ManifestResourceLoader.LoadTextFile(@"Resources\Shaders\screen.vert"),
+                    ManifestResourceLoader.LoadTextFile(@"Resources\Shaders\screen.frag"), null);
+
+                if (!postShader.Compiled)
+                {
+                    throw new Exception(postShader.CompilerOutput);
+                }
+
+                postprocessingEnabled = true;
+            }
+            else if (postprocessingEnabled && !enabled)
+            {
+                gl.DeleteRenderbuffersEXT(1, glRenderBufferArray);
+                gl.DeleteTextures(1, glFrameBufferTexArray);
+                gl.DeleteFramebuffersEXT(1, glFrameBufferArray);
+
+                postShader.Dispose();
+                postShader = null;
+
+                postprocessingEnabled = false;
+            }
         }
     }
 }
