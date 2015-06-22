@@ -1,4 +1,4 @@
-﻿namespace Animatum.Settings
+﻿namespace Animatum
 {
     partial class OptionsForm
     {

@@ -7,35 +7,31 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Animatum.Settings
+namespace Animatum
 {
     public partial class OptionsForm : Form
     {
-        private Settings settings;
-
         public OptionsForm()
         {
             InitializeComponent();
-
-            settings = new Settings();
         }
 
         private void OptionsForm_Load(object sender, EventArgs e)
         {
             this.renderGridCheckBox.Checked =
-                settings.GetSetting("display/renderGrid", true);
+                Settings.GetSetting("display/renderGrid", true);
             this.renderAxiesCheckBox.Checked =
-                settings.GetSetting("display/renderAxies", true);
+                Settings.GetSetting("display/renderAxies", true);
             this.frameRateUpDown.Value =
-                settings.GetSetting("playback/frameRate", 32);
+                Settings.GetSetting("playback/frameRate", 32);
             this.timelineDebugCheckBox.Checked=
-                settings.GetSetting("timeline/debugMode", false);
-            string handedness = settings.GetSetting("xml/handedness", "right");
+                Settings.GetSetting("timeline/debugMode", false);
+            string handedness = Settings.GetSetting("xml/handedness", "right");
             if (handedness == "left")
                 this.handednessComboBox.SelectedIndex = 0;
             if (handedness == "right")
                 this.handednessComboBox.SelectedIndex = 1;
-            string up = settings.GetSetting("xml/up", "z");
+            string up = Settings.GetSetting("xml/up", "z");
             if (up == "x")
                 this.upComboBox.SelectedIndex = 0;
             if (up == "y")
@@ -47,13 +43,13 @@ namespace Animatum.Settings
         private void okayButton_Click(object sender, EventArgs e)
         {
             //Save settings
-            settings.PutSetting("display/renderGrid", this.renderGridCheckBox.Checked);
-            settings.PutSetting("display/renderAxies", this.renderAxiesCheckBox.Checked);
-            settings.PutSetting("playback/frameRate", (int)this.frameRateUpDown.Value);
-            settings.PutSetting("timeline/debugMode", this.timelineDebugCheckBox.Checked);
-            settings.PutSetting("xml/handedness",
+            Settings.PutSetting("display/renderGrid", this.renderGridCheckBox.Checked);
+            Settings.PutSetting("display/renderAxies", this.renderAxiesCheckBox.Checked);
+            Settings.PutSetting("playback/frameRate", (int)this.frameRateUpDown.Value);
+            Settings.PutSetting("timeline/debugMode", this.timelineDebugCheckBox.Checked);
+            Settings.PutSetting("xml/handedness",
                 this.handednessComboBox.SelectedItem.ToString().ToLower());
-            settings.PutSetting("xml/up",
+            Settings.PutSetting("xml/up",
                 this.upComboBox.SelectedItem.ToString().ToLower());
             //Okay
             this.DialogResult = DialogResult.OK;

@@ -2,40 +2,40 @@
 using System.Windows.Forms;
 using System.Xml;
 
-namespace Animatum.Settings
+namespace Animatum
 {
     //From: http://www.codeproject.com/Articles/15530/Quick-and-Dirty-Settings-Persistence-with-XML
     public class Settings
     {
-        XmlDocument xmlDocument = new XmlDocument();
-        string documentPath = Application.StartupPath + "//settings.xml";
+        static XmlDocument xmlDocument = new XmlDocument();
+        static string documentPath = Application.StartupPath + "//settings.xml";
 
-        public Settings()
+        public static void Load()
         {
             try { xmlDocument.Load(documentPath); }
             catch { xmlDocument.LoadXml("<settings></settings>"); }
         }
 
-        public bool GetSetting(string xPath, bool defaultValue)
+        public static bool GetSetting(string xPath, bool defaultValue)
         { return bool.Parse(GetSetting(xPath, defaultValue.ToString())); }
 
-        public void PutSetting(string xPath, bool value)
+        public static void PutSetting(string xPath, bool value)
         { PutSetting(xPath, value.ToString()); }
 
-        public int GetSetting(string xPath, int defaultValue)
+        public static int GetSetting(string xPath, int defaultValue)
         { return Int16.Parse(GetSetting(xPath, defaultValue.ToString())); }
 
-        public void PutSetting(string xPath, int value)
+        public static void PutSetting(string xPath, int value)
         { PutSetting(xPath, value.ToString()); }
 
-        public string GetSetting(string xPath, string defaultValue)
+        public static string GetSetting(string xPath, string defaultValue)
         {
             XmlNode xmlNode = xmlDocument.SelectSingleNode("settings/" + xPath);
             if (xmlNode != null) { return xmlNode.InnerText; }
             else { return defaultValue; }
         }
 
-        public void PutSetting(string xPath, string value)
+        public static void PutSetting(string xPath, string value)
         {
             XmlNode xmlNode = xmlDocument.SelectSingleNode("settings/" + xPath);
             if (xmlNode == null) { xmlNode = createMissingNode("settings/" + xPath); }
@@ -43,7 +43,7 @@ namespace Animatum.Settings
             xmlDocument.Save(documentPath);
         }
 
-        private XmlNode createMissingNode(string xPath)
+        static private XmlNode createMissingNode(string xPath)
         {
             string[] xPathSections = xPath.Split('/');
             string currentXPath = "";

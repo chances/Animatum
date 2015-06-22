@@ -11,7 +11,6 @@ namespace Animatum.SceneGraph.Serialization
     class AnimationXMLSerializer : Serializer
     {
         private XmlDocument xmlDoc;
-        private Settings.Settings settings;
         private string handedness, up;
         private string animationName;
 
@@ -19,10 +18,9 @@ namespace Animatum.SceneGraph.Serialization
         {
             this.Model = model;
             this.animationName = animationName;
-            settings = new Settings.Settings();
             //Load handedness and up settings
-            handedness = settings.GetSetting("xml/handedness", "right");
-            up = settings.GetSetting("xml/up", "z");
+            handedness = Settings.GetSetting("xml/handedness", "right");
+            up = Settings.GetSetting("xml/up", "z");
             //Create document
             xmlDoc = new XmlDocument();
         }

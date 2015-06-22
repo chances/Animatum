@@ -5,14 +5,13 @@ using System.Windows.Forms;
 using Animatum.Controls;
 using Animatum.SceneGraph;
 using Animatum.SceneGraph.Serialization;
-using Animatum.Settings;
 using ASE = libASEsharp;
 
 namespace Animatum
 {
     public partial class MainForm : Form
     {
-        private Settings.Settings settings;
+        private Timer updateTimer;
         private ModelViewControl modelView;
         private string title = "";
         private bool unsaved = false;
@@ -31,7 +30,7 @@ namespace Animatum
             this.Visible = false;
 
             //Init settings
-            settings = new Settings.Settings();
+            Settings.Load();
 
             //Create model view
             modelView = new ModelViewControl();
@@ -39,10 +38,10 @@ namespace Animatum
             this.splitContainerTimeline.Panel1.Controls.Add(modelView);
 
             //Set settings
-            modelView.Scene.RenderGrid = settings.GetSetting("display/renderGrid", true);
-            modelView.Scene.RenderAxies = settings.GetSetting("display/renderAxies", true);
-            modelView.FrameRate = settings.GetSetting("playback/frameRate", 32);
-            timeline.DebugMode = settings.GetSetting("timeline/debugMode", false);
+            modelView.Scene.RenderGrid = Settings.GetSetting("display/renderGrid", true);
+            modelView.Scene.RenderAxies = Settings.GetSetting("display/renderAxies", true);
+            modelView.FrameRate = Settings.GetSetting("playback/frameRate", 32);
+            timeline.DebugMode = Settings.GetSetting("timeline/debugMode", false);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -96,11 +95,10 @@ namespace Animatum
             if (options.ShowDialog() == DialogResult.OK)
             {
                 //Update settings
-                settings = new Settings.Settings();
-                modelView.Scene.RenderGrid = settings.GetSetting("display/renderGrid", true);
-                modelView.Scene.RenderAxies = settings.GetSetting("display/renderAxies", true);
-                modelView.FrameRate = settings.GetSetting("playback/frameRate", 32);
-                timeline.DebugMode = settings.GetSetting("timeline/debugMode", false);
+                modelView.Scene.RenderGrid = Settings.GetSetting("display/renderGrid", true);
+                modelView.Scene.RenderAxies = Settings.GetSetting("display/renderAxies", true);
+                modelView.FrameRate = Settings.GetSetting("playback/frameRate", 32);
+                timeline.DebugMode = Settings.GetSetting("timeline/debugMode", false);
                 //Invalidate
                 this.modelView.Invalidate();
             }
