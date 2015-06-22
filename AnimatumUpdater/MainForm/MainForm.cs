@@ -31,6 +31,8 @@ namespace Animatum.Updater
         //the extract directory
         string tempDirectory;
 
+        string animatumLocation;
+
         string updateFilename;
         string serverFileLoc;
         ServerFile ServerFile;
@@ -78,7 +80,7 @@ namespace Animatum.Updater
 
             update.ServerFileSites.Add("http://web.cecs.pdx.edu/~chances/animatum/animatum.update");
 
-            string animatumLocation = Path.Combine(baseDirectory, "Animatum.exe");
+            animatumLocation = Path.Combine(baseDirectory, "Animatum.exe");
             if (File.Exists(animatumLocation))
                 update.InstalledVersion = FileVersionInfo.GetVersionInfo(animatumLocation).FileVersion;
             else
@@ -264,6 +266,11 @@ namespace Animatum.Updater
         protected override void OnClosed(EventArgs e)
         {
             RemoveTempDirectory();
+
+            if (File.Exists(animatumLocation) && installing
+                && !QuickCheck && !isAutoUpdateMode && !isCancelled
+                && String.IsNullOrEmpty(error) && String.IsNullOrEmpty(errorDetails))
+                Process.Start(animatumLocation);
 
             if (isCancelled)
                 ReturnCode = 3;

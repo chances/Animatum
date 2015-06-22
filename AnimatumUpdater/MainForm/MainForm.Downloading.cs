@@ -173,6 +173,7 @@ namespace Animatum.Updater
                 clientLang.Download = "Downloading Animatum and its dependecies";
 
                 clientLang.SuccessUpdate.Content = String.Format("Animatum has been successfully updated to version {0}", ServerFile.NewVersion);
+                clientLang.FinishBottom = "Click Finish to exit and start Animatum.";
 
                 installing = true;
             }
