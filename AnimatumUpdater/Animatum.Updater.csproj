@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A910C923-2EED-40E0-9805-D97DE8E8DF2B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Animatum.Updater</RootNamespace>
+    <AssemblyName>Animatum.Updater</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>updater.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Animatum.Updater.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Arguments.cs" />
+    <Compile Include="Common\ClientLanguage.cs" />
+    <Compile Include="Common\ReadWriteFiles.cs" />
+    <Compile Include="Common\ServerFile.cs" />
+    <Compile Include="Common\ServerFile.Load.cs" />
+    <Compile Include="Common\UpdateDetails.cs" />
+    <Compile Include="Common\UpdateFile.cs" />
+    <Compile Include="Controls\AnimationControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\LinkLabel2.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PanelDisplay.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\RichTextBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Windows7ProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\Windows7Taskbar.cs" />
+    <Compile Include="FileDownloader.cs" />
+    <Compile Include="frmFilesInUse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFilesInUse.Designer.cs" />
+    <Compile Include="frmProcesses.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProcesses.Designer.cs" />
+    <Compile Include="InstallUpdate\InstallUpdate.cs" />
+    <Compile Include="InstallUpdate\InstallUpdate.Extract.cs" />
+    <Compile Include="InstallUpdate\InstallUpdate.Processes.cs" />
+    <Compile Include="InstallUpdate\InstallUpdate.Registry.cs" />
+    <Compile Include="InstallUpdate\RollbackUpdate.cs" />
+    <Compile Include="InstallUpdate\UpdateSettings.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="MainForm\Frame.cs" />
+    <Compile Include="MainForm\MainForm.AutomaticUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm\MainForm.Buttons.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm\MainForm.Downloading.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm\MainForm.LogOffShutDown.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm\MainForm.Progress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm\MainForm.Updating.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm\MainForm.UserElevation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManifastResourceLoader.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Common\SystemFolders.cs" />
+    <Compile Include="Common\VersionTools.cs" />
+    <Compile Include="RegChange\RegChange.32bit.cs" />
+    <Compile Include="RegChange\RegChange.cs" />
+    <Compile Include="RegChange\RegChange.Execution.cs" />
+    <Compile Include="Shortcuts\ShellLinkNative.cs" />
+    <Compile Include="Shortcuts\ShellShortcut.cs" />
+    <Compile Include="Shortcuts\ShortcutInfo.cs" />
+    <Compile Include="UpdateHelper\AutoUpdaterInfo.cs" />
+    <Compile Include="UpdateHelper\PipeServer.cs" />
+    <Compile Include="UpdateHelper\UpdateHelper.cs" />
+    <Compile Include="UpdateHelper\UpdateHelperData.cs" />
+    <Compile Include="UpdateHelper\UpdateStepOn.cs" />
+    <Compile Include="Win32.cs" />
+    <EmbeddedResource Include="frmFilesInUse.resx" />
+    <EmbeddedResource Include="frmProcesses.resx" />
+    <EmbeddedResource Include="MainForm\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo190x51_trans.png" />
+    <EmbeddedResource Include="Resources\cross.png" />
+    <EmbeddedResource Include="Resources\loading-blue.png" />
+    <EmbeddedResource Include="Resources\tick.png" />
+    <EmbeddedResource Include="Resources\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="updater.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)\Animatum\bin\Debug\Animatum Updater.exe" /y</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

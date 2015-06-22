@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Animatum", "Animatum\Animatum.csproj", "{B9BE660A-0EFE-4553-8C51-B16B6D35DDDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Animatum.Updater", "AnimatumUpdater\Animatum.Updater.csproj", "{A910C923-2EED-40E0-9805-D97DE8E8DF2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
