@@ -256,6 +256,10 @@ namespace Animatum.SceneGraph
                 gl.LoadIdentity();
 
                 postShader.Bind();
+                postShader.SetUniform1("resolution_x", viewportSize.Width);
+                postShader.SetUniform1("resolution_y", viewportSize.Height);
+                //gl.Uniform2(postShader.GetUniformLocation("resolution"),
+                //    viewportSize.Width, viewportSize.Height);
 
                 gl.ActiveTexture(OpenGL.GL_TEXTURE0);
                 gl.BindTexture(OpenGL.GL_TEXTURE_2D, fboTexture);
