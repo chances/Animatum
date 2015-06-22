@@ -235,6 +235,8 @@
     <None Include="Resources\fileopen.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Shaders\fxaa.frag" />
+    <EmbeddedResource Include="Resources\Shaders\fxaa.vert" />
     <None Include="Resources\info.png" />
   </ItemGroup>
   <ItemGroup>
