@@ -37,6 +37,19 @@ namespace Animatum
             modelView.Dock = DockStyle.Fill;
             this.splitContainerTimeline.Panel1.Controls.Add(modelView);
 
+            //Create timeline
+            timelineDockPanel.Content.Controls.Add(timeline = new TimelineControl()
+            {
+                Dock = DockStyle.Fill,
+                Model = modelView.Scene.Model
+            });
+            timeline.BeginPlayback += timeline_BeginPlayback;
+            timeline.KeyCommand += timeline_KeyCommand;
+            timeline.ModelUpdated += timeline_ModelUpdated;
+            timeline.PausePlayback += timeline_PausePlayback;
+            timeline.Ready += timeline_Ready;
+            timeline.StopPlayback += timeline_StopPlayback;
+
             //Set settings
             modelView.Scene.RenderGrid = Settings.GetSetting("display/renderGrid", true);
             modelView.Scene.RenderAxies = Settings.GetSetting("display/renderAxies", true);
@@ -137,10 +150,13 @@ namespace Animatum
 
         private void timeline_Ready(object sender, EventArgs e)
         {
-            //Show the form. We don't want to see an ugly browser ;)
-            this.Visible = true;
-            //Update timeline model
-            this.timeline.Model = this.modelView.Scene.Model;
+            this.InvokeOnUiThreadIfRequired(() =>
+            {
+                //Show the form. We don't want to see an ugly browser ;)
+                this.Visible = true;
+                //Update timeline model
+                this.timeline.Model = this.modelView.Scene.Model;
+            });
         }
 
         private bool timeline_KeyCommand(object sender, int key)

@@ -29,13 +29,12 @@
         private void InitializeComponent()
         {
             this.reloadButton = new System.Windows.Forms.Button();
-            this.webBrowser = new Animatum.Controls.HotkeyWebBrowser();
             this.SuspendLayout();
             // 
             // reloadButton
             // 
             this.reloadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.reloadButton.Location = new System.Drawing.Point(98, 124);
+            this.reloadButton.Location = new System.Drawing.Point(97, 123);
             this.reloadButton.Name = "reloadButton";
             this.reloadButton.Size = new System.Drawing.Size(49, 23);
             this.reloadButton.TabIndex = 1;
@@ -43,27 +42,11 @@
             this.reloadButton.UseVisualStyleBackColor = true;
             this.reloadButton.Click += new System.EventHandler(this.reloadButton_Click);
             // 
-            // webBrowser
-            // 
-            this.webBrowser.AllowWebBrowserDrop = false;
-            this.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser.IsWebBrowserContextMenuEnabled = false;
-            this.webBrowser.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser.Name = "webBrowser";
-            this.webBrowser.ScrollBarsEnabled = false;
-            this.webBrowser.Size = new System.Drawing.Size(150, 150);
-            this.webBrowser.TabIndex = 2;
-            this.webBrowser.KeyCommand += new Animatum.Controls.HotkeyWebBrowser.KeyCommandHandler(this.webBrowser_KeyCommand);
-            this.webBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser_DocumentCompleted);
-            this.webBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.webBrowser_Navigated);
-            // 
             // TimelineControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.reloadButton);
-            this.Controls.Add(this.webBrowser);
             this.Name = "TimelineControl";
             this.Load += new System.EventHandler(this.TimelineControl_Load);
             this.ResumeLayout(false);
@@ -73,7 +56,6 @@
         #endregion
 
         private System.Windows.Forms.Button reloadButton;
-        private HotkeyWebBrowser webBrowser;
 
     }
 }

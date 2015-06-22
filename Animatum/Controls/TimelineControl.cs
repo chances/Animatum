@@ -6,13 +6,17 @@ using System.Threading;
 using System.IO;
 using mshtml;
 using System.ComponentModel;
+using CefSharp.WinForms;
+using CefSharp;
 
 namespace Animatum.Controls
 {
     public partial class TimelineControl : UserControl
     {
+        private readonly ChromiumWebBrowser webBrowser;
+
         private const float FONT_SIZE = 8.25f;
-        private string path = Application.StartupPath + "\\Timeline\\index.html";
+        private string path = "app://timeline/index.html";
         private TimelineScriptingObject scriptObj;
         private Model model;
         private bool debugMode;
@@ -27,7 +31,7 @@ namespace Animatum.Controls
         /// </summary>
         [Category("Key")]
         [Description("Occurs when the user performed a keyboard shortcut.")]
-        public event HotkeyWebBrowser.KeyCommandHandler KeyCommand;
+        public event ChromiumBrowserHandlers.KeyboardHandler.KeyCommandHandler KeyCommand;
         /// <summary>
         /// Occurs when the Model has been updated by the user in the timeline.
         /// </summary>
@@ -53,12 +57,50 @@ namespace Animatum.Controls
         {
             InitializeComponent();
 
-            scriptObj = new TimelineScriptingObject(null);
-            scriptObj.ModelUpdated += new EventHandler(scriptObj_ModelUpdated);
-            scriptObj.BeginPlayback += new EventHandler(scriptObj_BeginPlayback);
-            scriptObj.PausePlayback += new EventHandler(scriptObj_PausePlayback);
-            scriptObj.StopPlayback += new EventHandler(scriptObj_StopPlayback);
-            webBrowser.ObjectForScripting = scriptObj;
+            if (DesignMode)
+            {
+                this.BackColor = Color.Black;
+            }
+            else
+            {
+
+                InitializeCef();
+
+                webBrowser = new ChromiumWebBrowser(path)
+                {
+                    Dock = DockStyle.Fill
+                };
+                this.Controls.Add(webBrowser);
+                webBrowser.SendToBack();
+
+                webBrowser.MenuHandler = new ChromiumBrowserHandlers.MenuHandler();
+                var keyboardHandler = new ChromiumBrowserHandlers.KeyboardHandler();
+                keyboardHandler.KeyCommand += webBrowser_KeyCommand;
+                webBrowser.KeyboardHandler = keyboardHandler;
+
+                webBrowser.ConsoleMessage += webBrowser_ConsoleMessage;
+                webBrowser.LoadError += webBrowser_LoadError;
+
+                webBrowser.BrowserSettings.JavaScriptAccessClipboardDisabled = false;
+                webBrowser.BrowserSettings.JavaScriptCloseWindowsDisabled = true;
+                webBrowser.BrowserSettings.JavaScriptOpenWindowsDisabled = true;
+
+                scriptObj = new TimelineScriptingObject(null);
+                scriptObj.DOMReady += scriptObj_DOMReady;
+                scriptObj.ModelUpdated += new EventHandler(scriptObj_ModelUpdated);
+                scriptObj.BeginPlayback += new EventHandler(scriptObj_BeginPlayback);
+                scriptObj.PausePlayback += new EventHandler(scriptObj_PausePlayback);
+                scriptObj.StopPlayback += new EventHandler(scriptObj_StopPlayback);
+
+                webBrowser.RegisterJsObject("external", scriptObj);
+            }
+        }
+
+        void scriptObj_DOMReady(object sender, EventArgs e)
+        {
+            setBrowserStyles();
+
+            if (Ready != null) Ready(this, new EventArgs());
         }
 
         public Model Model
@@ -74,8 +116,7 @@ namespace Animatum.Controls
                     model.AnimationEnded += new EventHandler(model_AnimationEnded);
                 }
                 scriptObj.model = model;
-                if (webBrowser.Document != null)
-                    execScript("onModelUpdated();");
+                execScript("onModelUpdated();");
             }
         }
 
@@ -86,31 +127,45 @@ namespace Animatum.Controls
             {
                 debugMode = value;
                 this.reloadButton.Visible = debugMode;
-                this.webBrowser.ScriptErrorsSuppressed = !debugMode;
+
+                if (DebugMode)
+                    webBrowser.ShowDevTools();
             }
         }
 
-        private void OnReady()
+        private void InitializeCef()
         {
-            if (Ready != null) Ready(this, new EventArgs());
+            CefSettings settings = new CefSettings();
+            settings.Locale = "en-US";
+
+            settings.RegisterScheme(new CefCustomScheme()
+            {
+                IsDisplayIsolated = true,
+                IsStandard = true,
+                SchemeName = AppSchemeHandlerFactory.SchemeName,
+                SchemeHandlerFactory = new AppSchemeHandlerFactory()
+            });
+
+            Cef.Initialize(settings, true, true);
         }
 
         private void OnModelUpdated()
         {
-            if (ModelUpdated != null)
-                ModelUpdated(this, new EventArgs());
+            this.InvokeOnUiThreadIfRequired(() =>
+            {
+                if (ModelUpdated != null)
+                    ModelUpdated(this, new EventArgs());
+            });
         }
 
         void model_CurrentTimeChanged(object sender, EventArgs e)
         {
-            if (webBrowser.Document != null)
-                execScript("onCurrentTimeChanged();");
+            execScript("onCurrentTimeChanged();");
         }
 
         void model_AnimationEnded(object sender, EventArgs e)
         {
-            if (webBrowser.Document != null)
-                execScript("onAnimationEnded();");
+            execScript("onAnimationEnded();");
         }
 
         void scriptObj_ModelUpdated(object sender, EventArgs e)
@@ -136,58 +191,70 @@ namespace Animatum.Controls
                 StopPlayback(this, new EventArgs());
         }
 
-        private void setBrowserStyle()
+        private void setBrowserStyles()
         {
-            //Create a style element
-            HtmlElement styleElem = webBrowser.Document.CreateElement("style");
             string style = "body {";
-            //Background
+            // Background
             style += "background-color:" + ColorTranslator.ToHtml(this.BackColor) + ";";
-            //Font
+            // Font
             style += "font-family: \"" + this.Font.FontFamily.Name + "\";";
             style += "font-size:" + FONT_SIZE + "pt;";
             style += "}";
-            //Set style
-            styleElem.InnerText = style;
-            webBrowser.Document.GetElementsByTagName("head")[0].AppendChild(styleElem);
+
+            // Set style
+            execScript("var node = document.createElement(\"style\"); node.innerHTML = \"" +
+                style + "\"; document.head.appendChild(node);");
         }
 
         private void execScript(string script)
         {
-            HtmlElement scriptElem = webBrowser.Document.CreateElement("script");
-            scriptElem.SetAttribute("type", "text/javascript");
-            IHTMLScriptElement elem = (IHTMLScriptElement)scriptElem.DomElement;
-            elem.text = script;
-            webBrowser.Document.GetElementsByTagName("head")[0].AppendChild(scriptElem);
+            if (scriptObj != null && scriptObj.isReady)
+            {
+                webBrowser.ExecuteScriptAsync(script);
+            }
         }
 
         private void TimelineControl_Load(object sender, EventArgs e)
         {
-            if (File.Exists(path))
-                webBrowser.Navigate(path);
-        }
-
-        private void webBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
-        {
-            setBrowserStyle();
+            if (Uri.IsWellFormedUriString(path, UriKind.RelativeOrAbsolute))
+            {
+                webBrowser.Load(path);
+            }
         }
 
         private void reloadButton_Click(object sender, EventArgs e)
         {
-            if (File.Exists(path))
-                webBrowser.Navigate(path);
-        }
-
-        private void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-            OnReady();
+            if (Uri.IsWellFormedUriString(path, UriKind.RelativeOrAbsolute))
+            {
+                webBrowser.Load(path);
+            }
         }
 
         private bool webBrowser_KeyCommand(object sender, int key)
         {
-            if (KeyCommand != null)
-                return KeyCommand(sender, key);
-            return false;
+            bool response = false;
+
+            this.InvokeOnUiThreadIfRequired(() =>
+            {
+                if (KeyCommand != null)
+                    response = KeyCommand(sender, key);
+            });
+
+            return response;
+        }
+
+        void webBrowser_ConsoleMessage(object sender, ConsoleMessageEventArgs e)
+        {
+            if (debugMode)
+            {
+                // Add to a log, maybe?
+            }
+        }
+
+        void webBrowser_LoadError(object sender, LoadErrorEventArgs e)
+        {
+            throw new Exception("Error " + e.ErrorCode.ToString() + ": " +
+                e.FailedUrl + "\n" + e.ErrorText);
         }
     }
 }

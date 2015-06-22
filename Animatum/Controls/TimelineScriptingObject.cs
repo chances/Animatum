@@ -15,6 +15,9 @@ namespace Animatum.Controls
     [ComVisible(true)]
     public class TimelineScriptingObject
     {
+        private bool timelineReady;
+
+        public event EventHandler DOMReady;
         public event EventHandler ModelUpdated;
         public event EventHandler BeginPlayback;
         public event EventHandler PausePlayback;
@@ -23,9 +26,26 @@ namespace Animatum.Controls
         public TimelineScriptingObject(Model model)
         {
             this.model = model;
+
+            timelineReady = false;
         }
 
         public Model model { get; set; }
+
+        public bool isReady
+        {
+            get { return timelineReady; }
+            set
+            {
+                if (value)
+                {
+                    timelineReady = true;
+
+                    if (DOMReady != null)
+                        DOMReady(this, new EventArgs());
+                }
+            }
+        }
 
         public bool isModelLoaded { get { return model != null; } }
 
