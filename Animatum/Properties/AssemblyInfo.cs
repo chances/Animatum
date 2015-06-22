@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 #endif
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Animatum")]
-[assembly: AssemblyCopyright("Copyright © 2012 Chance Snow")]
+[assembly: AssemblyCopyright("Copyright © 2015 Chance Snow")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0")]
-[assembly: AssemblyFileVersion("0.1.*")]
-[assembly: AssemblyInformationalVersion("1.0 Beta")]
+[assembly: AssemblyFileVersion("0.2.0.0")]
+[assembly: AssemblyInformationalVersion("1.0 Beta 2")]
